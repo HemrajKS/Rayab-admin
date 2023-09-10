@@ -10,6 +10,7 @@ export async function POST(request) {
 
   try {
     const uploadData = await upload(image, name);
+
     let json_response = {
       status: true,
       data: uploadData,
