@@ -1,12 +1,6 @@
 import upload from '@/app/services/cloudinary';
 import { NextResponse, NextRequest } from 'next/server';
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
-
 export async function POST(request) {
   // const formData = await form.parse(request);
 
