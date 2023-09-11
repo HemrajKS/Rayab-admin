@@ -26,23 +26,27 @@ export async function POST(req) {
       if (user) {
         return getErrorResponse(400, "User already exist");
       } else {
-        if (isAdmin) {
-          try {
-            const newUser = new UserModel(body);
-            const savedUser = await newUser.save();
-            return new NextResponse(
-              JSON.stringify({
-                status: "success",
-                data: { user: { savedUser, password: undefined } },
-              }),
-              {
-                status: 200,
-                headers: { "Content-Type": "application/json" },
-              }
-            );
-          } catch (error) {
-            return getErrorResponse(400, error.message);
+        if (body.password === body.cpassword) {
+          if (isAdmin) {
+            try {
+              const newUser = new UserModel(body);
+              const savedUser = await newUser.save();
+              return new NextResponse(
+                JSON.stringify({
+                  status: "success",
+                  data: { user: { savedUser, password: undefined } },
+                }),
+                {
+                  status: 200,
+                  headers: { "Content-Type": "application/json" },
+                }
+              );
+            } catch (error) {
+              return getErrorResponse(400, error.message);
+            }
           }
+        } else {
+          return getErrorResponse(401, "Passwords are not matching");
         }
       }
     } else {
