@@ -1,4 +1,4 @@
-import mongoose, { Schema, model } from 'mongoose';
+import mongoose, { Schema, model } from "mongoose";
 
 // Define the product item schema within the promotion
 const productItemSchema = new Schema({
@@ -13,40 +13,40 @@ const productItemSchema = new Schema({
 });
 
 // Define the promotion schema
-const promotionSchema = new Schema({
-  _id: {
-    type: String,
-    required: true,
+const promotionSchema = new Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    startDate: {
+      type: Date,
+      required: true,
+    },
+    endDate: {
+      type: Date,
+      required: true,
+    },
+    discountType: {
+      type: String,
+      required: true,
+    },
+    discountValue: {
+      type: Number,
+      required: true,
+    },
+    products: [productItemSchema],
   },
-  name: {
-    type: String,
-    required: true,
-  },
-  description: {
-    type: String,
-    required: true,
-  },
-  startDate: {
-    type: Date,
-    required: true,
-  },
-  endDate: {
-    type: Date,
-    required: true,
-  },
-  discountType: {
-    type: String,
-    required: true,
-  },
-  discountValue: {
-    type: Number,
-    required: true,
-  },
-  products: [productItemSchema],
-});
+  {
+    timestamps: true,
+  }
+);
 
 const Promotion =
-  mongoose.models.promotions ||
-  mongoose.model("promotions", promotionSchema);
+  mongoose.models.promotions || mongoose.model("promotions", promotionSchema);
 
 export default Promotion;

@@ -1,28 +1,25 @@
-import mongoose, { Schema, model } from 'mongoose';
+import mongoose, { Schema, model } from "mongoose";
 
 // Define the notification schema
-const notificationSchema = new Schema({
-  _id: {
-    type: String,
-    required: true,
+const notificationSchema = new Schema(
+  {
+    type: {
+      type: String,
+      required: true,
+    },
+    message: {
+      type: String,
+      required: true,
+    },
+    timestamp: {
+      type: Date,
+      required: true,
+    },
   },
-  id: {
-    type: String,
-    required: true,
-  },
-  type: {
-    type: String,
-    required: true,
-  },
-  message: {
-    type: String,
-    required: true,
-  },
-  timestamp: {
-    type: Date,
-    required: true,
-  },
-});
+  {
+    timestamps: true,
+  }
+);
 
 // Define the Notification model
 const Notification =

@@ -1,4 +1,4 @@
-import mongoose, { Schema, model } from 'mongoose';
+import mongoose, { Schema, model } from "mongoose";
 
 // Define the coordinates schema
 const coordinatesSchema = new Schema({
@@ -32,23 +32,27 @@ const customerSchema = new Schema({
 });
 
 // Define the order schema
-const orderSchema = new Schema({
-  _id: {
-    type: String,
-    required: true,
+const orderSchema = new Schema(
+  {
+    _id: {
+      type: String,
+      required: true,
+    },
+    user: String,
+    products: [productItemSchema],
+    totalPrice: Number,
+    status: String,
+    orderDate: Date,
+    customerQuery: String,
+    address: addressSchema,
+    customer: customerSchema,
+    createdAt: Date,
+    updatedAt: Date,
   },
-  user: String,
-  products: [productItemSchema],
-  totalPrice: Number,
-  status: String,
-  orderDate: Date,
-  customerQuery: String,
-  address: addressSchema,
-  customer: customerSchema,
-  createdAt: Date,
-  updatedAt: Date,
-});
-
+  {
+    timestamps: true,
+  }
+);
 
 const Order = mongoose.models.orders || mongoose.model("orders", orderSchema);
 
