@@ -3,7 +3,6 @@ import { hash } from "bcryptjs";
 import { NextResponse } from "next/server";
 import UserModel from "@/models/user";
 import connectDB from "@/lib/mongodb";
-import mongoose from "mongoose";
 
 export async function POST(req) {
   const isAdmin = true;
@@ -15,7 +14,7 @@ export async function POST(req) {
       username: body.username,
     });
     const hashedPassword = await hash(body.password, 12);
-    console.log(body);
+
     if (
       body.username &&
       body.email &&
@@ -23,18 +22,33 @@ export async function POST(req) {
       body.cpassword &&
       body.firstName
     ) {
+      const copiedObject = {
+        ...body,
+        password: hashedPassword,
+        isAdmin: true,
+        cpassword: undefined,
+      };
+
       if (user) {
         return getErrorResponse(400, "User already exist");
       } else {
         if (body.password === body.cpassword) {
           if (isAdmin) {
             try {
-              const newUser = new UserModel(body);
+              delete copiedObject.cpassword;
+              const newUser = new UserModel(copiedObject);
               const savedUser = await newUser.save();
+              const sanitizedObj = {
+                _id: savedUser._id,
+                username: savedUser.username,
+                email: savedUser.email,
+                firstName: savedUser.firstName,
+                lastName: savedUser.lastName,
+              };
               return new NextResponse(
                 JSON.stringify({
                   status: "success",
-                  data: { user: { savedUser, password: undefined } },
+                  data: sanitizedObj,
                 }),
                 {
                   status: 200,
