@@ -1,13 +1,11 @@
+import connectDB from '@/lib/mongodb';
+import PrivacyPolicy from '@/models/privacyPolicy';
 import { NextResponse, NextRequest } from 'next/server';
-import clientPromise from '../../../lib/mongodb';
-import { ObjectId } from 'mongodb';
 
 export async function GET(request) {
   try {
-    const client = await clientPromise;
-    const db = client.db('Rayab');
-    const Misc = await db.collection('misc');
-    const misc = await Misc.find({}).toArray();
+await connectDB()
+    const misc = await PrivacyPolicy.find({});
 
     let json_response = {
       status: true,

@@ -1,26 +1,26 @@
-import { NextResponse, NextRequest } from 'next/server';
-import clientPromise from '../../../lib/mongodb';
-import { ObjectId } from 'mongodb';
+import { NextResponse, NextRequest } from "next/server";
+import { ObjectId } from "mongodb";
+import Product from "@/models/product";
+import connectDB from "@/lib/mongodb";
 
 export async function GET(request) {
   try {
-    const client = await clientPromise;
-    const db = client.db('Rayab');
-
-    const Product = await db.collection('Products');
+    await connectDB();
     const totalProducts = await Product.count();
-    const skip = JSON.parse(request.nextUrl.searchParams.get('skip'))
-      ? JSON.parse(request.nextUrl.searchParams.get('skip'))
+
+    const skip = JSON.parse(request.nextUrl.searchParams.get("skip"))
+      ? JSON.parse(request.nextUrl.searchParams.get("skip"))
       : 0;
-    const limit = JSON.parse(request.nextUrl.searchParams.get('limit'))
-      ? JSON.parse(request.nextUrl.searchParams.get('limit'))
+    const limit = JSON.parse(request.nextUrl.searchParams.get("limit"))
+      ? JSON.parse(request.nextUrl.searchParams.get("limit"))
       : totalProducts;
-    const queryId = request.nextUrl.searchParams.get('id');
+
+    const queryId = request.nextUrl.searchParams.get("id");
     const id = new ObjectId(queryId);
 
     const products = queryId
-      ? await Product.find({ _id: id }).toArray()
-      : await Product.find({}).limit(limit).skip(skip).toArray();
+      ? await Product.find({ _id: id })
+      : await Product.find({}, {}, { skip, limit });
 
     let json_response = {
       status: true,
@@ -31,13 +31,13 @@ export async function GET(request) {
   } catch (error) {
     let json_response = {
       status: false,
-      results: 'some error occured',
+      results: "some error occured",
       error: error,
     };
     return NextResponse.json(json_response, {
       status: 500,
       headers: {
-        'Access-Control-Allow-Methods': 'GET',
+        "Access-Control-Allow-Methods": "GET",
       },
     });
   }
