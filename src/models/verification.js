@@ -14,6 +14,7 @@ const verficationSchema = new mongoose.Schema(
     otp: {
       type: String,
       required: true,
+      index: true
     },
     createdAt: {
       type: Date,
