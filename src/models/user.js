@@ -30,12 +30,20 @@ const userSchema = new Schema(
       type: Boolean,
       default: false,
     },
+
+    isActive: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
   }
 );
-
+userSchema.index(
+  { createdAt: 1 },
+  { expireAfterSeconds: 3600, partialFilterExpression: { isActive: false } } //removed one hour after not verifying
+);
 const User = mongoose.models.users || mongoose.model("users", userSchema);
 
 export default User;

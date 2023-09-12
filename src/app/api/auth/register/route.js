@@ -3,6 +3,9 @@ import { hash } from "bcryptjs";
 import { NextResponse } from "next/server";
 import UserModel from "@/models/user";
 import connectDB from "@/lib/mongodb";
+import { sendMail } from "@/app/services/mail";
+import { generateOTP } from "@/app/services/otp";
+import Verify from "@/models/verification";
 
 export async function POST(req) {
   const isAdmin = true;
@@ -22,33 +25,44 @@ export async function POST(req) {
       body.cpassword &&
       body.firstName
     ) {
-      const copiedObject = {
-        ...body,
-        password: hashedPassword,
-        isAdmin: true,
-        cpassword: undefined,
-      };
-
       if (user) {
         return getErrorResponse(400, "User already exist");
       } else {
         if (body.password === body.cpassword) {
           if (isAdmin) {
             try {
+              const otp = generateOTP();
+              const hashedOtp = await hash(otp, 12);
+              const copiedObject = {
+                ...body,
+                password: hashedPassword,
+                isAdmin: true,
+                cpassword: undefined,
+                isActive: false,
+              };
               delete copiedObject.cpassword;
               const newUser = new UserModel(copiedObject);
               const savedUser = await newUser.save();
-              const sanitizedObj = {
-                _id: savedUser._id,
-                username: savedUser.username,
-                email: savedUser.email,
-                firstName: savedUser.firstName,
-                lastName: savedUser.lastName,
-              };
+              try {
+                const verificationObj = {
+                  _id: savedUser._id,
+                  email: savedUser.email,
+                  otp: hashedOtp,
+                };
+                const verification = new Verify(verificationObj);
+                await verification.save();
+              } catch (error) {
+                console.log(error);
+              }
+
+              const sanitizedNewUser = { ...savedUser.toObject() };
+              delete sanitizedNewUser.password;
+              await sendMail({ to: body.email, otp });
               return new NextResponse(
                 JSON.stringify({
                   status: "success",
-                  data: sanitizedObj,
+                  message: "OTP has been sent to your email",
+                  data: sanitizedNewUser,
                 }),
                 {
                   status: 200,

@@ -17,7 +17,6 @@ export const authOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        console.log(credentials);
         const user = {
           id: 1,
           email: 'admin@gmail.com',
@@ -53,7 +52,6 @@ export const authOptions = {
       };
     },
     jwt: ({ token, user }) => {
-      console.log('JWT Callback', { token, user });
       if (user) {
         const u = user;
         return {
