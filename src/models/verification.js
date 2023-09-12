@@ -5,7 +5,6 @@ const verficationSchema = new mongoose.Schema(
     email: {
       type: String,
       required: true,
-      unique: true,
     },
     _id: {
       type: String,
