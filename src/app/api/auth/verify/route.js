@@ -33,6 +33,7 @@ export async function POST(req) {
               );
               const sanitizedNewUser = { ...user.toObject() };
               delete sanitizedNewUser.password;
+              await Verify.deleteOne({ _id: body.id});
               await sendMail({
                 to: body.email,
                 template: "regSuccessTemplate",

@@ -15,7 +15,7 @@ export const sendMail = async (params) => {
     let info = await transporter.sendMail({
       from: MAIL_SETTINGS.auth.user,
       to: params.to,
-      subject: "Rayab-Intl OTP",
+      subject: "Rayab International Company",
       html: compiledTemplate(params),
     });
     return info;
