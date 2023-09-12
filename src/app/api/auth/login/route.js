@@ -1,25 +1,26 @@
 import { getEnvVariable, getErrorResponse } from "@/lib/helpers";
+import connectDB from "@/lib/mongodb";
 import { signJWT } from "@/lib/token";
 import { compare } from "bcryptjs";
+import UserModel from "@/models/user";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req) {
   const body = await req.json();
   try {
-    const user = {
-      id: 1,
-      email: "admin@gmail.com",
-      password: "Admin",
-    };
+    await connectDB();
+    const user = await UserModel.findOne({
+      email: body.email,
+    });
 
-    if (!user || !(body.password === user.password)) {
+    if (!user || !(await compare(body.password, user.password))) {
       return getErrorResponse(401, "Invalid email or password");
     }
 
     const JWT_EXPIRES_IN = getEnvVariable("JWT_EXPIRES_IN");
 
     const token = await signJWT(
-      { sub: user.id, name: user.name, email: user.email },
+      { sub: user._id, name: user.name, email: user.email },
       { exp: `${JWT_EXPIRES_IN}m` }
     );
 
