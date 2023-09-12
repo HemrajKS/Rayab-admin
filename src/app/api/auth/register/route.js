@@ -57,7 +57,7 @@ export async function POST(req) {
 
               const sanitizedNewUser = { ...savedUser.toObject() };
               delete sanitizedNewUser.password;
-              await sendMail({ to: body.email, otp });
+              await sendMail({ to: body.email, otp, template: "otpTemplate" });
               return new NextResponse(
                 JSON.stringify({
                   status: "success",

@@ -1,3 +1,4 @@
+import { sendMail } from "@/app/services/mail";
 import { getErrorResponse } from "@/lib/helpers";
 import connectDB from "@/lib/mongodb";
 import UserModel from "@/models/user";
@@ -32,6 +33,10 @@ export async function POST(req) {
               );
               const sanitizedNewUser = { ...user.toObject() };
               delete sanitizedNewUser.password;
+              await sendMail({
+                to: body.email,
+                template: "regSuccessTemplate",
+              });
 
               return new NextResponse(
                 JSON.stringify({
@@ -56,16 +61,6 @@ export async function POST(req) {
     } else {
       return getErrorResponse(404, "Some fields are missing");
     }
-
-    const response = new NextResponse(
-      JSON.stringify({
-        status: true,
-      }),
-      {
-        status: 200,
-      }
-    );
-    return response;
   } catch (error) {
     return getErrorResponse(500, error.message);
   }
