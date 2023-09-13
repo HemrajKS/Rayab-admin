@@ -13,7 +13,7 @@ export async function POST(req) {
       email: body.email,
     });
 
-    if (!user || !(await compare(body.password, user.password))) {
+    if (!user || !(await compare(body.password, user.password))|| !user.isActive) {
       return getErrorResponse(401, "Invalid email or password");
     }
 
