@@ -14,8 +14,9 @@ export const OTP_CONFIG = {
   specialChars: false,
 };
 
-export const protectedRoutes = ["/api/upload"];
+export const protectedRoutes = ["/api/upload","/api/order/cart"];
 export const publicRoutes = ["/api/categories", "/api/misc"];
 export const authRoutes = ["/api/auth/"];
 
 export const OTP_LENGTH = 4;
+

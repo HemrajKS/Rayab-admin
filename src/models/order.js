@@ -1,12 +1,10 @@
 import mongoose, { Schema, model } from "mongoose";
 
-// Define the coordinates schema
 const coordinatesSchema = new Schema({
   latitude: Number,
   longitude: Number,
 });
 
-// Define the address schema
 const addressSchema = new Schema({
   street: String,
   city: String,
@@ -16,36 +14,40 @@ const addressSchema = new Schema({
   coordinates: coordinatesSchema,
 });
 
-// Define the product item schema
 const productItemSchema = new Schema({
-  product: String,
-  quantity: Number,
+  product: { type: String, required: true },
+  quantity: { type: Number, required: true },
 });
 
-// Define the customer schema
-const customerSchema = new Schema({
-  _id: String,
-  username: String,
-  email: String,
-  firstName: String,
-  lastName: String,
-});
-
-// Define the order schema
 const orderSchema = new Schema(
   {
-    _id: {
+    name: { type: String, required: true },
+    products: { type: [productItemSchema], required: true },
+    currency: {
       type: String,
       required: true,
     },
-    user: String,
-    products: [productItemSchema],
-    totalPrice: Number,
+    totalPrice: {
+      type: String,
+      required: true,
+    },
+    currency: String,
     status: String,
-    orderDate: Date,
+    orderDate: {
+      type: Date,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+    },
+    phone1: {
+      type: String,
+      required: true,
+    },
+    phone2: String,
     customerQuery: String,
     address: addressSchema,
-    customer: customerSchema,
     createdAt: Date,
     updatedAt: Date,
   },

@@ -35,6 +35,7 @@ const userSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    orders: { type: [String], default: [] },
   },
   {
     timestamps: true,
