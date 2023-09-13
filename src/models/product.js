@@ -14,6 +14,10 @@ const productSchema = new Schema(
       type: String,
       required: true,
     },
+    currency:{
+      type: String,
+      required: true
+    },
     price: {
       type: Number,
       required: true,
@@ -30,17 +34,8 @@ const productSchema = new Schema(
       type: String,
       required: true,
     },
-    createdAt: {
-      type: Date,
-      required: true,
-    },
-    updatedAt: {
-      type: Date,
-      required: true,
-    },
     manufacturer: {
       type: String,
-      required: true,
     },
     model: {
       type: String,
@@ -65,10 +60,10 @@ const productSchema = new Schema(
       shippingCost: Number,
     },
     images: [String],
-    addedBy:{
+    addedBy: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
 
   {

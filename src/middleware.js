@@ -7,7 +7,7 @@ export async function middleware(req) {
   let token;
 
   if (
-    req.nextUrl.pathname.startsWith("/admin") ||
+    req.nextUrl.pathname.startsWith("/api/admin") ||
     protectedRoutes.includes(req.nextUrl.pathname)
   ) {
     if (req.cookies.has("token")) {
