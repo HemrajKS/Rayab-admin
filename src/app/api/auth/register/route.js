@@ -29,7 +29,7 @@ export async function POST(req) {
         return getErrorResponse(400, "User already exist");
       } else {
         if (body.password === body.cpassword) {
-          if (isAdmin==false) {
+          if (isAdmin == false) {
             try {
               const otp = generateOTP();
               const hashedOtp = await hash(otp, 12);
@@ -70,7 +70,10 @@ export async function POST(req) {
                 }
               );
             } catch (error) {
-              return getErrorResponse(400, error.message);
+              if (error.code === 11000) {
+                return getErrorResponse(406, "Duplicate entries");
+              }
+              return getErrorResponse(500, "Sorry!, Could not register");
             }
           }
         } else {
