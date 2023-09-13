@@ -8,7 +8,7 @@ import { generateOTP } from "@/app/services/otp";
 import Verify from "@/models/verification";
 
 export async function POST(req) {
-  const isAdmin = true;
+  const isAdmin = false;
   try {
     await connectDB();
     const body = await req.json();
@@ -29,14 +29,14 @@ export async function POST(req) {
         return getErrorResponse(400, "User already exist");
       } else {
         if (body.password === body.cpassword) {
-          if (isAdmin) {
+          if (isAdmin==false) {
             try {
               const otp = generateOTP();
               const hashedOtp = await hash(otp, 12);
               const copiedObject = {
                 ...body,
                 password: hashedPassword,
-                isAdmin: true,
+                isAdmin,
                 cpassword: undefined,
                 isActive: false,
               };
