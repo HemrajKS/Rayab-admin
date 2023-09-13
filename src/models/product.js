@@ -65,7 +65,12 @@ const productSchema = new Schema(
       shippingCost: Number,
     },
     images: [String],
+    addedBy:{
+      type: String,
+      required: true
+    }
   },
+
   {
     timestamps: true,
   }

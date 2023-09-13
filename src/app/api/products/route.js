@@ -16,10 +16,9 @@ export async function GET(request) {
       : totalProducts;
 
     const queryId = request.nextUrl.searchParams.get("id");
-    const id = new ObjectId(queryId);
 
     const products = queryId
-      ? await Product.find({ _id: id })
+      ? await Product.findOne({ _id: queryId })
       : await Product.find({}, {}, { skip, limit });
 
     let json_response = {
