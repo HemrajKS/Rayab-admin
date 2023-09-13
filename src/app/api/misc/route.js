@@ -1,10 +1,10 @@
-import connectDB from '@/lib/mongodb';
-import PrivacyPolicy from '@/models/privacyPolicy';
-import { NextResponse, NextRequest } from 'next/server';
+import connectDB from "@/lib/mongodb";
+import PrivacyPolicy from "@/models/privacyPolicy";
+import { NextResponse, NextRequest } from "next/server";
 
 export async function GET(request) {
   try {
-await connectDB()
+    await connectDB();
     const misc = await PrivacyPolicy.find({});
 
     let json_response = {
@@ -15,13 +15,13 @@ await connectDB()
   } catch (error) {
     let json_response = {
       status: false,
-      results: 'some error occured',
+      results: "some error occured",
       error: error,
     };
     return NextResponse.json(json_response, {
       status: 500,
       headers: {
-        'Access-Control-Allow-Methods': 'GET',
+        "Access-Control-Allow-Methods": "GET",
       },
     });
   }

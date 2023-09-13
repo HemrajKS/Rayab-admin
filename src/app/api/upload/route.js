@@ -2,8 +2,6 @@ import upload from '@/app/services/cloudinary';
 import { NextResponse, NextRequest } from 'next/server';
 
 export async function POST(request) {
-  // const formData = await form.parse(request);
-
   const formData = await request.formData();
   const name = await formData.get('name');
   const image = await formData.get('image');

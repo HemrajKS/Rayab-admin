@@ -18,7 +18,7 @@ export function getErrorResponse(
 ) {
   return new NextResponse(
     JSON.stringify({
-      status: status < 500 ? "fail" : "error",
+      status: false,
       message,
       errors: errors ? errors.flatten() : null,
     }),

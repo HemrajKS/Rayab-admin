@@ -1,4 +1,4 @@
-import { getEnvVariable } from "./helpers";
+import { getEnvVariable, getErrorResponse } from "./helpers";
 import { SignJWT, jwtVerify } from "jose";
 
 export const signJWT = async (payload, options) => {
