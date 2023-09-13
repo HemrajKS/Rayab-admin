@@ -1,38 +1,35 @@
 import { getErrorResponse } from "@/lib/helpers";
 import connectDB from "@/lib/mongodb";
-import Product from "@/models/product";
+import Category from "@/models/category";
 import UserModel from "@/models/user";
 import { NextResponse } from "next/server";
 
-export async function PATCH(req) {
+export async function DELETE(req) {
   try {
     await connectDB();
     const body = await req.json();
 
-    const userId = req.headers.get("x-user-id");
+    const userId = await req.headers.get("x-user-id");
     const user = await UserModel.findOne({ _id: userId });
     if (user.isAdmin) {
       try {
-        const updatedProduct = await Product.findOneAndUpdate(
-          { _id: body.id },
-          body,
-          { new: true }
-        );
-        if (updatedProduct) {
+        const deleteCat = await Category.findOneAndDelete({ _id: body.id });
+        if (deleteCat) {
           let json_response = {
             status: true,
-            message: "Product Updated Successfully",
-            data: updatedProduct,
+            message: "Category deleted successfully",
+            data: deleteCat,
           };
           return NextResponse.json(json_response);
         } else {
-          return getErrorResponse(400, "Could not update product");
+          getErrorResponse(404, "Category not found");
         }
       } catch (error) {
-        return getErrorResponse(400, "Could not update product");
+        return getErrorResponse(400, "Could not delete category");
       }
+      return getErrorResponse(400, "Could not delete category");
     } else {
-      return getErrorResponse(403, "Only Admins can edit products.");
+      return getErrorResponse(403, "Only Admins can delete category.");
     }
   } catch (error) {
     let json_response = {
@@ -43,7 +40,7 @@ export async function PATCH(req) {
     return NextResponse.json(json_response, {
       status: 500,
       headers: {
-        "Access-Control-Allow-Methods": "PATCH",
+        "Access-Control-Allow-Methods": "DELETE",
       },
     });
   }

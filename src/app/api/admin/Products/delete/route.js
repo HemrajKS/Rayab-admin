@@ -24,6 +24,7 @@ export async function DELETE(req) {
         } else {
           getErrorResponse(404, "Product not found");
         }
+        return getErrorResponse(400, "Could not delete product");
       } catch (error) {
         return getErrorResponse(400, "Could not delete product");
       }

@@ -1,6 +1,6 @@
 import { getErrorResponse } from "@/lib/helpers";
 import connectDB from "@/lib/mongodb";
-import Product from "@/models/product";
+import Category from "@/models/category";
 import UserModel from "@/models/user";
 import { NextResponse } from "next/server";
 
@@ -13,26 +13,26 @@ export async function PATCH(req) {
     const user = await UserModel.findOne({ _id: userId });
     if (user.isAdmin) {
       try {
-        const updatedProduct = await Product.findOneAndUpdate(
+        const updatedCat = await Category.findOneAndUpdate(
           { _id: body.id },
           body,
           { new: true }
         );
-        if (updatedProduct) {
+        if (updatedCat) {
           let json_response = {
             status: true,
-            message: "Product Updated Successfully",
-            data: updatedProduct,
+            message: "Category Updated Successfully",
+            data: updatedCat,
           };
           return NextResponse.json(json_response);
         } else {
-          return getErrorResponse(400, "Could not update product");
+          return getErrorResponse(400, "Could not update category");
         }
       } catch (error) {
-        return getErrorResponse(400, "Could not update product");
+        return getErrorResponse(400, "Could not update category");
       }
     } else {
-      return getErrorResponse(403, "Only Admins can edit products.");
+      return getErrorResponse(403, "Only Admins can edit category.");
     }
   } catch (error) {
     let json_response = {
