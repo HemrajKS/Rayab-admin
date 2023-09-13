@@ -18,6 +18,8 @@ export const protectedRoutes = [
   '/api/upload',
   '/api/order/cart',
   '/api/order/orderCompleted',
+  '/api/order/deleteOrder',
+  '/api/products/review',
 ];
 export const publicRoutes = ['/api/categories', '/api/misc'];
 export const authRoutes = ['/api/auth/'];
