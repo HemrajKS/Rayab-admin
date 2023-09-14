@@ -24,6 +24,6 @@ export const protectedRoutes = [
   "/api/order/userOrder"
 ];
 export const publicRoutes = ["/api/categories", "/api/misc"];
-export const authRoutes = ["/api/auth/"];
+export const authRoutes = ["/api/authentication/"];
 
 export const OTP_LENGTH = 4;
