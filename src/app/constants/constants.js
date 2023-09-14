@@ -21,6 +21,7 @@ export const protectedRoutes = [
   "/api/order/deleteOrder",
   "/api/products/review",
   "/api/order/getOrder",
+  "/api/order/userOrder"
 ];
 export const publicRoutes = ["/api/categories", "/api/misc"];
 export const authRoutes = ["/api/auth/"];

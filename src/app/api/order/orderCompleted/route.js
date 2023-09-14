@@ -15,6 +15,7 @@ export async function POST(req) {
     const order = await Order.findOne({ _id: body.id });
     let orderNew = {};
     const user = await User.findOne({ _id: userId });
+    let json_response={}
 
     if (user.isAdmin) {
       if (order.products && JSON.stringify(order.products) !== '[]') {
@@ -32,7 +33,7 @@ export async function POST(req) {
             { status: 'completed' },
             { new: true }
           );
-          let json_response = {
+          json_response = {
             status: true,
             data: orderNew,
             message: 'Order Completed Successfully',
@@ -45,7 +46,7 @@ export async function POST(req) {
             { status: 'rejected' },
             { new: true }
           );
-          let json_response = {
+        json_response = {
             status: true,
             data: orderNew,
             message: 'Order Rejected Successfully',
@@ -58,19 +59,15 @@ export async function POST(req) {
             { status: 'pending' },
             { new: true }
           );
-          let json_response = {
+         json_response = {
             status: true,
             data: orderNew,
             message: 'Order Rejected Successfully',
           };
         }
 
-        let json_response = {
-          status: true,
-          data: orderNew,
-        };
-
-        return NextResponse.json(json_response);
+   
+        return getErrorResponse(500, 'Some error occured');
       } else {
         return getErrorResponse(404, 'Orders not found');
       }

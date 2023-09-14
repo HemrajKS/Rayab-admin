@@ -51,7 +51,6 @@ export async function GET(req) {
       return getErrorResponse(403, "Please login as admin");
     }
   } catch (error) {
-    console.log(error);
     let json_response = {
       status: false,
       results: "some error occured",
