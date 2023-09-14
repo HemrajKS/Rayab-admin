@@ -13,8 +13,6 @@ export async function GET(req) {
       ? JSON.parse(req.nextUrl.searchParams.get('limit'))
       : orderCount;
 
-    console.log(req.nextUrl.searchParams);
-
     const order = await Order.find().skip(skip).limit(limit).exec();
 
     let json_response = {

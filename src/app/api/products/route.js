@@ -6,7 +6,6 @@ import connectDB from "@/lib/mongodb";
 export async function GET(request) {
   try {
     await connectDB();
-    const totalProducts = await Product.count();
 
     const skip = JSON.parse(request.nextUrl.searchParams.get("skip"))
       ? JSON.parse(request.nextUrl.searchParams.get("skip"))
@@ -17,9 +16,25 @@ export async function GET(request) {
 
     const queryId = request.nextUrl.searchParams.get("id");
 
+    const search = request.nextUrl.searchParams.get("search");
+
+    const searchCriteria = {
+      $or: [
+        { name: { $regex: search, $options: "i" } },
+        { description: { $regex: search, $options: "i" } },
+        { category: { $regex: search, $options: "i" } },
+      ],
+    };
+
     const products = queryId
       ? await Product.findOne({ _id: queryId })
+      : search
+      ? await Product.find(searchCriteria, {}, { skip, limit })
       : await Product.find({}, {}, { skip, limit });
+
+    const totalProducts = search
+      ? await Product.countDocuments(searchCriteria)
+      : await Product.count();
 
     let json_response = {
       status: true,
