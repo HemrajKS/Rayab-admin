@@ -1,10 +1,29 @@
-"use client"
-import { createContext, useContext, useState } from 'react';
+"use client";
+import { createContext, useContext, useEffect, useState } from "react";
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    // Check if there is a login status stored in cookies
+    const cookieValue = getCookie("logged-in");
+    if (cookieValue === "true") {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  const getCookie = (name) => {
+    const cookies = document.cookie.split("; ");
+    for (const cookie of cookies) {
+      const [cookieName, cookieValue] = cookie.split("=");
+      if (cookieName === name) {
+        return cookieValue;
+      }
+    }
+    return null;
+  };
 
   const login = () => {
     setIsLoggedIn(true);
