@@ -29,7 +29,7 @@ export async function POST(req) {
     await sendMail({
       to: "hkshettigar123@gmail.com",
       message: `You have recieved a order from ${savedOrder.name}`,
-      link: savedOrder._id,
+      orderId: savedOrder._id,
       template: "orderNotification",
     });
     return NextResponse.json(json_response);
