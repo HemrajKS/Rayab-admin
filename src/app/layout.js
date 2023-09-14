@@ -1,3 +1,4 @@
+import { AuthProvider } from "@/contexts/AuthContext";
 import "./globals.css";
 import { Inter } from "next/font/google";
 
@@ -8,10 +9,12 @@ export const metadata = {
   description: "Rayab International",
 };
 
-export default function RootLayout({ children, params }) {
+export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <AuthProvider>
+        <body className={inter.className}>{children}</body>
+      </AuthProvider>
     </html>
   );
 }
