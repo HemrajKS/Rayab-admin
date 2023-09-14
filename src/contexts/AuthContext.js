@@ -7,7 +7,6 @@ export function AuthProvider({ children }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    // Check if there is a login status stored in cookies
     const cookieValue = getCookie("logged-in");
     if (cookieValue === "true") {
       setIsLoggedIn(true);
@@ -25,18 +24,23 @@ export function AuthProvider({ children }) {
     return null;
   };
 
-  const login = () => {
-    setIsLoggedIn(true);
-    // You may also set user information here if needed
-  };
+  // const login = () => {
+  //   setIsLoggedIn(true);
+  //   // You may also set user information here if needed
+  // };
 
-  const logout = () => {
-    setIsLoggedIn(false);
-    // Clear user information if necessary
-  };
+  // const logout = () => {
+  //   setIsLoggedIn(false);
+  //   // Clear user information if necessary
+  // };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        isLoggedIn,
+        // , login, logout
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
