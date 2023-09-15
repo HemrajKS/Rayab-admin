@@ -35,7 +35,7 @@ export function AuthProvider({ children }) {
     <AuthContext.Provider
       value={{
         isLoggedIn,
-        isLoading
+        isLoading,
       }}
     >
       {children}

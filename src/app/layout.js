@@ -1,10 +1,13 @@
-
 import { AuthProvider } from "@/contexts/AuthContext";
 import "./globals.css";
-import { Inter } from "next/font/google";
+import { Poppins} from "next/font/google";
 import PrivateRoute from "@/contexts/PrivateRoute";
 
-const inter = Inter({ subsets: ["latin"] });
+const poppins = Poppins({
+  weight: '400',
+  subsets: ['latin'],
+  display: 'swap',
+})
 
 export const metadata = {
   title: "Rayab International - Ecommerce",
@@ -16,9 +19,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <AuthProvider>
-
-        <body className={inter.className}>{children}</body>
-
+        <body className={poppins.className}>{children}</body>
       </AuthProvider>
     </html>
   );

@@ -3,7 +3,12 @@
 @tailwind utilities;
 
 body {
-  background-color: yellow;
+  background-color: #f7f8fa;
+  min-height: 100vh;
+}
+
+main {
+  height: 100%;
 }
 
 * {

@@ -1,10 +1,9 @@
-import PrivateRoute from "@/contexts/PrivateRoute";
-import Image from "next/image";
-
+"use client";
 export default function Home() {
+
   return (
-    <PrivateRoute>
+    <>
       <h1>Welcome to dashboard page</h1>
-    </PrivateRoute>
+    </>
   );
 }
