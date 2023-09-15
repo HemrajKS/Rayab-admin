@@ -1,15 +1,22 @@
 "use client";
+import { usePathname } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const cookieValue = getCookie("logged-in");
     if (cookieValue === "true") {
       setIsLoggedIn(true);
+      setIsLoading(false);
+      localStorage.setItem("logged-in", "true");
+    } else {
+      setIsLoggedIn(false);
+      setIsLoading(false);
     }
   }, []);
 
@@ -24,21 +31,11 @@ export function AuthProvider({ children }) {
     return null;
   };
 
-  // const login = () => {
-  //   setIsLoggedIn(true);
-  //   // You may also set user information here if needed
-  // };
-
-  // const logout = () => {
-  //   setIsLoggedIn(false);
-  //   // Clear user information if necessary
-  // };
-
   return (
     <AuthContext.Provider
       value={{
         isLoggedIn,
-        // , login, logout
+        isLoading
       }}
     >
       {children}

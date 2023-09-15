@@ -1,12 +1,13 @@
+"use client";
+
 import { useAuth } from "@/contexts/AuthContext";
+import PrivateRoute from "@/contexts/PrivateRoute";
 
 export default function Layout({ children }) {
 
   return (
-    <>
-      <h1>Header</h1>
+    <PrivateRoute>
       <main>{children}</main>
-      <h1>Footer</h1>
-    </>
+    </PrivateRoute>
   );
 }
