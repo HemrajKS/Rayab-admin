@@ -12,7 +12,7 @@ export async function POST(req) {
     await connectDB();
     const user = await UserModel.findOne({
       email: body.email,
-      ...(body.isAdmin && { isAdmin: body.isAdmin }),
+      isAdmin: !!body.isAdmin,
     });
 
     if (
