@@ -21,5 +21,5 @@ module.exports = {
   },
   plugins: [],
 
-  purge: ['./src/components/**/*.{js,jsx}'],
+  purge: ['./src/**/*.{js,ts,jsx,tsx}'],
 };
