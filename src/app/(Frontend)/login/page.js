@@ -38,6 +38,7 @@ const Login = () => {
             name={'email'}
             onChange={onChange}
             value={credentials.email}
+            pattern={'[^@s]+@[^@s]+.[^@s]+'}
           />
           <Input
             label={'Password'}

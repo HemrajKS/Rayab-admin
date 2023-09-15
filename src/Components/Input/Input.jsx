@@ -1,7 +1,17 @@
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import React from 'react';
 
-const Input = ({ label, type, name, value, showPw, setShowPw, onChange }) => {
+const Input = ({
+  label,
+  type,
+  name,
+  value,
+  showPw,
+  setShowPw,
+  onChange,
+  disabled,
+  pattern,
+}) => {
   return (
     <div>
       <label className="block relative">
@@ -22,6 +32,8 @@ const Input = ({ label, type, name, value, showPw, setShowPw, onChange }) => {
           name={name}
           onChange={onChange}
           value={value}
+          disabled={disabled}
+          pattern={pattern}
         />
         {name === 'password' && (
           <span
