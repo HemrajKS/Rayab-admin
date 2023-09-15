@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Home, Visibility, VisibilityOff } from '@mui/icons-material';
 import Input from '@/Components/Input/Input';
 import Button from '@/Components/Button/Button';
@@ -8,6 +8,9 @@ import Button from '@/Components/Button/Button';
 const Login = () => {
   const [showPw, setShowPw] = useState(false);
   const [credentials, setCredentials] = useState({ email: '', password: '' });
+  const [disabledBtn, setDisabledBtn] = useState(true);
+
+  const pattern = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/;
 
   const submit = (e) => {
     e.preventDefault();
@@ -19,6 +22,16 @@ const Login = () => {
       return newCredentials;
     });
   };
+
+  useEffect(() => {
+    if (
+      credentials.email !== '' &&
+      credentials.password !== '' &&
+      pattern.test(credentials.email)
+    ) {
+      setDisabledBtn(false);
+    }
+  }, [credentials]);
 
   return (
     <div className="flex items-center justify-center absolute top-0 bottom-0 left-0 right-0">
@@ -50,7 +63,7 @@ const Login = () => {
             value={credentials.password}
           />
 
-          <Button type={'submit'} name={'Login'} />
+          <Button type={'submit'} name={'Login'} disabled={disabledBtn} />
         </form>
       </div>
     </div>
