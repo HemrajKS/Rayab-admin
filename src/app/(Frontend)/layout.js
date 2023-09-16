@@ -22,7 +22,7 @@ export default function Layout({ children }) {
 
   return (
     <PrivateRoute>
-      <div className="relative bg-[#F7F8FA] h-[100vh]">
+      <div className="relative bg-[#F7F8FA] h-[100vh] max-w-[1480px] mx-[auto]">
         <div className="flex flex-col">
           <Suspense fallback={<div>Loading...</div>}>
             <Header toggleDrawer={toggleDrawer} />

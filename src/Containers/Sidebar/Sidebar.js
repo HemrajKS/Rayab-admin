@@ -12,6 +12,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
+import { AccountCircle } from '@mui/icons-material';
 
 const drawerWidth = 240;
 
@@ -62,7 +63,7 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-export default function Sidebar({ toggleDrawer, open }) {
+export default function Sidebar({ open }) {
   const theme = useTheme();
   return (
     <Box sx={{ display: 'flex' }}>
@@ -73,60 +74,53 @@ export default function Sidebar({ toggleDrawer, open }) {
           '& .MuiDrawer-root': {
             position: 'relative',
             height: 'calc(100vh - 80px)',
+            background: 'none',
+            border: 'none',
           },
           '& .MuiPaper-root': {
             position: 'relative',
             height: 'calc(100vh - 80px)',
+            background: 'none',
+            border: 'none',
           },
         }}
       >
         <List>
           {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
+            <div
+              className="rounded-full bg-white shadow-md ml-[25px] h-[40px] mb-[20px] flex items-center justify-center cursor-pointer"
+              onClick={() => {
+                router.push('/profile');
+              }}
+              key={text}
+            >
+              <ListItem disablePadding>
+                <ListItemButton
                   sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
+                    minHeight: 48,
+                    justifyContent: open ? 'initial' : 'center',
+                    px: 2.5,
+                    '&:hover': { backgroundColor: 'transparent' },
                   }}
                 >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : 'auto',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <AccountCircle
+                      sx={{ color: '#0b1c487c', fontSize: '30px' }}
+                    />
+
+                    {/* {index % 2 === 0 ? <InboxIcon /> : <MailIcon />} */}
+                  </ListItemIcon>
+
+                  <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                </ListItemButton>
+              </ListItem>
+            </div>
           ))}
         </List>
       </Drawer>

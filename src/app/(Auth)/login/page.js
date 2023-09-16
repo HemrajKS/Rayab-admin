@@ -28,7 +28,6 @@ const Login = () => {
       isAdmin: true,
     };
     const response = await makeHttpRequest(urls.login, 'post', submitObj);
-    console.log(response);
     if (response.data.status) {
       setDisabledBtn(false);
       setLoading(false);
