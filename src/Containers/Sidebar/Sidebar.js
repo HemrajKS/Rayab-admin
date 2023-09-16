@@ -9,7 +9,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { sideBarContent } from '@/app/constants/constants';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 const drawerWidth = 240;
 
@@ -28,9 +28,9 @@ const closedMixin = (theme) => ({
     duration: theme.transitions.duration.leavingScreen,
   }),
   overflowX: 'hidden',
-  width: `calc(${theme.spacing(7)} + 1px)`,
+  width: `calc(${theme.spacing(7)} + 14px)`,
   [theme.breakpoints.up('sm')]: {
-    width: `calc(${theme.spacing(8)} + 1px)`,
+    width: `calc(${theme.spacing(8)} + 14px)`,
   },
 });
 
@@ -54,6 +54,8 @@ const Drawer = styled(MuiDrawer, {
 export default function Sidebar({ open }) {
   const theme = useTheme();
   const router = useRouter();
+  const pathname = usePathname();
+
   return (
     <Box sx={{ display: 'flex' }}>
       <Drawer
@@ -77,7 +79,8 @@ export default function Sidebar({ open }) {
         <List sx={{ paddingTop: '24px' }}>
           {sideBarContent.map((item, index) => (
             <div
-              className="rounded-full bg-white shadow-md ml-[25px] h-[40px] mb-[20px] flex items-center justify-center cursor-pointer"
+              className={`rounded-full bg-white shadow-md ml-[25px] h-[52px]
+              mb-[20px] flex items-center justify-center cursor-pointer active:scale-90`}
               onClick={() => {
                 router.push(item.link);
               }}
@@ -91,23 +94,37 @@ export default function Sidebar({ open }) {
                     px: 2.5,
                     '&:hover': { backgroundColor: 'transparent' },
                   }}
+                  disableRipple
                 >
                   <ListItemIcon
                     sx={{
                       minWidth: 0,
                       mr: open ? 3 : 'auto',
                       justifyContent: 'center',
+                      color: pathname.startsWith(item.link)
+                        ? '#e47e52'
+                        : '#0b1c48',
                     }}
                   >
                     {item.icon}
-
-                    {/* {index % 2 === 0 ? <InboxIcon /> : <MailIcon />} */}
                   </ListItemIcon>
 
-                  <ListItemText
-                    primary={item.name}
-                    sx={{ opacity: open ? 1 : 0 }}
-                  />
+                  <div
+                    style={{
+                      display: open ? 'block' : 'none',
+                      color: pathname.startsWith(item.link)
+                        ? '#e47e52'
+                        : '#0b1c48',
+                      fontSize: '18px',
+                      fontWeight: '500',
+                      letterSpacing: '0.6px',
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                    }}
+                  >
+                    {item.name}
+                  </div>
                 </ListItemButton>
               </ListItem>
             </div>
