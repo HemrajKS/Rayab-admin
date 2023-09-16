@@ -1,3 +1,11 @@
+import {
+  Category,
+  Dashboard,
+  Inventory,
+  Person,
+  ShoppingCart,
+} from '@mui/icons-material';
+
 export const MAIL_SETTINGS = {
   service: 'gmail',
   secure: true,
@@ -26,6 +34,14 @@ export const protectedRoutes = [
 export const publicRoutes = ['/api/categories', '/api/misc'];
 export const authRoutes = ['/api/authentication/'];
 export const frontendProtected = ['/profile'];
+
+export const sideBarContent = [
+  { name: 'Dashboard', icon: <Dashboard />, link: '/dashboard' },
+  { name: 'Orders', icon: <ShoppingCart />, link: '/orders' },
+  { name: 'Products', icon: <Inventory />, link: '/products' },
+  { name: 'Categories', icon: <Category />, link: '/categories' },
+  { name: 'Users', icon: <Person />, link: '/users' },
+];
 
 export const urls = {
   login: '/api/authentication/login',

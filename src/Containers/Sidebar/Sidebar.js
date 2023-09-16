@@ -3,16 +3,13 @@ import * as React from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
-
 import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
-import { AccountCircle } from '@mui/icons-material';
+import { sideBarContent } from '@/app/constants/constants';
+import { useRouter } from 'next/navigation';
 
 const drawerWidth = 240;
 
@@ -37,15 +34,6 @@ const closedMixin = (theme) => ({
   },
 });
 
-const DrawerHeader = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'flex-end',
-  padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
-}));
-
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== 'open',
 })(({ theme, open }) => ({
@@ -65,6 +53,7 @@ const Drawer = styled(MuiDrawer, {
 
 export default function Sidebar({ open }) {
   const theme = useTheme();
+  const router = useRouter();
   return (
     <Box sx={{ display: 'flex' }}>
       <Drawer
@@ -85,14 +74,14 @@ export default function Sidebar({ open }) {
           },
         }}
       >
-        <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+        <List sx={{ paddingTop: '24px' }}>
+          {sideBarContent.map((item, index) => (
             <div
               className="rounded-full bg-white shadow-md ml-[25px] h-[40px] mb-[20px] flex items-center justify-center cursor-pointer"
               onClick={() => {
-                router.push('/profile');
+                router.push(item.link);
               }}
-              key={text}
+              key={item.name}
             >
               <ListItem disablePadding>
                 <ListItemButton
@@ -110,14 +99,15 @@ export default function Sidebar({ open }) {
                       justifyContent: 'center',
                     }}
                   >
-                    <AccountCircle
-                      sx={{ color: '#0b1c487c', fontSize: '30px' }}
-                    />
+                    {item.icon}
 
                     {/* {index % 2 === 0 ? <InboxIcon /> : <MailIcon />} */}
                   </ListItemIcon>
 
-                  <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                  <ListItemText
+                    primary={item.name}
+                    sx={{ opacity: open ? 1 : 0 }}
+                  />
                 </ListItemButton>
               </ListItem>
             </div>
