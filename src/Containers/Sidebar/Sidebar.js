@@ -57,7 +57,7 @@ export default function Sidebar({ open }) {
   const pathname = usePathname();
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', paddingRight: '16px' }}>
       <Drawer
         variant="permanent"
         open={open}

@@ -64,19 +64,21 @@ export async function GET(req) {
 
       const userRegistrationTimeSeriesData = userRegistrationDates.map(
         (item) => ({
-          date: new Date(item._id.year, item._id.month - 1, item._id.day), // Create a JavaScript Date object
+          date: new Date(item._id.year, item._id.month - 1, item._id.day),
           count: item.count,
         })
       );
       return NextResponse.json({
         status: true,
-        totalOrders,
-        pendingOrders,
-        completedOrders,
-        latestProducts,
-        latestOrders,
-        orderTimeSeriesData,
-        userRegistrationDates,
+        data: {
+          totalOrders,
+          pendingOrders,
+          completedOrders,
+          latestProducts,
+          latestOrders,
+          orderTimeSeriesData,
+          userRegistrationTimeSeriesData,
+        },
       });
     } else {
       return NextResponse.json(

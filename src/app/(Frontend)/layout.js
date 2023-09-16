@@ -37,7 +37,9 @@ export default function Layout({ children }) {
                 />
               </Suspense>
             </div>
-            {children}
+            <div className="w-full pt-[16px] h-[calc(100vh-80px)] overflow-hidden">
+              {children}
+            </div>
           </div>
         </div>
       </div>

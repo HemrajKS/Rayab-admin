@@ -47,6 +47,7 @@ export const sideBarContent = [
 export const urls = {
   login: '/api/authentication/login',
   logout: '/api/authentication/logout',
+  dashboard: '/api/dashboard',
 };
 
 export const OTP_LENGTH = 4;
