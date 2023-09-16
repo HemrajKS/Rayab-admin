@@ -30,6 +30,7 @@ export const protectedRoutes = [
   '/api/products/review',
   '/api/order/getOrder',
   '/api/order/userOrder',
+  '/api/dashboard',
 ];
 export const publicRoutes = ['/api/categories', '/api/misc'];
 export const authRoutes = ['/api/authentication/'];
