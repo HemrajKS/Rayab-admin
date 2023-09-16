@@ -5,6 +5,30 @@
 body {
   background-color: #f7f8fa;
   min-height: 100vh;
+  min-height: 100dvh;
+}
+
+body {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+body::-webkit-scrollbar {
+  width: 0.5em;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+
+::selection {
+  background-color: #e47e52;
+  color: #fff;
+}
+
+::-moz-selection {
+  background-color: #e47e52;
+  color: #fff;
 }
 
 main {

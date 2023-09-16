@@ -72,11 +72,11 @@ export default function Sidebar({ toggleDrawer, open }) {
         sx={{
           '& .MuiDrawer-root': {
             position: 'relative',
-            height: 'calc(100vh - 24px)',
+            height: 'calc(100vh - 80px)',
           },
           '& .MuiPaper-root': {
             position: 'relative',
-            height: 'calc(100vh - 24px)',
+            height: 'calc(100vh - 80px)',
           },
         }}
       >

@@ -29,6 +29,7 @@ export const frontendProtected = ['/profile'];
 
 export const urls = {
   login: '/api/authentication/login',
+  logout: '/api/authentication/logout',
 };
 
 export const OTP_LENGTH = 4;
