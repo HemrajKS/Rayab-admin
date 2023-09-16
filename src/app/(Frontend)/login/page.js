@@ -31,7 +31,7 @@ const Login = () => {
       setDisabledBtn(false);
     }
   }, [credentials]);
-
+  console.log(credentials);
   return (
     <div className="flex items-center justify-center h-[100dvh]">
       <div
