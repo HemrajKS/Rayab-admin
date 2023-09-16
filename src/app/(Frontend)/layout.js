@@ -6,6 +6,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { Menu } from '@mui/icons-material';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Header = lazy(() => import('@/Containers/Header/Header'));
 const Sidebar = lazy(() => import('@/Containers/Sidebar/Sidebar'));
@@ -17,9 +18,11 @@ export default function Layout({ children }) {
     setOpen(!open);
   };
 
+  const { isLoggenIn } = useAuth();
+
   return (
     <PrivateRoute>
-      <div className="relative bg-[yellow] h-[100vh]">
+      <div className="relative bg-[#F7F8FA] h-[100vh]">
         <div className="flex flex-col">
           <Suspense fallback={<div>Loading...</div>}>
             <Header toggleDrawer={toggleDrawer} />
