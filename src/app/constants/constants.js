@@ -1,5 +1,5 @@
 export const MAIL_SETTINGS = {
-  service: "gmail",
+  service: 'gmail',
   secure: true,
   auth: {
     user: process.env.MAIL_EMAIL,
@@ -15,16 +15,20 @@ export const OTP_CONFIG = {
 };
 
 export const protectedRoutes = [
-  "/api/upload",
-  "/api/order/cart",
-  "/api/order/orderCompleted",
-  "/api/order/deleteOrder",
-  "/api/products/review",
-  "/api/order/getOrder",
-  "/api/order/userOrder",
+  '/api/upload',
+  '/api/order/cart',
+  '/api/order/orderCompleted',
+  '/api/order/deleteOrder',
+  '/api/products/review',
+  '/api/order/getOrder',
+  '/api/order/userOrder',
 ];
-export const publicRoutes = ["/api/categories", "/api/misc"];
-export const authRoutes = ["/api/authentication/"];
-export const frontendProtected = ["/profile"];
+export const publicRoutes = ['/api/categories', '/api/misc'];
+export const authRoutes = ['/api/authentication/'];
+export const frontendProtected = ['/profile'];
+
+export const urls = {
+  login: '/api/authentication/login',
+};
 
 export const OTP_LENGTH = 4;

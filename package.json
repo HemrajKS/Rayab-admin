@@ -14,6 +14,7 @@
     "@mui/icons-material": "^5.14.9",
     "@mui/material": "^5.14.9",
     "autoprefixer": "10.4.15",
+    "axios": "^1.5.0",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.40.0",
     "ejs": "^3.1.9",

@@ -11,6 +11,7 @@ const Input = ({
   onChange,
   disabled,
   pattern,
+  autocomplete,
 }) => {
   return (
     <div>
@@ -34,6 +35,7 @@ const Input = ({
           value={value}
           disabled={disabled}
           pattern={pattern}
+          autoComplete={autocomplete}
         />
         {name === 'password' && (
           <span

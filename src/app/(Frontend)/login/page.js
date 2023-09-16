@@ -3,6 +3,8 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import Input from '@/Components/Input/Input';
 import Button from '@/Components/Button/Button';
+import { urls } from '@/app/constants/constants';
+import makeHttpRequest from '@/app/services/apiCall';
 
 const Login = () => {
   const [showPw, setShowPw] = useState(false);
@@ -11,8 +13,19 @@ const Login = () => {
 
   const pattern = /[^@s]+@[^@s]+.[^@s]+/;
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
+    const submitObj = {
+      email: e.target.email.value,
+      password: e.target.password.value,
+      isAdmin: true,
+    };
+    const response = await makeHttpRequest(urls.login, 'post', submitObj);
+    if (response.data.status) {
+      window.location.reload();
+    } else {
+      alert('logged out');
+    }
   };
 
   const onChange = (e) => {
@@ -23,13 +36,11 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (
-      credentials.email !== '' &&
-      credentials.password !== '' &&
-      pattern.test(credentials.email)
-    ) {
-      setDisabledBtn(false);
-    }
+    const isEmailValid = credentials.email !== '';
+    const isPasswordValid = credentials.password !== '';
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const isEmailFormatValid = emailPattern.test(credentials.email);
+    setDisabledBtn(!(isEmailValid && isPasswordValid && isEmailFormatValid));
   }, [credentials]);
 
   return (
@@ -53,7 +64,7 @@ const Login = () => {
             name={'email'}
             onChange={onChange}
             value={credentials.email}
-            pattern={'[^@s]+@[^@s]+.[^@s]+'}
+            pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
           />
           <Input
             label={'Password'}
@@ -63,6 +74,7 @@ const Login = () => {
             setShowPw={setShowPw}
             onChange={onChange}
             value={credentials.password}
+            autocomplete="off"
           />
 
           <Button type={'submit'} name={'Login'} disabled={disabledBtn} />
