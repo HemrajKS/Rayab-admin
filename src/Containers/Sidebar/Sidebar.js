@@ -76,7 +76,7 @@ export default function Sidebar({ open }) {
           },
         }}
       >
-        <List sx={{ paddingTop: '24px' }}>
+        <List sx={{ paddingTop: '16px' }}>
           {sideBarContent.map((item, index) => (
             <div
               className={`rounded-full bg-white shadow-md ml-[25px] h-[52px]

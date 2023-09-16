@@ -36,7 +36,7 @@ const Header = ({ toggleDrawer }) => {
             sx={{ color: '#0b1c487c', fontSize: '26px' }}
           />
         </div>
-        <div className="font-black text-[24px] text-[#0b1c48]">
+        <div className="font-black text-[24px] text-[#0b1c48] select-none">
           Rayab <span className="font-thin text-[#e47e52]">International</span>
         </div>
       </div>

@@ -28,13 +28,15 @@ export default function Layout({ children }) {
             <Header toggleDrawer={toggleDrawer} />
           </Suspense>
           <div className="flex flex-row ">
-            <Suspense fallback={<div>Loading...</div>}>
-              <Sidebar
-                open={open}
-                toggleDrawer={toggleDrawer}
-                sx={{ cursor: 'pointer' }}
-              />
-            </Suspense>
+            <div>
+              <Suspense fallback={<div>Loading...</div>}>
+                <Sidebar
+                  open={open}
+                  toggleDrawer={toggleDrawer}
+                  sx={{ cursor: 'pointer' }}
+                />
+              </Suspense>
+            </div>
             {children}
           </div>
         </div>
