@@ -5,26 +5,37 @@ import Input from '@/Components/Input/Input';
 import Button from '@/Components/Button/Button';
 import { urls } from '@/app/constants/constants';
 import makeHttpRequest from '@/app/services/apiCall';
+import { useAuth } from '@/contexts/AuthContext';
+import { CircularIndeterminate } from '@/Components/Loaders/Loaders';
 
 const Login = () => {
   const [showPw, setShowPw] = useState(false);
   const [credentials, setCredentials] = useState({ email: '', password: '' });
   const [disabledBtn, setDisabledBtn] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+  const { login, logout } = useAuth();
 
   const pattern = /[^@s]+@[^@s]+.[^@s]+/;
 
   const submit = async (e) => {
     e.preventDefault();
+    setDisabledBtn(true);
+    setLoading(true);
     const submitObj = {
       email: e.target.email.value,
       password: e.target.password.value,
       isAdmin: true,
     };
     const response = await makeHttpRequest(urls.login, 'post', submitObj);
+    console.log(response);
     if (response.data.status) {
-      window.location.reload();
+      setDisabledBtn(false);
+      setLoading(false);
+      login();
     } else {
-      alert('logged out');
+      setDisabledBtn(false);
+      setLoading(false);
     }
   };
 
@@ -77,7 +88,17 @@ const Login = () => {
             autocomplete="off"
           />
 
-          <Button type={'submit'} name={'Login'} disabled={disabledBtn} />
+          <Button
+            type={'submit'}
+            name={
+              loading ? (
+                <CircularIndeterminate size={30} color={'#e47e52'} />
+              ) : (
+                'Login'
+              )
+            }
+            disabled={disabledBtn}
+          />
         </form>
       </div>
     </div>
