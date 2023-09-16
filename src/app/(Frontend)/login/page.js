@@ -1,7 +1,6 @@
 'use client';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { Home, Visibility, VisibilityOff } from '@mui/icons-material';
 import Input from '@/Components/Input/Input';
 import Button from '@/Components/Button/Button';
 
@@ -34,7 +33,7 @@ const Login = () => {
   }, [credentials]);
 
   return (
-    <div className="flex items-center justify-center h-[100vh] h-[100dvh]">
+    <div className="flex items-center justify-center h-[100dvh]">
       <div
         className="sm:relative absolute sm:top-0 sm:right-0 sm:left-0 sm:right-0 flex flex-col sm:rounded-[12px] p-[25px] sm:min-h-[250px] sm:min-w-[250px] sm:max-h-[520px] sm:max-w-[520px] h-full w-full items-center justify-center bg-white min-w-500 sm:rounded-2.5 shadow-md "
         style={{ height: '100dvh' }}
