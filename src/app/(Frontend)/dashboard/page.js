@@ -82,13 +82,7 @@ export default function Dashboard() {
             </div>
           </div>
           <div className="flex gap-[20px] flex-wrap pt-[20px]">
-            {data.latestOrders?.map((order, i) => {
-              return (
-                <>
-                  <OrderTable data={order} />
-                </>
-              );
-            })}
+            <OrderTable data={data?.latestOrders ? data.latestOrders : []} />
           </div>
         </div>
       )}
@@ -109,11 +103,7 @@ export default function Dashboard() {
           </div>
           <div className="flex gap-[20px] flex-wrap pt-[20px]">
             {data?.latestProducts?.map((product, i) => {
-              return (
-                <>
-                  <ProductCards data={product} index={i} />
-                </>
-              );
+              return <ProductCards data={product} key={i} />;
             })}
           </div>
         </div>
