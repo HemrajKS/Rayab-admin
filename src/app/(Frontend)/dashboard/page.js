@@ -1,9 +1,8 @@
 'use client';
 
 import Card from '@/Components/Card/Card';
-import FullScreenLoader from '@/Components/FullScreenLoader/FullScreenLoader';
-import Graph from '@/Components/Graph/Graph';
-import ProductCards from '@/Components/ProductCards/ProductCards';
+import Graph from '@/Containers/Graph/Graph';
+import ProductCards from '@/Containers/ProductCards/ProductCards';
 import { urls } from '@/app/constants/constants';
 import makeHttpRequest from '@/app/services/apiCall';
 import { useRouter } from 'next/navigation';
@@ -68,30 +67,57 @@ export default function Dashboard() {
           yLabel="User Reg."
         />
       </div>
-      <div className="p-[20px]">
-        <div className="flex justify-between">
-          <div className="font-bold text-[18px]">
-            Newest Additions to Our Product Catalog
+      {data?.latestOrders && data.latestOrders.length > 0 && (
+        <div className="p-[20px]">
+          <div className="flex justify-between">
+            <div className="font-bold text-[18px]">Recent Orders Overview</div>
+            <div
+              className="cursor-pointer text-[#e47e52]"
+              onClick={() => {
+                router.push('/orders');
+              }}
+            >
+              Browse All
+            </div>
           </div>
-          <div
-            className="cursor-pointer text-[#e47e52]"
-            onClick={() => {
-              router.push('/products');
-            }}
-          >
-            Browse All
+          <div className="flex gap-[20px] flex-wrap pt-[20px]">
+            {data.latestOrders?.map((order, i) => {
+              return (
+                <>
+                  {/* <ProductCards data={product} index={i} /> */}
+                  {order.name}
+                </>
+              );
+            })}
           </div>
         </div>
-        <div className="flex gap-[20px] flex-wrap pt-[20px]">
-          {data?.latestProducts?.map((product, i) => {
-            return (
-              <>
-                <ProductCards data={product} index={i} />
-              </>
-            );
-          })}
+      )}
+      {data?.latestProducts && data.latestProducts.length > 0 && (
+        <div className="p-[20px]">
+          <div className="flex justify-between">
+            <div className="font-bold text-[18px]">
+              Newest Additions to Our Product Catalog
+            </div>
+            <div
+              className="cursor-pointer text-[#e47e52]"
+              onClick={() => {
+                router.push('/products');
+              }}
+            >
+              Browse All
+            </div>
+          </div>
+          <div className="flex gap-[20px] flex-wrap pt-[20px]">
+            {data?.latestProducts?.map((product, i) => {
+              return (
+                <>
+                  <ProductCards data={product} index={i} />
+                </>
+              );
+            })}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
