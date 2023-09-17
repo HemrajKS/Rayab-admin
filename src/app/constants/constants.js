@@ -48,6 +48,7 @@ export const urls = {
   login: '/api/authentication/login',
   logout: '/api/authentication/logout',
   dashboard: '/api/dashboard',
+  orders: '/api/order/getOrder',
 };
 
 export const OTP_LENGTH = 4;

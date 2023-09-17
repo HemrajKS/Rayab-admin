@@ -33,7 +33,7 @@ export default function Dashboard() {
         console.log(err);
       });
   };
-  console.log(data);
+
   return (
     <div className="overflow-auto h-full text-[#0b1c48]">
       <div className="text-[28px] font-bold pl-[25px]">Dashboard</div>
