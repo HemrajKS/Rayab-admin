@@ -3,13 +3,17 @@
 import Card from '@/Components/Card/Card';
 import FullScreenLoader from '@/Components/FullScreenLoader/FullScreenLoader';
 import Graph from '@/Components/Graph/Graph';
+import ProductCards from '@/Components/ProductCards/ProductCards';
 import { urls } from '@/app/constants/constants';
 import makeHttpRequest from '@/app/services/apiCall';
+import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 
 export default function Dashboard() {
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(true);
+
+  const router = useRouter();
 
   useEffect(() => {
     dashboardApi();
@@ -33,7 +37,7 @@ export default function Dashboard() {
   return (
     <div className="overflow-auto h-full text-[#0b1c48]">
       <div className="text-[28px] font-bold">Dashboard</div>
-      <div className="flex gap-5 flex-wrap p-[20px]">
+      <div className="flex gap-[18px] flex-wrap p-[20px]">
         <Card
           count={data.totalOrders ? data.totalOrders : '-'}
           title={'Total Orders'}
@@ -50,17 +54,44 @@ export default function Dashboard() {
           subTitle={'Orders successfully processed'}
         />
       </div>
-      <div className="flex gap-5 flex-wrap p-[20px]">
+      <div className="flex gap-[20px] flex-wrap p-[20px]">
         <Graph
           title={'Order Trends Over Time'}
           timeSeriesData={data.orderTimeSeriesData}
+          xLabel="Time"
+          yLabel="Orders"
         />
         <Graph
           title={'User Registration Trends Over Time'}
           timeSeriesData={data.userRegistrationTimeSeriesData}
+          xLabel="Time"
+          yLabel="User Reg."
         />
       </div>
-      <FullScreenLoader open={loading} />
+      <div className="p-[20px]">
+        <div className="flex justify-between">
+          <div className="font-bold text-[18px]">
+            Newest Additions to Our Product Catalog
+          </div>
+          <div
+            className="cursor-pointer text-[#e47e52]"
+            onClick={() => {
+              router.push('/products');
+            }}
+          >
+            Browse All
+          </div>
+        </div>
+        <div className="flex gap-[20px] flex-wrap pt-[20px]">
+          {data?.latestProducts?.map((product, i) => {
+            return (
+              <>
+                <ProductCards data={product} index={i} />
+              </>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 }
