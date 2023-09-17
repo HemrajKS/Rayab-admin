@@ -2,6 +2,7 @@
 
 import Card from '@/Components/Card/Card';
 import Graph from '@/Containers/Graph/Graph';
+import OrderTable from '@/Containers/OrderTable/OrderTable';
 import ProductCards from '@/Containers/ProductCards/ProductCards';
 import { urls } from '@/app/constants/constants';
 import makeHttpRequest from '@/app/services/apiCall';
@@ -84,8 +85,7 @@ export default function Dashboard() {
             {data.latestOrders?.map((order, i) => {
               return (
                 <>
-                  {/* <ProductCards data={product} index={i} /> */}
-                  {order.name}
+                  <OrderTable data={order} />
                 </>
               );
             })}
