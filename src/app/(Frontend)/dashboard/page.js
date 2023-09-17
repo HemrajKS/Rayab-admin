@@ -36,7 +36,7 @@ export default function Dashboard() {
   console.log(data);
   return (
     <div className="overflow-auto h-full text-[#0b1c48]">
-      <div className="text-[28px] font-bold">Dashboard</div>
+      <div className="text-[28px] font-bold pl-[25px]">Dashboard</div>
       <div className="flex gap-[18px] flex-wrap p-[20px]">
         <Card
           count={data.totalOrders ? data.totalOrders : '-'}

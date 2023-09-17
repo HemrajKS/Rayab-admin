@@ -1,12 +1,16 @@
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
 const ProductCards = ({ data, index }) => {
-  console.log(data);
+  const router = useRouter();
   return (
     <div
       key={index}
-      className="bg-white flex w-[100%] max-w-[calc(20%-16px)] min-w-[200px] p-[16px] rounded-[14px] shadow-md items-center flex-col"
+      className="bg-white flex cursor-pointer w-[100%] max-w-[calc(20%-16px)] min-w-[200px] p-[16px] rounded-[14px] shadow-md items-center flex-col"
+      onClick={() => {
+        router.push(`/products/${data._id}`);
+      }}
     >
       <div className="h-[130px] relative">
         <Image
@@ -23,11 +27,11 @@ const ProductCards = ({ data, index }) => {
           {data.stock}
         </div>
       </div>
-      <div className="font-bold text-[16px] mt-[10px] truncate">
+      <div className="font-bold text-[16px] mt-[10px] truncate w-full text-center">
         {' '}
         {data.name}
       </div>
-      <div className="font-thin text-[14px] text-gray-400 truncate">
+      <div className="font-thin text-[14px] text-gray-400 truncate w-full text-center">
         {data.category}
       </div>
     </div>
