@@ -1,40 +1,40 @@
-import { NextResponse, NextRequest } from "next/server";
-import { ObjectId } from "mongodb";
-import Product from "@/models/product";
-import connectDB from "@/lib/mongodb";
+import { NextResponse, NextRequest } from 'next/server';
+import { ObjectId } from 'mongodb';
+import Product from '@/models/product';
+import connectDB from '@/lib/mongodb';
 
 export async function GET(request) {
   try {
     await connectDB();
 
-    const skip = JSON.parse(request.nextUrl.searchParams.get("skip"))
-      ? JSON.parse(request.nextUrl.searchParams.get("skip"))
-      : 0;
-    const limit = JSON.parse(request.nextUrl.searchParams.get("limit"))
-      ? JSON.parse(request.nextUrl.searchParams.get("limit"))
-      : totalProducts;
+    const queryId = request.nextUrl.searchParams.get('id');
 
-    const queryId = request.nextUrl.searchParams.get("id");
-
-    const search = request.nextUrl.searchParams.get("search");
+    const search = request.nextUrl.searchParams.get('search');
 
     const searchCriteria = {
       $or: [
-        { name: { $regex: search, $options: "i" } },
-        { description: { $regex: search, $options: "i" } },
-        { category: { $regex: search, $options: "i" } },
+        { name: { $regex: search, $options: 'i' } },
+        { description: { $regex: search, $options: 'i' } },
+        { category: { $regex: search, $options: 'i' } },
       ],
     };
+
+    const totalProducts = search
+      ? await Product.countDocuments(searchCriteria)
+      : await Product.count();
+
+    const skip = JSON.parse(request.nextUrl.searchParams.get('skip'))
+      ? JSON.parse(request.nextUrl.searchParams.get('skip'))
+      : 0;
+    const limit = JSON.parse(request.nextUrl.searchParams.get('limit'))
+      ? JSON.parse(request.nextUrl.searchParams.get('limit'))
+      : totalProducts;
 
     const products = queryId
       ? await Product.findOne({ _id: queryId })
       : search
       ? await Product.find(searchCriteria, {}, { skip, limit })
       : await Product.find({}, {}, { skip, limit });
-
-    const totalProducts = search
-      ? await Product.countDocuments(searchCriteria)
-      : await Product.count();
 
     let json_response = {
       status: true,
@@ -43,15 +43,16 @@ export async function GET(request) {
     };
     return NextResponse.json(json_response);
   } catch (error) {
+    console.log(error);
     let json_response = {
       status: false,
-      results: "some error occured",
+      results: 'some error occured',
       error: error,
     };
     return NextResponse.json(json_response, {
       status: 500,
       headers: {
-        "Access-Control-Allow-Methods": "GET",
+        'Access-Control-Allow-Methods': 'GET',
       },
     });
   }
