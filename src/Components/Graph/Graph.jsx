@@ -49,7 +49,7 @@ const Graph = ({ title, timeSeriesData, xLabel, yLabel }) => {
   };
   return (
     <div className="bg-white flex flex-col w-full max-w-[calc(50%-10px)] min-w-[520px] p-[16px] rounded-[14px] shadow-md gap-2">
-      <div className="text-bold text-[20px] pt-[8px] pl-[28px]">{title}</div>
+      <div className="text-bold text-[18px] pt-[8px] pl-[28px]">{title}</div>
       <ReactECharts
         option={chartOptions}
         echarts={echarts}

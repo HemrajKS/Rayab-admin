@@ -6,9 +6,7 @@ body {
   background-color: #f7f8fa;
   min-height: 100vh;
   min-height: 100dvh;
-}
-
-body {
+  scroll-behavior: smooth;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
