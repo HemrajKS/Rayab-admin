@@ -50,6 +50,7 @@ export const urls = {
   dashboard: '/api/dashboard',
   orders: '/api/order/getOrder',
   products: '/api/products',
+  categories: '/api/categories',
 };
 
 export const OTP_LENGTH = 4;
