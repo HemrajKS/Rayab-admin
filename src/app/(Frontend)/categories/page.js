@@ -1,16 +1,23 @@
 'use client';
 import BasicModal from '@/Components/Modal/Modal';
+import CategoryForm from '@/Containers/CategoryForm/CategoryForm';
 import CategoryTable from '@/Containers/CategoryTable/CategoryTable';
 import { urls } from '@/app/constants/constants';
 import makeHttpRequest from '@/app/services/apiCall';
+import { Add } from '@mui/icons-material';
 import React, { useEffect, useState } from 'react';
 
 const Page = () => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
-  const [deleteCategory, setDeletCategory] = useState({
-    open: false,
+  const [category, setCategory] = useState({
+    open: '',
     cat: {},
+  });
+
+  const [editCategory, setEditCategory] = useState({
+    name: '',
+    description: '',
   });
 
   useEffect(() => {
@@ -33,14 +40,20 @@ const Page = () => {
       });
   };
 
-  const deleteCat = (cat) => {
-    setDeletCategory((prev) => {
-      return { ...prev, open: true, cat: cat };
+  const catObj = (cat, type) => {
+    setCategory((prev) => {
+      return { ...prev, open: type, cat: cat };
     });
+
+    if (type === 'edit' || type === 'add') {
+      setEditCategory((prev) => {
+        return { ...prev, name: cat.name, description: cat.description };
+      });
+    }
   };
 
   const cancel = () => {
-    setDeletCategory((prev) => {
+    setCategory((prev) => {
       return { ...prev, open: false, cat: {} };
     });
   };
@@ -48,7 +61,7 @@ const Page = () => {
   const deleteCatApi = () => {
     setLoading(true);
     makeHttpRequest(`${urls.deleteCategories}`, 'delete', {
-      id: deleteCategory?.cat?._id,
+      id: category?.cat?._id,
     })
       .then((res) => {
         setLoading(false);
@@ -63,19 +76,76 @@ const Page = () => {
       });
   };
 
+  const editCatApi = () => {
+    if (editCategory.name !== '' && editCategory.description !== '') {
+      setLoading(true);
+      makeHttpRequest(
+        `${
+          { edit: urls.editCategories, add: urls.addCategories }[category.open]
+        }`,
+        { edit: 'patch', add: 'post' }[category.open],
+        {
+          edit: {
+            id: category?.cat?._id,
+            ...editCategory,
+          },
+          add: editCategory,
+        }[category.open]
+      )
+        .then((res) => {
+          setLoading(false);
+
+          if (res.status === 200) {
+            categoryApi();
+          }
+        })
+        .catch((err) => {
+          setLoading(false);
+          console.log(err);
+        });
+    }
+  };
+
+  const onChange = (e) => {
+    setEditCategory((prev) => {
+      return {
+        ...prev,
+        [e.target.name]: e.target.value,
+      };
+    });
+  };
+
   return (
     <div className="overflow-auto h-full text-[#0b1c48]">
       <div className="pl-[25px] pr-[20px] flex items-center flex-row w-full justify-between">
         <div className="text-[28px] font-bold ">Categories</div>
+        <div
+          className="rounded-full bg-white shadow-md w-[50px] h-[50px] flex items-center justify-center cursor-pointer"
+          onClick={() => {
+            catObj({ name: '', description: '' }, 'add');
+          }}
+        >
+          <Add sx={{ color: '#0b1c48', fontSize: '26px' }} />
+        </div>
       </div>
       <div className="pl-[20px] pt-[20px]">
-        <CategoryTable data={data} deleteCat={deleteCat} />
+        <CategoryTable data={data} catObj={catObj} />
       </div>
       <BasicModal
-        open={deleteCategory.open}
-        message={`Are you sure you want to delete the category ${deleteCategory?.cat?.name} ?`}
+        open={category.open === 'delete'}
+        message={`Are you sure you want to delete the category ${category?.cat?.name} ?`}
         func={deleteCatApi}
         cancel={cancel}
+      />
+      <BasicModal
+        open={category.open === 'edit' || category.open === 'add'}
+        message={
+          <CategoryForm editCategory={editCategory} onChange={onChange} />
+        }
+        func={editCatApi}
+        cancel={cancel}
+        yesBtn={'Submit'}
+        noBtn={'Cancel'}
       />
     </div>
   );

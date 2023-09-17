@@ -1,7 +1,7 @@
 import { Delete, Edit } from '@mui/icons-material';
 import React from 'react';
 
-const CategoryTable = ({ data, deleteCat }) => {
+const CategoryTable = ({ data, catObj }) => {
   return (
     <div>
       {data && data.length > 0 && (
@@ -29,18 +29,25 @@ const CategoryTable = ({ data, deleteCat }) => {
                   }}
                 >
                   <td className="px-[20px] py-[10px] text-center">{i + 1}</td>
-                  <td className="px-[20px] py-[10px] text-left">{cat.name}</td>
-                  <td className="px-[20px] py-[10px] text-left ">
+                  <td className="px-[20px] py-[10px] text-left max-w-[320px] truncate">
+                    {cat.name}
+                  </td>
+                  <td className="px-[20px] py-[10px] text-left max-w-[500px] truncate">
                     {cat.description}
                   </td>
                   <td>
-                    <Edit sx={{ color: '#2e4e9f', cursor: 'pointer' }} />
+                    <Edit
+                      sx={{ color: '#2e4e9f', cursor: 'pointer' }}
+                      onClick={() => {
+                        catObj(cat, 'edit');
+                      }}
+                    />
                   </td>
                   <td>
                     <Delete
                       sx={{ color: '#f05454', cursor: 'pointer' }}
                       onClick={() => {
-                        deleteCat(cat);
+                        catObj(cat, 'delete');
                       }}
                     />
                   </td>

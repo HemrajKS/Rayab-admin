@@ -24,6 +24,8 @@ export default function BasicModal({
   message,
   cancel,
   func,
+  yesBtn,
+  noBtn,
 }) {
   return (
     <div>
@@ -40,13 +42,13 @@ export default function BasicModal({
               }}
               className="mr-4 shadow-lg spread-2 text-white text-[18px] rounded-[6px] cursor-pointer w-[100px] bg-[#e47e52] flex items-center justify-center py-1 hover:bg-[#e47e52ba]"
             >
-              Yes
+              {yesBtn ? yesBtn : 'Yes'}
             </div>
             <div
               className=" text-[#0b1c48] hover:bg-[#0b1c4812] text-[18px] shadow-lg rounded-[6px] cursor-pointer w-[100px] bg-[#0b1c482f] flex items-center justify-center py-1"
               onClick={cancel}
             >
-              No
+              {noBtn ? noBtn : 'No'}
             </div>
           </div>
         </Box>
