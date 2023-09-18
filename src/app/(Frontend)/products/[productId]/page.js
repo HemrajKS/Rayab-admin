@@ -96,47 +96,75 @@ const ProductId = ({ params }) => {
               <div className="bg-white rounded-[16px] shadow-md overflow-auto xl:max-h-[calc(494px)] h-[100%] min-w-[450px] w-full xl:max-w-[calc(50%-10px)] p-[20px]">
                 <div className="flex items-start justify-between">
                   <div className="text-bold text-[28px]">{data.name}</div>
-                  <div className="ml-[20px] text-bold text-[28px] bg-[#e47e52] text-white px-[14px] py-[2px] rounded-[14px]">
+                  <div className="ml-[20px] text-bold text-[20px] bg-[#e47e52] text-white px-[14px] py-[2px] rounded-[10px]">
                     {data.stock}
                   </div>
                 </div>
-                <div className="text-[#e47e52] font-thin">{data.category}</div>
-                <div className="mb-[18px]">{data.description}</div>
-                <div>
+                <div className="text-[#e47e52] text-[14px] font-thin">
+                  {data.category}
+                </div>
+                <div className="mb-[14px] text-gray-400 ">
+                  {data.description}
+                </div>
+                <div className="text-bold text-[18px] mb-[14px]">
                   {data.currency ? data.currency : 'INR'} {data.price}
                 </div>
-                {data.model && <div>Model: {data.model}</div>}
+                {data.model && (
+                  <div className="mb-[8px]">
+                    <span className="font-bold">Model:</span> {data.model}
+                  </div>
+                )}
                 {data.features && (
-                  <>
-                    <div>Features:</div>
+                  <div className="mb-[8px]">
+                    <div className="font-bold">Features:</div>
                     {data.features.map((feat, i) => {
                       return (
-                        <div key={i}>
+                        <div key={i} className="pl-[16px]">
                           {i + 1}. {feat}
                         </div>
                       );
                     })}
-                  </>
+                  </div>
                 )}
-                {data.color && <div>Color: {data.color}</div>}
-                {data.weight && <div>Weight: {data.weight}</div>}
-                {data.dimensions && <div>Dimensions: {data.dimensions}</div>}
+                {data.color && (
+                  <div className="mb-[8px]">
+                    <span className="font-bold">Color:</span> {data.color}
+                  </div>
+                )}
+                {data.weight && (
+                  <div className="mb-[8px]">
+                    <span className="font-bold">Weight:</span> {data.weight}
+                  </div>
+                )}
+                {data.dimensions && (
+                  <div className="mb-[8px]">
+                    <span className="font-bold">Dimensions:</span>{' '}
+                    {data.dimensions}
+                  </div>
+                )}
                 {data.shippingInfo && (
-                  <>
-                    <div>Shipping Info</div>
+                  <div className="mb-[8px]">
+                    <div className="font-bold">Shipping Info:</div>
                     {Object.keys(data.shippingInfo).map((obj, i) => {
                       return (
-                        <div key={i}>
+                        <div key={i} className="pl-[16px]">
                           <span>{_.startCase(obj)}</span>:{' '}
                           {data.shippingInfo[obj]}
                         </div>
                       );
                     })}
-                  </>
+                  </div>
                 )}
-                {data.warranty && <div>Warranty: {data.warranty}</div>}
+                {data.warranty && (
+                  <div className="mb-[8px]">
+                    <span className="font-bold">Warranty:</span> {data.warranty}
+                  </div>
+                )}
                 {data.manufacturer && (
-                  <div>Manufacturer: {data.manufacturer}</div>
+                  <div className="mb-[8px]">
+                    <span className="font-bold">Manufacturer:</span>{' '}
+                    {data.manufacturer}
+                  </div>
                 )}
               </div>
             </div>
