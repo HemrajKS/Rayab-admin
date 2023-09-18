@@ -13,6 +13,7 @@ const Input = ({
   pattern,
   autocomplete,
   search,
+  required,
 }) => {
   return (
     <div>
@@ -41,6 +42,7 @@ const Input = ({
           disabled={disabled}
           pattern={pattern}
           autoComplete={autocomplete}
+          required={required}
           placeholder={`${search ? 'Search' : ''}`}
         />
         {name === 'password' && (

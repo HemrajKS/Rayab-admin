@@ -32,7 +32,6 @@ const productSchema = new Schema(
     },
     productVideo: {
       type: String,
-      required: true,
     },
     manufacturer: {
       type: String,

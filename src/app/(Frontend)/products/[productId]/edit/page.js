@@ -1,4 +1,5 @@
 'use client';
+import ProductForm from '@/Containers/ProductForm/ProductForm';
 import { urls } from '@/app/constants/constants';
 import makeHttpRequest from '@/app/services/apiCall';
 import { ArrowBack } from '@mui/icons-material';
@@ -49,8 +50,18 @@ const Page = ({ params }) => {
             <ArrowBack sx={{ color: '#e47e52', fontSize: '26px' }} />
           </div>
         </div>
-        <div className=" bg-white rounded-[16px] shadow-md my-[20px] p-[20px]">
-          Hello
+        <div className=" bg-white rounded-[16px] shadow-md my-[20px] p-[20px] h-[calc(100vh-192px)] overflow-auto">
+          {JSON.stringify(data) !== '{}' ? (
+            <div className="h-full ">
+              <ProductForm data={data} edit />
+            </div>
+          ) : (
+            !loading && (
+              <div className="flex items-center justify-center text-[#e47e52] text-[26px] h-full">
+                Product Not Found..!
+              </div>
+            )
+          )}
         </div>
       </div>
     </div>

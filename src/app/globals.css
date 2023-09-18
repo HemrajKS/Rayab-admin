@@ -73,3 +73,16 @@ main {
 .image-gallery-thumbnail + .image-gallery-thumbnail {
   margin-left: 5px;
 }
+
+.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
+  padding: 0px;
+}
+
+.MuiOutlinedInput-notchedOutline {
+  border-width: 1px !important;
+  border-color: rgba(100, 116, 139, 0.5) !important;
+}
+
+.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border: 2px #0b1c48 solid !important;
+}
