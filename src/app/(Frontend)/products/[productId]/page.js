@@ -1,4 +1,5 @@
 'use client';
+import ImageGallery from '@/Containers/ImageGallery/ImageGallery';
 import { urls } from '@/app/constants/constants';
 import makeHttpRequest from '@/app/services/apiCall';
 import { ArrowBack } from '@mui/icons-material';
@@ -36,7 +37,7 @@ const ProductId = ({ params }) => {
     <div className="overflow-auto h-full text-[#0b1c48]">
       <div className="pl-[25px] pr-[20px] relative">
         <div
-          className="rounded-full absolute top-[10px] left-[40px] bg-slate-100 shadow-md w-[50px] h-[50px] flex items-center justify-center cursor-pointer"
+          className="rounded-full z-[999]  bg-slate-100 shadow-md w-[50px] h-[50px] flex items-center justify-center cursor-pointer"
           onClick={() => {
             router.push('/products');
           }}
@@ -44,12 +45,12 @@ const ProductId = ({ params }) => {
           <ArrowBack sx={{ color: '#e47e52', fontSize: '26px' }} />
         </div>
         {JSON.stringify(data) !== '{}' ? (
-          <div>
+          <div className="mt-[20px]">
             <div className="flex gap-[20px] flex-wrap">
-              <div className="bg-white rounded-[16px] max-h-[calc(100vh-106px)] min-w-[450px] w-full xl:max-w-[calc(50%-10px)] h-[100%] p-[20px]">
-                cbx kjb dgdlbgjfd dfvd;oin
+              <div className="bg-white rounded-[16px] shadow-md max-h-[calc(100vh-106px)] min-w-[450px] w-full xl:max-w-[calc(50%-10px)] h-[100%] p-[20px]">
+                <ImageGallery />
               </div>
-              <div className="bg-white rounded-[16px] max-h-[calc(100vh-106px)] h-[100%] min-w-[450px] w-full xl:max-w-[calc(50%-10px)] p-[20px]">
+              <div className="bg-white rounded-[16px] shadow-md max-h-[calc(100vh-106px)] h-[100%] min-w-[450px] w-full xl:max-w-[calc(50%-10px)] p-[20px]">
                 cbx kjb dgdlbgjfd dfvd;oin
               </div>
             </div>
