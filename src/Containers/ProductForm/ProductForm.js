@@ -118,10 +118,11 @@ const ProductForm = ({ data, edit }) => {
     }
   };
 
-  const deleteFeature = (index) => {
-    if (index !== -1) {
+  const deleteFeature = (i) => {
+    console.log(i);
+    if (i !== -1) {
       const newState = { ...submitObj };
-      newState.features.splice(index, 1);
+      newState.features.splice(i, 1);
       setSubmitObj(newState);
     }
   };
@@ -255,7 +256,12 @@ const ProductForm = ({ data, edit }) => {
               <span>
                 {i + 1}. {feat}
               </span>{' '}
-              <span onClick={deleteFeature(i)}>
+              <span
+                onClick={() => {
+                  deleteFeature(i);
+                }}
+                className="cursor-pointer text-[#e47e52]"
+              >
                 <Close />
               </span>
             </div>
