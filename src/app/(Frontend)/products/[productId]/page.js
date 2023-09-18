@@ -4,7 +4,7 @@ import ImageGallery from '@/Containers/ImageGallery/ImageGallery';
 import Video from '@/Containers/Video/Video';
 import { urls } from '@/app/constants/constants';
 import makeHttpRequest from '@/app/services/apiCall';
-import { ArrowBack, Star } from '@mui/icons-material';
+import { ArrowBack, Delete, Edit, Star } from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import _ from 'lodash';
@@ -40,8 +40,6 @@ const ProductId = ({ params }) => {
       });
   };
 
-  console.log('data', data);
-
   function transformProductImages(product) {
     const images = [
       {
@@ -67,13 +65,33 @@ const ProductId = ({ params }) => {
   return (
     <div className="overflow-auto h-full text-[#0b1c48] ">
       <div className="pl-[25px] pr-[20px] relative mb-[25px]">
-        <div
-          className="rounded-full z-[999]  bg-slate-100 shadow-md w-[50px] h-[50px] flex items-center justify-center cursor-pointer"
-          onClick={() => {
-            router.push('/products');
-          }}
-        >
-          <ArrowBack sx={{ color: '#e47e52', fontSize: '26px' }} />
+        <div className="flex justify-between items-center">
+          <div
+            className="rounded-full z-[999]  bg-slate-100 shadow-md w-[50px] h-[50px] flex items-center justify-center cursor-pointer"
+            onClick={() => {
+              router.push('/products');
+            }}
+          >
+            <ArrowBack sx={{ color: '#e47e52', fontSize: '26px' }} />
+          </div>
+          <div className="flex gap-[20px]">
+            <div
+              className="rounded-full z-[999]  bg-slate-100 shadow-md w-[50px] h-[50px] flex items-center justify-center cursor-pointer"
+              onClick={() => {
+                router.push(`/products/${params.productId}/edit`);
+              }}
+            >
+              <Edit sx={{ color: '#2e4e9f', fontSize: '26px' }} />
+            </div>
+            <div
+              className="rounded-full z-[999]  bg-slate-100 shadow-md w-[50px] h-[50px] flex items-center justify-center cursor-pointer"
+              onClick={() => {
+                router.push('/products');
+              }}
+            >
+              <Delete sx={{ color: '#f05454', fontSize: '26px' }} />
+            </div>
+          </div>
         </div>
         {JSON.stringify(data) !== '{}' ? (
           <div className="mt-[20px]">
