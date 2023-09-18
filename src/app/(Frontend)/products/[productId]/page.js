@@ -7,6 +7,7 @@ import makeHttpRequest from '@/app/services/apiCall';
 import { ArrowBack } from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
+import _ from 'lodash';
 
 const ProductId = ({ params }) => {
   const router = useRouter();
@@ -92,8 +93,51 @@ const ProductId = ({ params }) => {
                   }[activeTab]
                 }
               </div>
-              <div className="bg-white rounded-[16px] shadow-md max-h-[calc(100vh-106px)] h-[100%] min-w-[450px] w-full xl:max-w-[calc(50%-10px)] p-[20px]">
-                cbx kjb dgdlbgjfd dfvd;oin
+              <div className="bg-white rounded-[16px] shadow-md overflow-auto xl:max-h-[calc(494px)] h-[100%] min-w-[450px] w-full xl:max-w-[calc(50%-10px)] p-[20px]">
+                <div className="flex items-start justify-between">
+                  <div className="text-bold text-[28px]">{data.name}</div>
+                  <div className="ml-[20px] text-bold text-[28px] bg-[#e47e52] text-white px-[14px] py-[2px] rounded-[14px]">
+                    {data.stock}
+                  </div>
+                </div>
+                <div className="text-[#e47e52] font-thin">{data.category}</div>
+                <div className="mb-[18px]">{data.description}</div>
+                <div>
+                  {data.currency ? data.currency : 'INR'} {data.price}
+                </div>
+                {data.model && <div>Model: {data.model}</div>}
+                {data.features && (
+                  <>
+                    <div>Features:</div>
+                    {data.features.map((feat, i) => {
+                      return (
+                        <div key={i}>
+                          {i + 1}. {feat}
+                        </div>
+                      );
+                    })}
+                  </>
+                )}
+                {data.color && <div>Color: {data.color}</div>}
+                {data.weight && <div>Weight: {data.weight}</div>}
+                {data.dimensions && <div>Dimensions: {data.dimensions}</div>}
+                {data.shippingInfo && (
+                  <>
+                    <div>Shipping Info</div>
+                    {Object.keys(data.shippingInfo).map((obj, i) => {
+                      return (
+                        <div key={i}>
+                          <span>{_.startCase(obj)}</span>:{' '}
+                          {data.shippingInfo[obj]}
+                        </div>
+                      );
+                    })}
+                  </>
+                )}
+                {data.warranty && <div>Warranty: {data.warranty}</div>}
+                {data.manufacturer && (
+                  <div>Manufacturer: {data.manufacturer}</div>
+                )}
               </div>
             </div>
           </div>
