@@ -14,9 +14,10 @@ const Input = ({
   autocomplete,
   search,
   required,
+  inputRef,
 }) => {
   return (
-    <div>
+    <div className="w-full">
       <label className="block relative">
         <span className="block text-[16px] text-[#0b1c48] font-[20px] opacity-80">
           {label}
@@ -44,6 +45,7 @@ const Input = ({
           autoComplete={autocomplete}
           required={required}
           placeholder={`${search ? 'Search' : ''}`}
+          ref={inputRef}
         />
         {name === 'password' && (
           <span
