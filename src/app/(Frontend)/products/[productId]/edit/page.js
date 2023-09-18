@@ -1,4 +1,5 @@
 'use client';
+import FullScreenLoader from '@/Components/FullScreenLoader/FullScreenLoader';
 import ProductForm from '@/Containers/ProductForm/ProductForm';
 import { urls } from '@/app/constants/constants';
 import makeHttpRequest from '@/app/services/apiCall';
@@ -12,6 +13,7 @@ const Page = ({ params }) => {
 
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
+  const [submitObj, setSubmitObj] = useState({});
 
   useEffect(() => {
     productApi();
@@ -34,7 +36,41 @@ const Page = ({ params }) => {
       });
   };
 
-  console.log(data);
+  const submitData = (object) => {
+    setSubmitObj(object);
+  };
+
+  const editApi = () => {
+    setLoading(true);
+    if (
+      submitObj.name !== '' &&
+      submitObj.description !== '' &&
+      submitObj.category !== '' &&
+      submitObj.price !== '' &&
+      submitObj.currency !== '' &&
+      submitObj.stock !== '' &&
+      submitObj.imageUrl !== ''
+    ) {
+      makeHttpRequest(`${urls.updateProduct}`, 'patch', {
+        ...submitObj,
+        id: productId,
+      })
+        .then((res) => {
+          setLoading(false);
+          if (res.status === 200) {
+            if (res?.data?.data) {
+              router.push(`/products/${productId}`);
+            }
+          }
+        })
+        .catch((err) => {
+          setLoading(false);
+          console.log(err);
+        });
+    } else {
+      alert('Please enter all the required fields..!');
+    }
+  };
 
   return (
     <div className="overflow-auto h-full text-[#0b1c48] ">
@@ -49,11 +85,19 @@ const Page = ({ params }) => {
             {' '}
             <ArrowBack sx={{ color: '#e47e52', fontSize: '26px' }} />
           </div>
+          <div
+            className="cursor-pointer bg-[#e47e52] rounded-md text-white font-bold text-[18px] px-[18px] py-[6px] tracking-[1.5px]"
+            onClick={() => {
+              editApi();
+            }}
+          >
+            Save
+          </div>
         </div>
         <div className=" bg-white rounded-[16px] shadow-md my-[20px] p-[20px] h-[calc(100vh-192px)] overflow-auto">
           {JSON.stringify(data) !== '{}' ? (
             <div className="h-full ">
-              <ProductForm data={data} edit />
+              <ProductForm data={data} edit submitData={submitData} />
             </div>
           ) : (
             !loading && (
@@ -64,6 +108,7 @@ const Page = ({ params }) => {
           )}
         </div>
       </div>
+      <FullScreenLoader open={loading} />
     </div>
   );
 };

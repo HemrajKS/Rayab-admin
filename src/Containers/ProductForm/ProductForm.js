@@ -9,7 +9,7 @@ import Button from '@/Components/Button/Button';
 import { Close, Remove } from '@mui/icons-material';
 import _ from 'lodash';
 
-const ProductForm = ({ data, edit }) => {
+const ProductForm = ({ data, edit, submitData }) => {
   const fieldsToRemove = [
     'addedBy',
     '__v',
@@ -32,8 +32,6 @@ const ProductForm = ({ data, edit }) => {
 
   const featureRef = useRef(null);
 
-  console.log(submitObj);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -46,6 +44,10 @@ const ProductForm = ({ data, edit }) => {
   useEffect(() => {
     categoryApi();
   }, []);
+
+  useEffect(() => {
+    submitData(submitObj);
+  }, [submitObj]);
 
   const categoryApi = () => {
     setCategoriesLoad(true);
@@ -78,7 +80,6 @@ const ProductForm = ({ data, edit }) => {
 
       makeHttpRequest(`/api/upload`, 'post', formData)
         .then((res) => {
-          console.log(res);
           if (res.status === 200) {
             if (res?.data?.data) {
               if (type === 'mainImage') {
@@ -123,7 +124,6 @@ const ProductForm = ({ data, edit }) => {
   };
 
   const deleteFeature = (i) => {
-    console.log(i);
     if (i !== -1) {
       const newState = { ...submitObj };
       newState.features.splice(i, 1);

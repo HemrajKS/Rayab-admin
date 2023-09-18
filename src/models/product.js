@@ -38,7 +38,6 @@ const productSchema = new Schema(
     },
     model: {
       type: String,
-      required: true,
     },
     weight: String,
     dimensions: String,
