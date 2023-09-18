@@ -257,7 +257,7 @@ const ProductForm = ({ data, edit }) => {
       </div>
 
       <div className="min-w-[450px] w-full xl:max-w-[calc(50%-10px)] mb-[20px]">
-        <div className="min-w-[450px] w-full xl:max-w-[calc(50%-10px)] flex items-center gap-[20px]">
+        <div className="flex items-center gap-[20px]">
           <Input name={'features'} label={'Features'} inputRef={featureRef} />
           <Button name={'Add'} type={'button'} onClick={addFeature} />
         </div>
