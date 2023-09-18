@@ -16,7 +16,7 @@ function Textarea({
       </span>
 
       <textarea
-        className="mt-1 block w-full pl-3 pr-3 py-2 bg-white border border-slate-300 rounded-md text-[#0b1c48] text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-slate-500 focus:ring-1 focus:ring-[#0b1c48] disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500"
+        className="mt-1 block w-full pl-3 pr-3 py-2 bg-white border border-slate-300 rounded-md text-[#0b1c48] text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-slate-500 focus:ring-1 focus:ring-[#0b1c48] disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 mb-[20px]"
         name={name}
         onChange={onChange}
         value={value}
