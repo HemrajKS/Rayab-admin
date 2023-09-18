@@ -3,13 +3,17 @@ import Input from '@/Components/Input/Input';
 import ProductCards from '@/Containers/ProductCards/ProductCards';
 import { urls } from '@/app/constants/constants';
 import makeHttpRequest from '@/app/services/apiCall';
+import { Add } from '@mui/icons-material';
 import { debounce } from 'lodash';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useMemo, useState } from 'react';
 
 const Page = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState('');
   const [search, setSearch] = useState('');
+
+  const router = useRouter();
 
   const groupedProducts = {};
 
@@ -62,7 +66,7 @@ const Page = () => {
     <div className="overflow-auto h-full text-[#0b1c48]">
       <div className="pl-[25px] pr-[20px] flex items-center flex-row w-full justify-between">
         <div className="text-[28px] font-bold ">Products</div>
-        <div>
+        <div className="flex items-center gap-[20px]">
           {' '}
           <Input
             label={''}
@@ -73,6 +77,15 @@ const Page = () => {
             style={{ display: 'none' }}
             search={true}
           />
+          <div
+            className="rounded-full z-[999]  bg-slate-100 shadow-md w-[66px] h-[50px] flex items-center justify-center cursor-pointer"
+            onClick={() => {
+              router.push(`/addProducts`);
+            }}
+          >
+            {' '}
+            <Add sx={{ color: '#e47e52', fontSize: '26px' }} />
+          </div>
         </div>
       </div>
       {data && data.length > 0 ? (

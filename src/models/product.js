@@ -19,11 +19,11 @@ const productSchema = new Schema(
       required: true,
     },
     price: {
-      type: Number,
+      type: String,
       required: true,
     },
     stock: {
-      type: Number,
+      type: String,
       required: true,
     },
     imageUrl: {
@@ -42,11 +42,11 @@ const productSchema = new Schema(
     weight: String,
     dimensions: String,
     color: String,
-    rating: Number,
+    rating: String,
     reviews: [
       {
         user: String,
-        rating: Number,
+        rating: String,
         comment: String,
         userId: String,
       },
@@ -56,7 +56,7 @@ const productSchema = new Schema(
     shippingInfo: {
       weight: String,
       dimensions: String,
-      shippingCost: Number,
+      shippingCost: String,
     },
     images: [String],
     addedBy: {

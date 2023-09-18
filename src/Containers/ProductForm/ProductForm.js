@@ -91,7 +91,9 @@ const ProductForm = ({ data, edit, submitData }) => {
                 setUploadImgUrlLoading(false);
               } else if (type === 'otherImages') {
                 const newState = { ...submitObj };
-
+                if (!newState.images) {
+                  newState.images = [];
+                }
                 newState.images.push(res?.data?.data);
                 setSubmitObj(newState);
                 setUploadImgLoading(false);
@@ -115,6 +117,10 @@ const ProductForm = ({ data, edit, submitData }) => {
       const feature = featureRef.current.value;
       if (feature !== '') {
         const newState = { ...submitObj };
+        if (!newState.features) {
+          newState.features = [];
+        }
+
         newState.features.push(feature);
         setSubmitObj(newState);
       }
@@ -261,7 +267,7 @@ const ProductForm = ({ data, edit, submitData }) => {
           <Input name={'features'} label={'Features'} inputRef={featureRef} />
           <Button name={'Add'} type={'button'} onClick={addFeature} />
         </div>
-        {submitObj.features.map((feat, i) => {
+        {submitObj?.features?.map((feat, i) => {
           return (
             <div
               key={i}
@@ -289,7 +295,9 @@ const ProductForm = ({ data, edit, submitData }) => {
           <Input
             name={'shippingInfo'}
             label={'Shipping Info'}
-            value={submitObj.shippingInfo[activeInfo]}
+            value={
+              submitObj?.shippingInfo && submitObj.shippingInfo[activeInfo]
+            }
             onChange={addShippingInfo}
           />
           {/* <Button name={'Add'} type={'button'} /> */}

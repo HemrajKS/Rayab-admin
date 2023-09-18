@@ -42,7 +42,7 @@ const Upload = ({
           <div className="flex justify-center overflow-auto">
             {
               {
-                mainImage: (
+                mainImage: url && (
                   <Image
                     src={url}
                     alt="Selected"

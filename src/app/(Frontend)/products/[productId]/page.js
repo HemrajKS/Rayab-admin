@@ -10,12 +10,14 @@ import React, { useEffect, useState } from 'react';
 import _ from 'lodash';
 import { Rating } from '@mui/material';
 import RatingTable from '@/Containers/RatingTable/RatingTable';
+import BasicModal from '@/Components/Modal/Modal';
 
 const ProductId = ({ params }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({});
   const [activeTab, setActiveTab] = useState('images');
+  const [deleteModal, setDeleteModal] = useState(false);
 
   const mediaTabs = ['images', 'video'];
 
@@ -62,6 +64,21 @@ const ProductId = ({ params }) => {
     setActiveTab(tab);
   };
 
+  const deleteProduct = () => {
+    setLoading(true);
+    makeHttpRequest(`${urls.deleteProduct}`, 'delete', { id: params.productId })
+      .then((res) => {
+        setLoading(false);
+        if (res.status === 200) {
+          router.push('/products');
+        }
+      })
+      .catch((err) => {
+        setLoading(false);
+        console.log(err);
+      });
+  };
+
   return (
     <div className="overflow-auto h-full text-[#0b1c48] ">
       <div className="pl-[25px] pr-[20px] relative mb-[25px]">
@@ -86,7 +103,7 @@ const ProductId = ({ params }) => {
             <div
               className="rounded-full z-[999]  bg-slate-100 shadow-md w-[50px] h-[50px] flex items-center justify-center cursor-pointer"
               onClick={() => {
-                router.push('/products');
+                setDeleteModal(true);
               }}
             >
               <Delete sx={{ color: '#f05454', fontSize: '26px' }} />
@@ -219,6 +236,14 @@ const ProductId = ({ params }) => {
           )
         )}
       </div>
+      <BasicModal
+        open={deleteModal}
+        message={'Are you sure, you want to delete this Product?'}
+        func={deleteProduct}
+        cancel={() => {
+          setDeleteModal(false);
+        }}
+      />
     </div>
   );
 };
