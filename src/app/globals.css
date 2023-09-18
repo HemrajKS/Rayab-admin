@@ -40,3 +40,36 @@ main {
   padding: 0;
   transition: all 0.15s ease-in;
 }
+
+.image-gallery-content .image-gallery-slide .image-gallery-image {
+  height: 320px;
+}
+
+.image-gallery-thumbnails-wrapper.thumbnails-swipe-horizontal {
+  margin-top: 10px;
+}
+
+.image-gallery-thumbnail.active,
+.image-gallery-thumbnail:first-child {
+  border: 4px solid #0b1c48;
+  border-radius: 12px;
+}
+
+.image-gallery-thumbnail.active,
+.image-gallery-thumbnail:focus,
+.image-gallery-thumbnail:hover {
+  outline: none;
+  border: 4px solid #e47e52;
+  border-radius: 12px;
+}
+
+.image-gallery-thumbnail .image-gallery-thumbnail-image {
+  border-radius: 8px;
+  height: 60px;
+  width: 100px;
+  object-fit: cover;
+}
+
+.image-gallery-thumbnail + .image-gallery-thumbnail {
+  margin-left: 5px;
+}
