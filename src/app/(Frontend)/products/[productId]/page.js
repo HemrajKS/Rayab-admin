@@ -63,8 +63,8 @@ const ProductId = ({ params }) => {
   };
 
   return (
-    <div className="overflow-auto h-full text-[#0b1c48]">
-      <div className="pl-[25px] pr-[20px] relative">
+    <div className="overflow-auto h-full text-[#0b1c48] ">
+      <div className="pl-[25px] pr-[20px] relative mb-[25px]">
         <div
           className="rounded-full z-[999]  bg-slate-100 shadow-md w-[50px] h-[50px] flex items-center justify-center cursor-pointer"
           onClick={() => {
@@ -93,7 +93,7 @@ const ProductId = ({ params }) => {
                   }[activeTab]
                 }
               </div>
-              <div className="bg-white rounded-[16px] shadow-md overflow-auto xl:max-h-[calc(494px)] h-[100%] min-w-[450px] w-full xl:max-w-[calc(50%-10px)] p-[20px]">
+              <div className="bg-white rounded-[16px] shadow-md overflow-auto xl:max-h-[calc(494px)] xl:h-[494px] min-w-[450px] w-full xl:max-w-[calc(50%-10px)] p-[20px]">
                 <div className="flex items-start justify-between">
                   <div className="text-bold text-[28px]">{data.name}</div>
                   <div className="ml-[20px] text-bold text-[20px] bg-[#e47e52] text-white px-[14px] py-[2px] rounded-[10px]">
