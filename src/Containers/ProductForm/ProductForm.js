@@ -7,6 +7,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Upload from '@/Components/Uploader/Upload';
 import Button from '@/Components/Button/Button';
 import { Close, Remove } from '@mui/icons-material';
+import _ from 'lodash';
 
 const ProductForm = ({ data, edit }) => {
   const fieldsToRemove = [
@@ -25,6 +26,9 @@ const ProductForm = ({ data, edit }) => {
   );
   const [uploadImgLoading, setUploadImgLoading] = useState(false);
   const [uploadImgUrlLoading, setUploadImgUrlLoading] = useState(false);
+  const [activeInfo, setActiveInfo] = useState('dimensions');
+
+  const shipping = ['dimensions', 'shippingCost', 'weight'];
 
   const featureRef = useRef(null);
 
@@ -125,6 +129,16 @@ const ProductForm = ({ data, edit }) => {
       newState.features.splice(i, 1);
       setSubmitObj(newState);
     }
+  };
+
+  const addShippingInfo = (e) => {
+    setSubmitObj({
+      ...submitObj,
+      shippingInfo: {
+        ...submitObj.shippingInfo,
+        [activeInfo]: e.target.value,
+      },
+    });
   };
 
   return (
@@ -271,9 +285,31 @@ const ProductForm = ({ data, edit }) => {
 
       <div className="min-w-[450px] w-full xl:max-w-[calc(50%-10px)] mb-[20px]">
         {' '}
-        <div className="min-w-[450px] w-full xl:max-w-[calc(50%-10px)] flex items-center gap-[20px]">
-          <Input name={'shippingInfo'} label={'Shipping Info'} />
-          <Button name={'Add'} type={'button'} />
+        <div>
+          <Input
+            name={'shippingInfo'}
+            label={'Shipping Info'}
+            value={submitObj.shippingInfo[activeInfo]}
+            onChange={addShippingInfo}
+          />
+          {/* <Button name={'Add'} type={'button'} /> */}
+        </div>
+        <div className="flex gap-[10px]">
+          {shipping.map((item, i) => {
+            return (
+              <div
+                key={i}
+                className={`cursor-pointer px-[8px] py-[4px] rounded-md ${
+                  item === activeInfo && 'bg-[#e47e52] text-[white]'
+                }`}
+                onClick={() => {
+                  setActiveInfo(item);
+                }}
+              >
+                {_.startCase(item)}
+              </div>
+            );
+          })}
         </div>
       </div>
 
