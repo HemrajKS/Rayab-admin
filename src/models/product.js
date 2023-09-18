@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema } from 'mongoose';
 
 const productSchema = new Schema(
   {
@@ -14,9 +14,9 @@ const productSchema = new Schema(
       type: String,
       required: true,
     },
-    currency:{
+    currency: {
       type: String,
-      required: true
+      required: true,
     },
     price: {
       type: Number,
@@ -50,6 +50,7 @@ const productSchema = new Schema(
         user: String,
         rating: Number,
         comment: String,
+        userId: String,
       },
     ],
     features: [String],
@@ -72,6 +73,6 @@ const productSchema = new Schema(
 );
 
 const Product =
-  mongoose.models.Products || mongoose.model("Products", productSchema);
+  mongoose.models.Products || mongoose.model('Products', productSchema);
 
 export default Product;

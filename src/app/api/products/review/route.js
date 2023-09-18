@@ -1,5 +1,6 @@
 import connectDB from '@/lib/mongodb';
 import Product from '@/models/product';
+import User from '@/models/user';
 import { NextResponse } from 'next/server';
 
 export async function PATCH(req) {
@@ -7,7 +8,13 @@ export async function PATCH(req) {
   const userId = req.headers.get('x-user-id');
   try {
     await connectDB();
-    const reviewUser = { ...body, ...{ user: userId } };
+    const user = await User.findOne({ _id: userId });
+
+    const reviewUser = {
+      ...body,
+      ...{ userId: userId },
+      ...{ user: user.name },
+    };
 
     const review = await Product.findOneAndUpdate(
       {
