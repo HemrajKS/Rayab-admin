@@ -4,10 +4,12 @@ import ImageGallery from '@/Containers/ImageGallery/ImageGallery';
 import Video from '@/Containers/Video/Video';
 import { urls } from '@/app/constants/constants';
 import makeHttpRequest from '@/app/services/apiCall';
-import { ArrowBack } from '@mui/icons-material';
+import { ArrowBack, Star } from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import _ from 'lodash';
+import { Rating } from '@mui/material';
+import RatingTable from '@/Containers/RatingTable/RatingTable';
 
 const ProductId = ({ params }) => {
   const router = useRouter();
@@ -167,6 +169,28 @@ const ProductId = ({ params }) => {
                   </div>
                 )}
               </div>
+            </div>
+            <div className="bg-white rounded-[16px] shadow-md mt-[20px] p-[20px]">
+              <div className="flex items-center justify-between">
+                <div className="text-[26px] font-bold">Reviews</div>
+                <div className="flex gap-[8px] items-center text-[#e47e52] text-bold text-[20px]">
+                  <Rating
+                    name="text-feedback"
+                    value={data.rating}
+                    readOnly
+                    precision={0.1}
+                    emptyIcon={
+                      <Star style={{ opacity: 0.55 }} fontSize="inherit" />
+                    }
+                    sx={{
+                      color: '#e47e52',
+                      fontSize: '28px',
+                    }}
+                  />
+                  <div>{data.rating}</div>
+                </div>
+              </div>
+              <RatingTable data={data.reviews} />
             </div>
           </div>
         ) : (
