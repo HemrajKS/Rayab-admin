@@ -13,8 +13,10 @@ import Link from 'next/link';
 import Pagination from '@/Components/Pagination/Pagination';
 import { CircularIndeterminate } from '@/Components/Loaders/Loaders';
 import ProductCards from '@/Containers/ProductCards/ProductCards';
+import Dropdown from '@/Components/Dropdown/Dropdown';
+import FullScreenLoader from '@/Components/FullScreenLoader/FullScreenLoader';
 
-const ProductId = ({ params }) => {
+const OrderId = ({ params }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
@@ -22,6 +24,9 @@ const ProductId = ({ params }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [productLoading, setProductLoading] = useState(false);
   const [products, setProducts] = useState([]);
+  const [delLoading, setDelLoading] = useState(false);
+  const [statusModal, setStatusModal] = useState(false);
+  const [statusData, setStatusData] = useState('');
 
   const productsPerPage = 5;
 
@@ -99,16 +104,16 @@ const ProductId = ({ params }) => {
   };
 
   const deleteOder = () => {
-    setLoading(true);
-    makeHttpRequest(`${urls.deleteProduct}`, 'delete', { id: params.productId })
+    setDelLoading(true);
+    makeHttpRequest(`${urls.deleteOrder}`, 'delete', { id: params.orderId })
       .then((res) => {
-        setLoading(false);
+        setDelLoading(false);
         if (res.status === 200) {
-          router.push('/products');
+          router.push('/orders');
         }
       })
       .catch((err) => {
-        setLoading(false);
+        setDelLoading(false);
         console.log(err);
       });
   };
@@ -120,6 +125,23 @@ const ProductId = ({ params }) => {
       totalQuantity += product.quantity;
     }
     return totalQuantity;
+  };
+
+  const orderStatusFunc = () => {
+    makeHttpRequest(`${urls.orderStatus}`, 'post', {
+      id: params.orderId,
+      status: statusData,
+    })
+      .then((res) => {
+        setDelLoading(false);
+        if (res.status === 200) {
+          orderApi();
+        }
+      })
+      .catch((err) => {
+        setDelLoading(false);
+        console.log(err);
+      });
   };
 
   return (
@@ -134,7 +156,25 @@ const ProductId = ({ params }) => {
           >
             <ArrowBack sx={{ color: '#e47e52', fontSize: '26px' }} />
           </div>
-          <div className="flex gap-[20px]">
+          <div className="flex gap-[20px] items-center">
+            {data.status && (
+              <div>
+                <Dropdown
+                  name="status"
+                  value={data.status}
+                  onChange={(e) => {
+                    setStatusData(e.target.value);
+                    setStatusModal(true);
+                  }}
+                  list={[
+                    { name: 'pending' },
+                    { name: 'rejected' },
+                    { name: 'completed' },
+                  ]}
+                  customStyle={{ marginBottom: 0 }}
+                />
+              </div>
+            )}
             <div
               className="rounded-full z-[999]  bg-slate-100 shadow-md w-[50px] h-[50px] flex items-center justify-center cursor-pointer"
               onClick={() => {
@@ -317,13 +357,22 @@ const ProductId = ({ params }) => {
       <BasicModal
         open={deleteModal}
         message={'Are you sure, you want to delete this Order?'}
-        // func={deleteProduct}
+        func={deleteOder}
         cancel={() => {
           setDeleteModal(false);
         }}
       />
+      <BasicModal
+        open={statusModal}
+        message={`Are you sure, you want to change the status of this Order to ${statusData}?`}
+        func={orderStatusFunc}
+        cancel={() => {
+          setStatusModal(false);
+        }}
+      />
+      <FullScreenLoader open={delLoading} />
     </div>
   );
 };
 
-export default ProductId;
+export default OrderId;

@@ -1,4 +1,4 @@
-import mongoose, { Schema, model } from "mongoose";
+import mongoose, { Schema, model } from 'mongoose';
 
 const coordinatesSchema = new Schema({
   latitude: Number,
@@ -35,8 +35,8 @@ const orderSchema = new Schema(
     currency: String,
     status: {
       type: String,
-      enum: ["pending", "completed", "rejected"],
-      default: "pending",
+      enum: ['pending', 'completed', 'rejected'],
+      default: 'pending',
       required: true,
     },
     orderDate: {
@@ -62,6 +62,6 @@ const orderSchema = new Schema(
   }
 );
 
-const Order = mongoose.models.orders || mongoose.model("orders", orderSchema);
+const Order = mongoose.models.orders || mongoose.model('orders', orderSchema);
 
 export default Order;

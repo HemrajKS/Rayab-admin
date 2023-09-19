@@ -58,6 +58,8 @@ export const urls = {
   postProduct: '/api/admin/Products/add',
   deleteProduct: '/api/admin/Products/delete',
   getOrders: '/api/order/getOrder',
+  deleteOrder: '/api/order/deleteOrder',
+  orderStatus: '/api/order/orderCompleted',
 };
 
 export const OTP_LENGTH = 4;

@@ -204,6 +204,7 @@ const ProductForm = ({ data, edit, submitData }) => {
           label={'Stock'}
           value={submitObj.stock}
           onChange={handleChange}
+          type={"number"}
           required
         />
       </div>
