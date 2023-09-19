@@ -60,6 +60,7 @@ export const urls = {
   getOrders: '/api/order/getOrder',
   deleteOrder: '/api/order/deleteOrder',
   orderStatus: '/api/order/orderCompleted',
+  users: '/api/admin/Users',
 };
 
 export const OTP_LENGTH = 4;
