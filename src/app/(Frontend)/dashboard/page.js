@@ -39,7 +39,7 @@ export default function Dashboard() {
       <div className="text-[28px] font-bold pl-[25px]">Dashboard</div>
       <div className="flex gap-[18px] flex-wrap p-[20px]">
         <Card
-          count={data.totalOrders ? data.totalOrders : '-'}
+          count={data?.totalOrders ? data?.totalOrders : '-'}
           title={'Total Orders'}
           subTitle={'All orders placed'}
         />
