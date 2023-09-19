@@ -10,6 +10,13 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { sideBarContent } from '@/app/constants/constants';
 import { usePathname, useRouter } from 'next/navigation';
+import {
+  Category,
+  Dashboard,
+  Inventory,
+  Person,
+  ShoppingCart,
+} from '@mui/icons-material';
 
 const drawerWidth = 240;
 
@@ -55,6 +62,18 @@ export default function Sidebar({ open }) {
   const theme = useTheme();
   const router = useRouter();
   const pathname = usePathname();
+
+  const getIcon = (ico) => {
+    const icon = {
+      Dashboard: <Dashboard />,
+      ShoppingCart: <ShoppingCart />,
+      Inventory: <Inventory />,
+      Category: <Category />,
+      Person: <Person />,
+    }[ico];
+
+    return icon;
+  };
 
   return (
     <Box sx={{ display: 'flex', paddingRight: '16px' }}>
@@ -106,7 +125,7 @@ export default function Sidebar({ open }) {
                         : '#0b1c48',
                     }}
                   >
-                    {item.icon}
+                    {getIcon(item.icon)}
                   </ListItemIcon>
 
                   <div
