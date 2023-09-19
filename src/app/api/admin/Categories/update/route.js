@@ -9,7 +9,7 @@ export async function PATCH(req) {
     await connectDB();
     const body = await req.json();
 
-    const userId = req.headers.get('User-Id');
+    const userId = req.headers.get('User');
     const user = await UserModel.findOne({ _id: userId });
     if (user.isAdmin) {
       try {

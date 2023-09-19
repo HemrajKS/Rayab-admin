@@ -5,7 +5,7 @@ import { NextResponse } from 'next/server';
 
 export async function PATCH(req) {
   const body = await req.json();
-  const userId = req.headers.get('User-Id');
+  const userId = req.headers.get('User');
   try {
     await connectDB();
     const user = await User.findOne({ _id: userId });
