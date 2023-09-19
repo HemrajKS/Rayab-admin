@@ -128,6 +128,7 @@ const OrderId = ({ params }) => {
   };
 
   const orderStatusFunc = () => {
+    setDelLoading(true);
     makeHttpRequest(`${urls.orderStatus}`, 'post', {
       id: params.orderId,
       status: statusData,
