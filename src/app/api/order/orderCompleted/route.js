@@ -9,7 +9,7 @@ import { NextResponse, NextRequest } from 'next/server';
 
 export async function POST(req) {
   const body = await req.json();
-  const userId = req.headers.get('X-User-Id');
+  const userId = req.headers.get('User-Id');
   try {
     await connectDB();
     const order = await Order.findOne({ _id: body.id });
