@@ -14,7 +14,7 @@ const OrderTable = ({ data }) => {
   return (
     <TableContainer
       sx={{ borderRadius: '14px' }}
-      className="shadow-md bg-white "
+      className="shadow-md bg-white"
     >
       <Table>
         <TableHead

@@ -56,7 +56,8 @@ export const urls = {
   addCategories: '/api/admin/Categories/add',
   updateProduct: '/api/admin/Products/update',
   postProduct: '/api/admin/Products/add',
-   deleteProduct: '/api/admin/Products/delete',
+  deleteProduct: '/api/admin/Products/delete',
+  getOrders: '/api/order/getOrder',
 };
 
 export const OTP_LENGTH = 4;
