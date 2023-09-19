@@ -15,18 +15,18 @@ export async function POST(req) {
     const order = await Order.findOne({ _id: body.id });
     let orderNew = {};
     const user = await User.findOne({ _id: userId });
-    let json_response={}
-
+    let json_response = {};
     if (user.isAdmin) {
       if (order.products && JSON.stringify(order.products) !== '[]') {
         if (body.status === 'completed') {
           for (const orderProduct of order.products) {
+            const quantityToDecrement = -orderProduct.quantity;
             await Product.findOneAndUpdate(
               {
                 _id: orderProduct.product,
               },
-              { $inc: { stock: -orderProduct.quantity } }
-            );
+              { $inc: { stock: quantityToDecrement } }
+            ).exec();
           }
           orderNew = await Order.findOneAndUpdate(
             { _id: body.id },
@@ -46,7 +46,7 @@ export async function POST(req) {
             { status: 'rejected' },
             { new: true }
           );
-        json_response = {
+          json_response = {
             status: true,
             data: orderNew,
             message: 'Order Rejected Successfully',
@@ -59,20 +59,19 @@ export async function POST(req) {
             { status: 'pending' },
             { new: true }
           );
-         json_response = {
+
+          json_response = {
             status: true,
             data: orderNew,
-            message: 'Order Rejected Successfully',
+            message: 'Order status changed to Pending',
           };
+          return NextResponse.json(json_response);
+        } else {
+          return getErrorResponse(404, 'Orders not found');
         }
-
-   
-        return getErrorResponse(500, 'Some error occured');
       } else {
-        return getErrorResponse(404, 'Orders not found');
+        return getErrorResponse(406, 'Only admins can change order status');
       }
-    } else {
-      return getErrorResponse(406, 'Only admins can change order status');
     }
   } catch (error) {
     if (error.code === 11000) {

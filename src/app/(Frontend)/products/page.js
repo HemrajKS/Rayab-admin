@@ -80,7 +80,7 @@ const Page = () => {
           <div
             className="rounded-full z-[999]  bg-slate-100 shadow-md w-[66px] h-[50px] flex items-center justify-center cursor-pointer"
             onClick={() => {
-              router.push(`/addProducts`);
+              router.push(`/addProduct`);
             }}
           >
             {' '}

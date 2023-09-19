@@ -5,7 +5,7 @@ const CategoryTable = ({ data, catObj }) => {
   return (
     <div>
       {data && data.length > 0 && (
-        <table className="table-auto shadow-md bg-[white] rounded-[10px] ">
+        <table className="table-auto shadow-md bg-[white] rounded-[10px] w-full ">
           <thead style={{ borderBottom: '6px solid #f7f8fa' }}>
             <tr className="   text-[#e47e52]  ">
               <th className="p-[20px] pb-[10px] text-left ">Sl. No.</th>

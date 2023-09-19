@@ -1,5 +1,6 @@
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import React from 'react';
+import { useState } from 'react';
 
 const Input = ({
   label,
@@ -15,7 +16,9 @@ const Input = ({
   search,
   required,
   inputRef,
+  typePassword,
 }) => {
+  const [show, setShow] = useState(false);
   return (
     <div className="w-full">
       <label className="block relative">
@@ -24,7 +27,7 @@ const Input = ({
         </span>
 
         <input
-          type={type}
+          type={typePassword ? (show ? 'text' : 'password') : type}
           className={`mt-1 block w-full pl-3 ${
             name === 'password' ? 'pr-8' : 'pr-3'
           } py-2 bg-white border border-slate-300  text-[#0b1c48] text-sm shadow-sm placeholder-slate-400
@@ -47,14 +50,24 @@ const Input = ({
           placeholder={`${search ? 'Search' : ''}`}
           ref={inputRef}
         />
-        {name === 'password' && (
+        {(name === 'password' || typePassword) && (
           <span
             className="absolute top-[34px] right-[8px] cursor-pointer "
             onClick={() => {
-              setShowPw(!showPw);
+              if (typePassword) {
+                setShow(!show);
+              } else {
+                setShowPw(!show);
+              }
             }}
           >
-            {showPw ? (
+            {typePassword ? (
+              show ? (
+                <VisibilityOff style={{ color: '#0b1c48', fontSize: '18px' }} />
+              ) : (
+                <Visibility style={{ color: '#0b1c48', fontSize: '18px' }} />
+              )
+            ) : showPw ? (
               <VisibilityOff style={{ color: '#0b1c48', fontSize: '18px' }} />
             ) : (
               <Visibility style={{ color: '#0b1c48', fontSize: '18px' }} />

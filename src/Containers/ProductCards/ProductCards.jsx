@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
-const ProductCards = ({ data, index }) => {
+const ProductCards = ({ data, index, qty }) => {
   const router = useRouter();
   return (
     <div
@@ -23,8 +23,12 @@ const ProductCards = ({ data, index }) => {
           height={450}
           className="rounded-[10px] h-full object-cover"
         />
-        <div className="absolute top-[6px] right-[6px] text-white bg-[#e47e52] py-[1.5px] px-[8px] rounded-[6px]">
-          {data.stock}
+        <div
+          className={`absolute top-[6px] right-[6px] ${
+            qty ? 'text-[#0b1c48]' : 'text-white'
+          } bg-[#e47e52] py-[1.5px] px-[8px] rounded-[6px]`}
+        >
+          {qty ? qty : data.stock}
         </div>
       </div>
       <div className="font-bold text-[16px] mt-[10px] truncate w-full text-center">

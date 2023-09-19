@@ -116,7 +116,7 @@ const Page = () => {
   };
 
   return (
-    <div className="overflow-auto h-full text-[#0b1c48]">
+    <div className="overflow-auto h-full text-[#0b1c48] overflow-x-hidden">
       <div className="pl-[25px] pr-[20px] flex items-center flex-row w-full justify-between">
         <div className="text-[28px] font-bold ">Categories</div>
         <div
@@ -128,7 +128,7 @@ const Page = () => {
           <Add sx={{ color: '#0b1c48', fontSize: '26px' }} />
         </div>
       </div>
-      <div className="pl-[20px] pt-[20px]">
+      <div className="p-[20px] overflow-x-auto">
         <CategoryTable data={data} catObj={catObj} />
       </div>
       <BasicModal
