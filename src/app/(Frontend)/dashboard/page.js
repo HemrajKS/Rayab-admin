@@ -44,12 +44,12 @@ export default function Dashboard() {
           subTitle={'All orders placed'}
         />
         <Card
-          count={data.pendingOrders ? data.pendingOrders : '-'}
+          count={data?.pendingOrders ? data?.pendingOrders : '-'}
           title={'Pending Orders'}
           subTitle={'Orders awaiting processing'}
         />
         <Card
-          count={data.completedOrders ? data.completedOrders : '-'}
+          count={data?.completedOrders ? data?.completedOrders : '-'}
           title={'Completed Orders'}
           subTitle={'Orders successfully processed'}
         />
@@ -57,18 +57,18 @@ export default function Dashboard() {
       <div className="flex gap-[20px] flex-wrap p-[20px]">
         <Graph
           title={'Order Trends Over Time'}
-          timeSeriesData={data.orderTimeSeriesData}
+          timeSeriesData={data?.orderTimeSeriesData}
           xLabel="Time"
           yLabel="Orders"
         />
         <Graph
           title={'User Registration Trends Over Time'}
-          timeSeriesData={data.userRegistrationTimeSeriesData}
+          timeSeriesData={data?.userRegistrationTimeSeriesData}
           xLabel="Time"
           yLabel="User Reg."
         />
       </div>
-      {data?.latestOrders && data.latestOrders.length > 0 && (
+      {data?.latestOrders && data?.latestOrders.length > 0 && (
         <div className="p-[20px]">
           <div className="flex justify-between">
             <div className="font-bold text-[18px]">Recent Orders Overview</div>
