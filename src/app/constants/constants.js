@@ -32,6 +32,7 @@ export const protectedRoutes = [
   '/api/order/userOrder',
   '/api/dashboard',
   '/api/profile',
+  '/api/profile/changePw',
 ];
 export const publicRoutes = ['/api/categories', '/api/misc'];
 export const authRoutes = ['/api/authentication/'];
@@ -63,6 +64,7 @@ export const urls = {
   orderStatus: '/api/order/orderCompleted',
   users: '/api/admin/Users',
   profile: '/api/profile',
+  changePassword: '/api/profile/changePw',
 };
 
 export const OTP_LENGTH = 4;

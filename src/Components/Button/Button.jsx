@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Button = ({ type, name, disabled, onClick }) => {
+const Button = ({ type, name, disabled, onClick, styles }) => {
   return (
     <button
       type={type}
@@ -9,6 +9,7 @@ const Button = ({ type, name, disabled, onClick }) => {
       } w-[100%]`}
       disabled={disabled}
       onClick={onClick}
+      style={styles ? styles : {}}
     >
       {name}
     </button>

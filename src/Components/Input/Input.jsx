@@ -15,6 +15,7 @@ const Input = ({
   search,
   required,
   inputRef,
+  typePassword,
 }) => {
   return (
     <div className="w-full">
@@ -47,7 +48,7 @@ const Input = ({
           placeholder={`${search ? 'Search' : ''}`}
           ref={inputRef}
         />
-        {name === 'password' && (
+        {(name === 'password' || typePassword) && (
           <span
             className="absolute top-[34px] right-[8px] cursor-pointer "
             onClick={() => {
