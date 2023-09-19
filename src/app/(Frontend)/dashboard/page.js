@@ -82,7 +82,13 @@ export default function Dashboard() {
             </div>
           </div>
           <div className="flex gap-[20px] flex-wrap pt-[20px]">
-            <OrderTable data={data?.latestOrders ? data.latestOrders : []} />
+            <OrderTable
+              data={
+                data?.latestOrders
+                  ? data.latestOrders && data.latestOrders.reverse()
+                  : []
+              }
+            />
           </div>
         </div>
       )}
@@ -102,9 +108,10 @@ export default function Dashboard() {
             </div>
           </div>
           <div className="flex gap-[20px] flex-wrap pt-[20px]">
-            {data?.latestProducts?.map((product, i) => {
-              return <ProductCards data={product} key={i} />;
-            })}
+            {data?.latestProducts &&
+              data.latestProducts.reverse().map((product, i) => {
+                return <ProductCards data={product} key={i} />;
+              })}
           </div>
         </div>
       )}
