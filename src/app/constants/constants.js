@@ -6,6 +6,16 @@ import {
   ShoppingCart,
 } from '@mui/icons-material';
 
+export const config = {
+  runtime: 'edge',
+  unstable_allowDynamic: [
+    '/lib/utilities.js',
+    '/node_modules/function-bind/**',
+    '/src/app/constants/constants.js',
+    '/node_modules/@mui/**',
+  ],
+};
+
 export const MAIL_SETTINGS = {
   service: 'gmail',
   secure: true,
@@ -56,7 +66,7 @@ export const urls = {
   addCategories: '/api/admin/Categories/add',
   updateProduct: '/api/admin/Products/update',
   postProduct: '/api/admin/Products/add',
-   deleteProduct: '/api/admin/Products/delete',
+  deleteProduct: '/api/admin/Products/delete',
 };
 
 export const OTP_LENGTH = 4;
