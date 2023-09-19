@@ -47,17 +47,17 @@ const Page = () => {
     if (password.oldPw !== '' && password.newPw !== '' && password.cPw !== '') {
       if (password.newPw === password.cPw) {
         setPassLoading(true);
-        makeHttpRequest(`${urls.changePassword}`, 'post', password)
+        makeHttpRequest(`${urls.changePassword}`, 'patch', password)
           .then((res) => {
-            changePassword(false);
+            setPassLoading(false);
             if (res.status === 200) {
               if (res?.data?.data) {
-                alert(res?.data?.data?.message);
+                alert(res?.data?.message);
               }
             }
           })
           .catch((err) => {
-            changePassword(false);
+            setPassLoading(false);
             if (err?.message) {
               alert(err?.message);
             }
