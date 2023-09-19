@@ -1,20 +1,10 @@
-import {
-  Category,
-  Dashboard,
-  Inventory,
-  Person,
-  ShoppingCart,
-} from '@mui/icons-material';
-
-export const config = {
-  runtime: 'edge',
-  unstable_allowDynamic: [
-    '/lib/utilities.js',
-    '/node_modules/function-bind/**',
-    '/src/app/constants/constants.js',
-    '/node_modules/@mui/**',
-  ],
-};
+// import {
+//   Category,
+//   Dashboard,
+//   Inventory,
+//   Person,
+//   ShoppingCart,
+// } from '@mui/icons-material';
 
 export const MAIL_SETTINGS = {
   service: 'gmail',
@@ -46,12 +36,20 @@ export const publicRoutes = ['/api/categories', '/api/misc'];
 export const authRoutes = ['/api/authentication/'];
 export const frontendProtected = ['/profile'];
 
+// export const sideBarContent = [
+//   { name: 'Dashboard', icon: <Dashboard />, link: '/dashboard' },
+//   { name: 'Orders', icon: <ShoppingCart />, link: '/orders' },
+//   { name: 'Products', icon: <Inventory />, link: '/products' },
+//   { name: 'Categories', icon: <Category />, link: '/categories' },
+//   { name: 'Users', icon: <Person />, link: '/users' },
+// ];
+
 export const sideBarContent = [
-  { name: 'Dashboard', icon: <Dashboard />, link: '/dashboard' },
-  { name: 'Orders', icon: <ShoppingCart />, link: '/orders' },
-  { name: 'Products', icon: <Inventory />, link: '/products' },
-  { name: 'Categories', icon: <Category />, link: '/categories' },
-  { name: 'Users', icon: <Person />, link: '/users' },
+  { name: 'Dashboard', icon: '<Dashboard />', link: '/dashboard' },
+  { name: 'Orders', icon: '<ShoppingCart />', link: '/orders' },
+  { name: 'Products', icon: '<Inventory />', link: '/products' },
+  { name: 'Categories', icon: '<Category />', link: '/categories' },
+  { name: 'Users', icon: '<Person />', link: '/users' },
 ];
 
 export const urls = {
