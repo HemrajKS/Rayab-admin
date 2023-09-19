@@ -5,7 +5,7 @@ import User from '@/models/user';
 import { NextResponse } from 'next/server';
 
 export async function GET(req) {
-  const userId = req.headers.get('x-user-id');
+  const userId = req.headers.get('X-User-Id');
 
   try {
     await connectDB();

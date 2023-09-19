@@ -8,22 +8,22 @@ export async function POST(req) {
   try {
     await connectDB();
     const body = await req.json();
-    const userId = req.headers.get('x-user-id');
+    const userId = req.headers.get('X-User-Id');
     const catObj = { ...body, addedBy: userId };
 
     const user = await UserModel.findOne({ _id: userId });
-    // if (user.isAdmin) {
-    //   const newCat = new Category(catObj);
-    //   const savedCat = await newCat.save();
-    //   let json_response = {
-    //     status: true,
-    //     message: "Category added successfully",
-    //     data: savedCat,
-    //   };
-    //   return NextResponse.json(json_response);
-    // } else {
-    //   return getErrorResponse(403, "Only Admins can add category.");
-    // }
+    if (user.isAdmin) {
+      const newCat = new Category(catObj);
+      const savedCat = await newCat.save();
+      let json_response = {
+        status: true,
+        message: 'Category added successfully',
+        data: savedCat,
+      };
+      return NextResponse.json(json_response);
+    } else {
+      return getErrorResponse(403, 'Only Admins can add category.');
+    }
 
     let json_response = {
       status: true,

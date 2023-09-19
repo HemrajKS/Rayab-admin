@@ -1,15 +1,15 @@
-import { getErrorResponse } from "@/lib/helpers";
-import connectDB from "@/lib/mongodb";
-import Product from "@/models/product";
-import UserModel from "@/models/user";
-import { NextResponse } from "next/server";
+import { getErrorResponse } from '@/lib/helpers';
+import connectDB from '@/lib/mongodb';
+import Product from '@/models/product';
+import UserModel from '@/models/user';
+import { NextResponse } from 'next/server';
 
 export async function DELETE(req) {
   try {
     await connectDB();
     const body = await req.json();
 
-    const userId = req.headers.get("x-user-id");
+    const userId = req.headers.get('X-User-Id');
     const user = await UserModel.findOne({ _id: userId });
     if (user.isAdmin) {
       try {
@@ -17,30 +17,30 @@ export async function DELETE(req) {
         if (deleteProduct) {
           let json_response = {
             status: true,
-            message: "Product deleted successfully",
+            message: 'Product deleted successfully',
             data: deleteProduct,
           };
           return NextResponse.json(json_response);
         } else {
-          getErrorResponse(404, "Product not found");
+          getErrorResponse(404, 'Product not found');
         }
-        return getErrorResponse(400, "Could not delete product");
+        return getErrorResponse(400, 'Could not delete product');
       } catch (error) {
-        return getErrorResponse(400, "Could not delete product");
+        return getErrorResponse(400, 'Could not delete product');
       }
     } else {
-      return getErrorResponse(403, "Only Admins can delete products.");
+      return getErrorResponse(403, 'Only Admins can delete products.');
     }
   } catch (error) {
     let json_response = {
       status: false,
-      results: "some error occured",
+      results: 'some error occured',
       error: error,
     };
     return NextResponse.json(json_response, {
       status: 500,
       headers: {
-        "Access-Control-Allow-Methods": "DELETE",
+        'Access-Control-Allow-Methods': 'DELETE',
       },
     });
   }

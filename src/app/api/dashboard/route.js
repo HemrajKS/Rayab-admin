@@ -7,7 +7,7 @@ import { NextResponse, NextRequest } from 'next/server';
 export async function GET(req) {
   try {
     await connectDB();
-    const userId = req.headers.get('x-user-id');
+    const userId = req.headers.get('X-User-Id');
     const user = await User.findOne({ _id: userId });
 
     if (user && user.isAdmin) {
