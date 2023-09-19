@@ -12,6 +12,7 @@ import BasicModal from '@/Components/Modal/Modal';
 import Link from 'next/link';
 import Pagination from '@/Components/Pagination/Pagination';
 import { CircularIndeterminate } from '@/Components/Loaders/Loaders';
+import ProductCards from '@/Containers/ProductCards/ProductCards';
 
 const ProductId = ({ params }) => {
   const router = useRouter();
@@ -22,7 +23,7 @@ const ProductId = ({ params }) => {
   const [productLoading, setProductLoading] = useState(false);
   const [products, setProducts] = useState([]);
 
-  const productsPerPage = 2;
+  const productsPerPage = 5;
 
   const totalPages = Math.ceil(
     ((data && data.products && data.products.length) || 0) / productsPerPage
@@ -37,14 +38,13 @@ const ProductId = ({ params }) => {
     }
   };
 
-  console.log('products', products);
   useEffect(() => {
     const startIndex = (currentPage - 1) * productsPerPage;
     const endIndex = startIndex + productsPerPage;
     const pageProducts =
       data && data.products && data.products.slice(startIndex, endIndex);
 
-    const fetchProductDetails = async (productId) => {
+    const fetchProductDetails = async (productId, qty) => {
       setProductLoading(true);
       try {
         makeHttpRequest(`${urls.products}?id=${productId}`, 'get')
@@ -54,7 +54,7 @@ const ProductId = ({ params }) => {
               if (res?.data?.products) {
                 return setProducts((prevProducts) => [
                   ...prevProducts,
-                  res?.data?.products,
+                  { ...res?.data?.products, quantity: qty },
                 ]);
               }
             }
@@ -71,8 +71,7 @@ const ProductId = ({ params }) => {
     if (pageProducts) {
       (async () => {
         for (const product of pageProducts) {
-          console.log(product);
-          await fetchProductDetails(product.product);
+          await fetchProductDetails(product.product, product.quantity);
         }
       })();
     }
@@ -98,8 +97,6 @@ const ProductId = ({ params }) => {
         console.log(err);
       });
   };
-
-  console.log(data);
 
   const deleteOder = () => {
     setLoading(true);
@@ -289,14 +286,24 @@ const ProductId = ({ params }) => {
                   Total Items: {calculateTotalQuantity()}
                 </div>
               </div>
-              <div>
-                {productLoading && <CircularIndeterminate />}
-                <Pagination
-                  currentPage={currentPage}
-                  totalPages={totalPages}
-                  onPageChange={handlePageChange}
-                />
+              <div className="flex items-center flex-wrap gap-[20px] mt-[15px]">
+                {products &&
+                  products.length > 0 &&
+                  products.map((prod, i) => (
+                    <ProductCards
+                      data={prod}
+                      key={i}
+                      index={i}
+                      qty={prod.quantity}
+                    />
+                  ))}
               </div>
+              {productLoading && <CircularIndeterminate />}
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+              />
             </div>
           </div>
         ) : (
