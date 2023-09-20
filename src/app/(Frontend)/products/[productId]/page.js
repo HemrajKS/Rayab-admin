@@ -8,7 +8,7 @@ import { ArrowBack, Delete, Edit, Star } from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import _ from 'lodash';
-import { Rating } from '@mui/material';
+import { Alert, Rating, Snackbar } from '@mui/material';
 import RatingTable from '@/Containers/RatingTable/RatingTable';
 import BasicModal from '@/Components/Modal/Modal';
 
@@ -18,6 +18,11 @@ const ProductId = ({ params }) => {
   const [data, setData] = useState({});
   const [activeTab, setActiveTab] = useState('images');
   const [deleteModal, setDeleteModal] = useState(false);
+  const [toastStatus, setToastStatus] = useState({
+    open: false,
+    message: "",
+    severity: "",
+  });
 
   const mediaTabs = ['images', 'video'];
 
@@ -70,12 +75,22 @@ const ProductId = ({ params }) => {
       .then((res) => {
         setLoading(false);
         if (res.status === 200) {
+          setToastStatus({
+            open: true,
+            message: res.data.message||"Product deleted successfully",
+            severity: "success",
+          });
           router.push('/products');
         }
       })
       .catch((err) => {
         setLoading(false);
         console.log(err);
+        setToastStatus({
+          open: true,
+          message: err.message||"Could not Delete the Product",
+          severity: "success",
+        });
       });
   };
 
@@ -236,6 +251,22 @@ const ProductId = ({ params }) => {
           )
         )}
       </div>
+      <Snackbar
+        open={toastStatus.open}
+        autoHideDuration={4000}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        onClose={()=>{
+          setToastStatus({
+            open:false,
+            severity:'',
+            message:''
+          })
+        }}
+      >
+        <Alert severity={toastStatus.severity} sx={{ width: "100%" }}>
+          {toastStatus.message}
+        </Alert>
+      </Snackbar>
       <BasicModal
         open={deleteModal}
         message={'Are you sure, you want to delete this Product?'}
