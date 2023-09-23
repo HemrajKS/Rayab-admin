@@ -1,5 +1,6 @@
 import { getErrorResponse } from '@/lib/helpers';
 import connectDB from '@/lib/mongodb';
+import { verifyJWT } from '@/lib/token';
 import Category from '@/models/category';
 import UserModel from '@/models/user';
 import { NextResponse } from 'next/server';
@@ -9,7 +10,10 @@ export async function DELETE(req) {
     await connectDB();
     const body = await req.json();
 
-    const userId = await req.headers.get('X-User-Id');
+    // const userId = await req.headers.get('X-User-Id');
+    let token = req.cookies.get('token')?.value;
+    const userId = (await verifyJWT(token)).sub;
+
     const user = await UserModel.findOne({ _id: userId });
     if (user.isAdmin) {
       try {

@@ -1,11 +1,16 @@
 import { getErrorResponse } from '@/lib/helpers';
 import connectDB from '@/lib/mongodb';
+import { verifyJWT } from '@/lib/token';
 import Order from '@/models/order';
 import mongoose from 'mongoose';
 import { NextResponse } from 'next/server';
 
 export async function GET(req) {
-  const userId = req.headers.get('X-User-Id');
+  // const userId = req.headers.get('X-User-Id');
+
+  let token = req.cookies.get('token')?.value;
+  const userId = (await verifyJWT(token)).sub;
+
   const statusFilter = req.nextUrl.searchParams.get('status') || '';
   const searchQuery = req.nextUrl.searchParams.get('search') || '';
   const _id = req.nextUrl.searchParams.get('id') || null;

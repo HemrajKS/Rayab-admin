@@ -1,4 +1,5 @@
 import connectDB from '@/lib/mongodb';
+import { verifyJWT } from '@/lib/token';
 import Order from '@/models/order';
 import Product from '@/models/product'; // Import the Product model
 import User from '@/models/user';
@@ -7,7 +8,11 @@ import { NextResponse, NextRequest } from 'next/server';
 export async function GET(req) {
   try {
     await connectDB();
-    const userId = req.headers.get('X-User-Id');
+    // const userId = req.headers.get('X-User-Id');
+
+    let token = req.cookies.get('token')?.value;
+    const userId = (await verifyJWT(token)).sub;
+
     const user = await User.findOne({ _id: userId });
 
     if (user && user.isAdmin) {

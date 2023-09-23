@@ -1,5 +1,6 @@
 import { getErrorResponse } from '@/lib/helpers';
 import connectDB from '@/lib/mongodb';
+import { verifyJWT } from '@/lib/token';
 import Category from '@/models/category';
 import UserModel from '@/models/user';
 import { NextResponse } from 'next/server';
@@ -8,7 +9,9 @@ export async function POST(req) {
   try {
     await connectDB();
     const body = await req.json();
-    const userId = req.headers.get('X-User-Id');
+    // const userId = req.headers.get('X-User-Id');
+    let token = req.cookies.get('token')?.value;
+    const userId = (await verifyJWT(token)).sub;
     const catObj = { ...body, addedBy: userId };
 
     const user = await UserModel.findOne({ _id: userId });

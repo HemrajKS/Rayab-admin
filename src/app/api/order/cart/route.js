@@ -1,12 +1,17 @@
 import { sendMail } from '@/app/services/mail';
 import connectDB from '@/lib/mongodb';
+import { verifyJWT } from '@/lib/token';
 import Order from '@/models/order';
 import UserModel from '@/models/user';
 import { NextResponse, NextRequest } from 'next/server';
 
 export async function POST(req) {
   const body = await req.json();
-  const userId = req.headers.get('X-User-Id');
+  // const userId = req.headers.get('X-User-Id');
+
+  let token = req.cookies.get('token')?.value;
+  const userId = (await verifyJWT(token)).sub;
+
   try {
     await connectDB();
     const saveOrder = { ...body, ...{ userId: userId, orderDate: new Date() } };

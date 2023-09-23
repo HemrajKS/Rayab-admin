@@ -3,12 +3,17 @@ import { compare, hash } from 'bcryptjs';
 import { NextResponse } from 'next/server';
 import UserModel from '@/models/user';
 import connectDB from '@/lib/mongodb';
+import { verifyJWT } from '@/lib/token';
 
 export async function PATCH(req) {
   try {
     await connectDB();
     const body = await req.json();
-    const userId = req.headers.get('X-User-Id');
+    // const userId = req.headers.get('X-User-Id');
+
+    let token = req.cookies.get('token')?.value;
+    const userId = (await verifyJWT(token)).sub;
+
     const user = await UserModel.findOne({
       _id: userId,
     });
