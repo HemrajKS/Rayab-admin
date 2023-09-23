@@ -6,12 +6,11 @@ import { NextResponse, NextRequest } from 'next/server';
 import { headers } from 'next/headers';
 
 export async function GET(req, res) {
-  res.headers.append('Access-Control-Allow-Headers', '*');
   try {
     await connectDB();
     const userId = req.headers.get('X-User-Id');
     // const data = req.get('X-User-Id');
-    console.log(userId);
+    console.log(userId, res);
 
     const user = await User.findOne({ _id: userId });
     const searchQuery = req.nextUrl.searchParams.get('search') || '';
