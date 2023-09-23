@@ -5,12 +5,11 @@ import User from '@/models/user';
 import { NextResponse, NextRequest } from 'next/server';
 import { headers } from 'next/headers';
 
-export async function GET(req, res) {
+export async function GET(req) {
   try {
     await connectDB();
     const userId = req.headers.get('X-User-Id');
     // const data = req.get('X-User-Id');
-    console.log(userId, res);
 
     const user = await User.findOne({ _id: userId });
     const searchQuery = req.nextUrl.searchParams.get('search') || '';
