@@ -43,6 +43,7 @@ export async function middleware(req) {
         // Add new request headers
         requestHeaders.set('x-hello-from-middleware1', 'hello');
         requestHeaders.set('x-hello-from-middleware2', 'world!');
+        response.headers.append('key', 'value');
         return response;
       }
     } catch (error) {

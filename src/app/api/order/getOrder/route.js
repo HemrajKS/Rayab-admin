@@ -12,7 +12,7 @@ export async function GET(req) {
     const userId = req.headers.get('user');
     const user1 = req.headers.get('x-hello-from-middleware1');
     const user2 = req.headers.get('x-hello-from-middleware2');
-    console.log(userId);
+    const key = req.headers.get('key');
 
     const user = await User.findOne({ _id: userId });
     const searchQuery = req.nextUrl.searchParams.get('search') || '';
@@ -65,6 +65,7 @@ export async function GET(req) {
         user,
         user1,
         user2,
+        key: key,
       });
     }
   } catch (error) {
