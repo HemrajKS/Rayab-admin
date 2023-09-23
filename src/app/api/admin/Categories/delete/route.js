@@ -14,26 +14,30 @@ export async function DELETE(req) {
     let token = req.cookies.get('token')?.value;
     const userId = (await verifyJWT(token)).sub;
 
-    const user = await UserModel.findOne({ _id: userId });
-    if (user.isAdmin) {
-      try {
-        const deleteCat = await Category.findOneAndDelete({ _id: body.id });
-        if (deleteCat) {
-          let json_response = {
-            status: true,
-            message: 'Category deleted successfully',
-            data: deleteCat,
-          };
-          return NextResponse.json(json_response);
-        } else {
-          getErrorResponse(404, 'Category not found');
+    try {
+      const user = await UserModel.findOne({ _id: userId });
+      if (user.isAdmin) {
+        try {
+          const deleteCat = await Category.findOneAndDelete({ _id: body.id });
+          if (deleteCat) {
+            let json_response = {
+              status: true,
+              message: 'Category deleted successfully',
+              data: deleteCat,
+            };
+            return NextResponse.json(json_response);
+          } else {
+            getErrorResponse(404, 'Category not found');
+          }
+        } catch (error) {
+          return getErrorResponse(400, 'Could not delete category');
         }
-      } catch (error) {
         return getErrorResponse(400, 'Could not delete category');
+      } else {
+        return getErrorResponse(403, 'Only Admins can delete category.');
       }
+    } catch (error) {
       return getErrorResponse(400, 'Could not delete category');
-    } else {
-      return getErrorResponse(403, 'Only Admins can delete category.');
     }
   } catch (error) {
     console.log(error);
