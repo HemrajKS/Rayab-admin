@@ -58,7 +58,10 @@ export async function GET(req) {
         return getErrorResponse(404, 'Order not found');
       }
     } else {
-      return getErrorResponse(403, 'Please login as admin');
+      return getErrorResponse(403, {
+        message: 'Please login as admin',
+        user: userId,
+      });
     }
   } catch (error) {
     let json_response = {
