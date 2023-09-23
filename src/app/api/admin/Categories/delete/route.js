@@ -10,13 +10,13 @@ export async function DELETE(req) {
     await connectDB();
     const body = await req.json();
 
-    try {
-      // const userId = await req.headers.get('X-User-Id');
-      let token = req.cookies.get('token')?.value;
-      const userId = (await verifyJWT(token)).sub;
+    // const userId = await req.headers.get('X-User-Id');
+    let token = req.cookies.get('token')?.value;
+    const userId = (await verifyJWT(token)).sub;
 
-      const user = await UserModel.findOne({ _id: userId });
-      if (user.isAdmin) {
+    const user = await UserModel.findOne({ _id: userId });
+    if (user.isAdmin) {
+      try {
         const deleteCat = await Category.findOneAndDelete({ _id: body.id });
         if (deleteCat) {
           let json_response = {
@@ -28,15 +28,15 @@ export async function DELETE(req) {
         } else {
           getErrorResponse(404, 'Category not found');
         }
-
+      } catch (error) {
         return getErrorResponse(400, 'Could not delete category');
-      } else {
-        return getErrorResponse(403, 'Only Admins can delete category.');
       }
-    } catch (error) {
       return getErrorResponse(400, 'Could not delete category');
+    } else {
+      return getErrorResponse(403, 'Only Admins can delete category.');
     }
   } catch (error) {
+    console.log(error);
     let json_response = {
       status: false,
       results: 'some error occured',
