@@ -12,6 +12,8 @@ export async function GET(req) {
     const headersList = headers();
     const userId = headersList.get('user');
 
+    console.log(headersList);
+
     const user = await User.findOne({ _id: userId });
     const searchQuery = req.nextUrl.searchParams.get('search') || '';
     const statusFilter = req.nextUrl.searchParams.get('status') || '';
@@ -52,7 +54,11 @@ export async function GET(req) {
         return getErrorResponse(404, 'Order not found');
       }
     } else {
-      return getErrorResponse(403, 'Please login as admin');
+      return getErrorResponse(403, {
+        message: 'Please login as admin',
+        data: headersList,
+        string: JSON.stringify(headersList),
+      });
     }
   } catch (error) {
     let json_response = {
