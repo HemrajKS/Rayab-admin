@@ -1,0 +1,3 @@
+/*
+  Access-Control-Allow-Origin: https://your-trusted-origin.com
+  Access-Control-Allow-Headers: Content-Type, Authorization, User
