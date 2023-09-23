@@ -18,18 +18,18 @@ export async function DELETE(req) {
     const user = await UserModel.findOne({ _id: userId });
     if (user.isAdmin) {
       try {
-        const deleteProduct = await Product.findOneAndRemove({ _id: body.id });
-        if (deleteProduct) {
-          let json_response = {
-            status: true,
-            message: 'Product deleted successfully',
-            data: deleteProduct,
-          };
-          return NextResponse.json(json_response);
-        } else {
-          getErrorResponse(404, 'Product not found');
-        }
-        return getErrorResponse(400, 'Could not delete product');
+        const deleteProduct = await Product.findOneAndDelete({ _id: body.id });
+        // if (deleteProduct) {
+        //   let json_response = {
+        //     status: true,
+        //     message: 'Product deleted successfully',
+        //     data: deleteProduct,
+        //   };
+        //   return NextResponse.json(json_response);
+        // } else {
+        //   getErrorResponse(404, 'Product not found');
+        // }
+        return getErrorResponse(200, 'Product deleted');
       } catch (error) {
         return getErrorResponse(400, 'Could not delete product');
       }
