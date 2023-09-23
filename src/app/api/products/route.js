@@ -44,7 +44,7 @@ export async function GET(request) {
     return NextResponse.json(json_response, {
       status: 200,
       headers: {
-        'Access-Control-Allow-Origin': 'http://localhost:4200', // Allow requests from localhost
+        'Access-Control-Allow-Origin': '*', // Allow requests from localhost
         'Access-Control-Allow-Headers': 'Content-Type, Authorization, User', // Allow multiple headers
       },
     });

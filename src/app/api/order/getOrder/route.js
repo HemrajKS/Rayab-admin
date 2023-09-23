@@ -8,11 +8,8 @@ import { headers } from 'next/headers';
 export async function GET(req) {
   try {
     await connectDB();
-    // const userId = req.headers.get('user');
-    const headersList = headers();
-    const userId = headersList.get('user');
-
-    console.log(headersList);
+    const userId = req.headers.get('User');
+    console.log(req);
 
     const user = await User.findOne({ _id: userId });
     const searchQuery = req.nextUrl.searchParams.get('search') || '';
@@ -49,16 +46,18 @@ export async function GET(req) {
           orders: order,
           ...(!id && { total: orderCount }),
         };
-        return NextResponse.json(json_response);
+        return NextResponse.json(json_response, {
+          status: 200,
+          headers: {
+            'Access-Control-Allow-Origin': '*', // Allow requests from localhost
+            'Access-Control-Allow-Headers': '*', // Allow multiple headers
+          },
+        });
       } else {
         return getErrorResponse(404, 'Order not found');
       }
     } else {
-      return getErrorResponse(403, {
-        message: 'Please login as admin',
-        data: headersList,
-        string: JSON.stringify(headersList),
-      });
+      return getErrorResponse(403, 'Please login as admin');
     }
   } catch (error) {
     let json_response = {
@@ -69,7 +68,8 @@ export async function GET(req) {
     return NextResponse.json(json_response, {
       status: 500,
       headers: {
-        'Access-Control-Allow-Methods': 'GET',
+        'Access-Control-Allow-Origin': '*', // Allow requests from localhost
+        'Access-Control-Allow-Headers': '*', // Allow multiple headers
       },
     });
   }
