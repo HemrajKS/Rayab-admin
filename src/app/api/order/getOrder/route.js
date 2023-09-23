@@ -8,7 +8,9 @@ import { headers } from 'next/headers';
 export async function GET(req) {
   try {
     await connectDB();
-    const userId = req.headers.get('User');
+
+    const userId = req.headers.get('user');
+    console.log(userId);
 
     const user = await User.findOne({ _id: userId });
     const searchQuery = req.nextUrl.searchParams.get('search') || '';
@@ -48,7 +50,7 @@ export async function GET(req) {
         return NextResponse.json(json_response, {
           headers: {
             'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Headers': 'Content-Type, Authorization, User',
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization, user',
           },
         });
       } else {
