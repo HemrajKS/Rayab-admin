@@ -47,7 +47,7 @@ export async function GET(req) {
         };
         return NextResponse.json(json_response, {
           headers: {
-            'Access-Control-Allow-Origin': '*', // Allow requests from localhost
+            'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Headers': 'Content-Type, Authorization, User',
           },
         });
@@ -55,7 +55,7 @@ export async function GET(req) {
         return getErrorResponse(404, 'Order not found');
       }
     } else {
-      return getErrorResponse(403, 'Please login as admin');
+      return getErrorResponse(403, { message: 'Please login as admin', user });
     }
   } catch (error) {
     let json_response = {
