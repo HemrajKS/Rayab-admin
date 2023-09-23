@@ -18,7 +18,7 @@ export async function DELETE(req) {
     const user = await UserModel.findOne({ _id: userId });
     if (user.isAdmin) {
       try {
-        const deleteProduct = await Product.findOneAndDelete({ _id: body.id });
+        const deleteProduct = await Product.findOneAndRemove({ _id: body.id });
         if (deleteProduct) {
           let json_response = {
             status: true,
