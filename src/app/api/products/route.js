@@ -41,7 +41,13 @@ export async function GET(request) {
       products: products,
       totalCount: totalProducts,
     };
-    return NextResponse.json(json_response);
+    return NextResponse.json(json_response, {
+      status: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type',
+      },
+    });
   } catch (error) {
     console.log(error);
     let json_response = {
