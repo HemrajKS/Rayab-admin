@@ -11,10 +11,10 @@ export async function DELETE(req) {
     const body = await req.json();
 
     // const userId = await req.headers.get('X-User-Id');
-    let token = req.cookies.get('token')?.value;
-    const userId = (await verifyJWT(token)).sub;
 
     try {
+      let token = req.cookies.get('token')?.value;
+      const userId = (await verifyJWT(token)).sub;
       const user = await UserModel.findOne({ _id: userId });
       if (user.isAdmin) {
         await Category.findOneAndDelete({ _id: body.id });
