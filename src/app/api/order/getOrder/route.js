@@ -5,7 +5,8 @@ import User from '@/models/user';
 import { NextResponse, NextRequest } from 'next/server';
 import { headers } from 'next/headers';
 
-export async function GET(req) {
+export async function GET(req, res) {
+  res.setHeader('Access-Control-Allow-Headers', '*');
   try {
     await connectDB();
     const userId = req.headers.get('X-User-Id');
