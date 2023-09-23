@@ -2,7 +2,7 @@ import { NextResponse, NextRequest } from 'next/server';
 import { ObjectId } from 'mongodb';
 import Product from '@/models/product';
 import connectDB from '@/lib/mongodb';
-
+export const dynamic = 'auto';
 export async function GET(request) {
   try {
     await connectDB();
