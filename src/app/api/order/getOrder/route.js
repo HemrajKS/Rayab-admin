@@ -9,7 +9,6 @@ export async function GET(req) {
   try {
     await connectDB();
     const userId = req.headers.get('User');
-    console.log(req);
 
     const user = await User.findOne({ _id: userId });
     const searchQuery = req.nextUrl.searchParams.get('search') || '';
@@ -46,7 +45,12 @@ export async function GET(req) {
           orders: order,
           ...(!id && { total: orderCount }),
         };
-        return NextResponse.json(json_response);
+        return NextResponse.json(json_response, {
+          headers: {
+            'Access-Control-Allow-Origin': '*', // Allow requests from localhost
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization, User',
+          },
+        });
       } else {
         return getErrorResponse(404, 'Order not found');
       }
