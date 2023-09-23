@@ -11,7 +11,6 @@ export async function GET(req) {
   try {
     let token = req.cookies.get('token')?.value;
     const { sub } = await verifyJWT(token);
-
     const userId = sub;
     await connectDB();
     if (userId) {
