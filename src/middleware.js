@@ -31,7 +31,7 @@ export async function middleware(req) {
       );
       response.headers.append(
         'Access-Control-Allow-Headers',
-        'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+        'User, X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
       );
       if (token) {
         const { sub, name, email } = await verifyJWT(token);
