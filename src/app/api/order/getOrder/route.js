@@ -8,7 +8,8 @@ import { headers } from 'next/headers';
 export async function GET(req) {
   try {
     await connectDB();
-    const userId = req.headers.get('User');
+    const userId = req.headers.get('user');
+
     console.log(req);
 
     const user = await User.findOne({ _id: userId });
