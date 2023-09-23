@@ -13,7 +13,7 @@ export async function POST(req) {
   // const userId = req.headers.get('X-User-Id');
 
   let token = req.cookies.get('token')?.value;
-  const userId = (await verifyJWT(token)).sub;
+  const userId = (await verifyJWT(token))?.sub;
 
   try {
     await connectDB();
