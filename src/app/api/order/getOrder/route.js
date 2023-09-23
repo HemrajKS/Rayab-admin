@@ -4,12 +4,15 @@ import Order from '@/models/order';
 import User from '@/models/user';
 import { NextResponse, NextRequest } from 'next/server';
 import { headers } from 'next/headers';
+import { verifyJWT } from '@/lib/token';
 
 export async function GET(req) {
   try {
     await connectDB();
-    const userId = req.headers.get('x-user-id');
-    // const data = req.get('X-User-Id');
+    let token = req.cookies.get('token')?.value;
+    const userId = (await verifyJWT(token)).sub;
+
+    // const userId = req.headers.get('x-user-id');
 
     const user = await User.findOne({ _id: userId });
     const searchQuery = req.nextUrl.searchParams.get('search') || '';
