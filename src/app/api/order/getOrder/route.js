@@ -8,8 +8,9 @@ import { headers } from 'next/headers';
 export async function GET(req) {
   try {
     await connectDB();
-    const userId = req.headers.get('User');
-    console.log(req);
+    // const userId = req.headers.get('user');
+    const headersList = headers();
+    const userId = headersList.get('user');
 
     const user = await User.findOne({ _id: userId });
     const searchQuery = req.nextUrl.searchParams.get('search') || '';
