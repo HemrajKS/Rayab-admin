@@ -17,7 +17,7 @@ export async function DELETE(req) {
       const userId = (await verifyJWT(token)).sub;
       const user = await UserModel.findOne({ _id: userId });
       if (user.isAdmin) {
-        await Category.findOneAndDelete({ _id: body.id });
+        await Category.remove({ _id: body.id });
         let json_response = {
           status: true,
           message: 'Category deleted successfully',
