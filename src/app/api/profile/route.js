@@ -9,7 +9,9 @@ export async function GET(req) {
   // const userId = req.headers.get('X-User-Id');
 
   let token = req.cookies.get('token')?.value;
-  const userId = JSON.stringify((await verifyJWT(token)).sub);
+  const { sub } = await verifyJWT(token);
+
+  const userId = '';
 
   try {
     await connectDB();
@@ -23,7 +25,7 @@ export async function GET(req) {
       };
       return NextResponse.json(json_response);
     } else {
-      return getErrorResponse(403, 'You must be logged in');
+      return getErrorResponse(403, { message: 'You must be logged in', sub });
     }
   } catch (error) {
     console.log(error);
