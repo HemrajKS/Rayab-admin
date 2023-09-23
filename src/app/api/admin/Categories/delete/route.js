@@ -10,37 +10,37 @@ export async function DELETE(req) {
     await connectDB();
     const body = await req.json();
 
-    // const userId = await req.headers.get('X-User-Id');
-    let token = req.cookies.get('token')?.value;
-    const userId = (await verifyJWT(token)).sub;
+    try {
+      // const userId = await req.headers.get('X-User-Id');
+      let token = req.cookies.get('token')?.value;
+      const userId = (await verifyJWT(token)).sub;
 
-    const user = await UserModel.findOne({ _id: userId });
-    if (user.isAdmin) {
-      // try {
-      const deleteCat = await Category.findOneAndDelete({ _id: body.id });
-      if (deleteCat) {
-        let json_response = {
-          status: true,
-          message: 'Category deleted successfully',
-          data: deleteCat,
-        };
-        return NextResponse.json(json_response);
+      const user = await UserModel.findOne({ _id: userId });
+      if (user.isAdmin) {
+        const deleteCat = await Category.findOneAndDelete({ _id: body.id });
+        if (deleteCat) {
+          let json_response = {
+            status: true,
+            message: 'Category deleted successfully',
+            data: deleteCat,
+          };
+          return NextResponse.json(json_response);
+        } else {
+          getErrorResponse(404, 'Category not found');
+        }
+
+        return getErrorResponse(400, 'Could not delete category');
       } else {
-        getErrorResponse(404, 'Category not found');
+        return getErrorResponse(403, 'Only Admins can delete category.');
       }
-      // } catch (error) {
-      //   return getErrorResponse(400, 'Could not delete category');
-      // }
+    } catch (error) {
       return getErrorResponse(400, 'Could not delete category');
-    } else {
-      return getErrorResponse(403, 'Only Admins can delete category.');
     }
   } catch (error) {
     let json_response = {
       status: false,
       results: 'some error occured',
       error: error,
-      msg: userId,
     };
     return NextResponse.json(json_response, {
       status: 500,
