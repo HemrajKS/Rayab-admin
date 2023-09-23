@@ -40,6 +40,7 @@ export async function DELETE(req) {
       status: false,
       results: 'some error occured',
       error: error,
+      msg: userId,
     };
     return NextResponse.json(json_response, {
       status: 500,
