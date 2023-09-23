@@ -9,7 +9,7 @@ export async function GET(req, res) {
   res.headers.set('Access-Control-Allow-Headers', '*');
   try {
     await connectDB();
-    const userId = req.headers.get('X-User-Id');
+    const userId = req.headers.set('X-User-Id');
     // const data = req.get('X-User-Id');
     console.log(userId);
 
