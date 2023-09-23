@@ -9,7 +9,7 @@ export async function DELETE(req) {
     await connectDB();
     const body = await req.json();
 
-    const userId = await req.headers.get('User');
+    const userId = await req.headers.get('X-User-Id');
     const user = await UserModel.findOne({ _id: userId });
     if (user.isAdmin) {
       try {

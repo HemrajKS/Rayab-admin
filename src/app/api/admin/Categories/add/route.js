@@ -8,7 +8,7 @@ export async function POST(req) {
   try {
     await connectDB();
     const body = await req.json();
-    const userId = req.headers.get('User');
+    const userId = req.headers.get('X-User-Id');
     const catObj = { ...body, addedBy: userId };
 
     const user = await UserModel.findOne({ _id: userId });

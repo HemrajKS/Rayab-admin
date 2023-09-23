@@ -8,7 +8,7 @@ export async function PATCH(req) {
   try {
     await connectDB();
     const body = await req.json();
-    const userId = req.headers.get('User');
+    const userId = req.headers.get('X-User-Id');
     const user = await UserModel.findOne({
       _id: userId,
     });

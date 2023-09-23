@@ -34,7 +34,7 @@ export async function middleware(req) {
       if (token) {
         const { sub, name, email } = await verifyJWT(token);
         req.user = { id: sub, name, email };
-        response.headers.set('User', sub);
+        response.headers.set('X-User-Id', sub);
 
         return response;
       }

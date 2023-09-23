@@ -6,7 +6,7 @@ import { NextResponse, NextRequest } from 'next/server';
 
 export async function POST(req) {
   const body = await req.json();
-  const userId = req.headers.get('User');
+  const userId = req.headers.get('X-User-Id');
   try {
     await connectDB();
     const saveOrder = { ...body, ...{ userId: userId, orderDate: new Date() } };

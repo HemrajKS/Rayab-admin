@@ -8,7 +8,9 @@ import { headers } from 'next/headers';
 export async function GET(req) {
   try {
     await connectDB();
-    const userId = req.headers.get('user');
+    const userId = req.headers.get('X-User-Id');
+    // const data = req.get('X-User-Id');
+    console.log(req);
 
     const user = await User.findOne({ _id: userId });
     const searchQuery = req.nextUrl.searchParams.get('search') || '';
@@ -49,7 +51,7 @@ export async function GET(req) {
           status: 200,
           headers: {
             'Access-Control-Allow-Origin': '*', // Allow requests from localhost
-            'Access-Control-Allow-Headers': '*', // Allow multiple headers
+            'Access-Control-Allow-Headers': 'X-User-Id', // Allow multiple headers
           },
         });
       } else {
@@ -68,7 +70,7 @@ export async function GET(req) {
       status: 500,
       headers: {
         'Access-Control-Allow-Origin': '*', // Allow requests from localhost
-        'Access-Control-Allow-Headers': '*', // Allow multiple headers
+        'Access-Control-Allow-Headers': 'X-User-Id', // Allow multiple headers
       },
     });
   }
