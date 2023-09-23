@@ -10,7 +10,7 @@ export async function GET(req) {
   try {
     await connectDB();
     let token = req.cookies.get('token')?.value;
-    const userId = (await verifyJWT(token)).sub;
+    const userId = (await verifyJWT(token))?.sub;
 
     // const userId = req.headers.get('x-user-id');
 

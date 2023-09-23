@@ -11,7 +11,7 @@ export async function GET(req) {
     // const userId = req.headers.get('X-User-Id');
 
     let token = req.cookies.get('token')?.value;
-    const userId = (await verifyJWT(token)).sub;
+    const userId = (await verifyJWT(token))?.sub;
 
     const user = await User.findOne({ _id: userId });
 
