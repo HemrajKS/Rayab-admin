@@ -6,7 +6,7 @@ import { ArrowBack, Delete, Edit, LocationOn, Star } from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import _ from 'lodash';
-import { Rating } from '@mui/material';
+import { Alert, Rating, Snackbar } from '@mui/material';
 import RatingTable from '@/Containers/RatingTable/RatingTable';
 import BasicModal from '@/Components/Modal/Modal';
 import Link from 'next/link';
@@ -27,6 +27,11 @@ const OrderId = ({ params }) => {
   const [delLoading, setDelLoading] = useState(false);
   const [statusModal, setStatusModal] = useState(false);
   const [statusData, setStatusData] = useState('');
+  const [toastStatus, setToastStatus] = useState({
+    open: false,
+    message: "",
+    severity: "",
+  });
 
   const productsPerPage = 5;
 
@@ -51,6 +56,7 @@ const OrderId = ({ params }) => {
 
     const fetchProductDetails = async (productId, qty) => {
       setProductLoading(true);
+      setProducts([]);
       try {
         makeHttpRequest(`${urls.products}?id=${productId}`, 'get')
           .then((res) => {
@@ -115,6 +121,11 @@ const OrderId = ({ params }) => {
       .catch((err) => {
         setDelLoading(false);
         console.log(err);
+        setToastStatus({
+          open: true,
+          message: err.message||"Could not Delete Order",
+          severity: "success",
+        });
       });
   };
 
@@ -136,12 +147,22 @@ const OrderId = ({ params }) => {
       .then((res) => {
         setDelLoading(false);
         if (res.status === 200) {
+          setToastStatus({
+            open: true,
+            message: res.status.message||"Status updated successfully",
+            severity: "success",
+          });
           orderApi();
         }
       })
       .catch((err) => {
         setDelLoading(false);
         console.log(err);
+        setToastStatus({
+          open: true,
+          message: err.message||"Could not Update Order",
+          severity: "error",
+        });
       });
   };
 
@@ -372,6 +393,22 @@ const OrderId = ({ params }) => {
         }}
       />
       <FullScreenLoader open={delLoading} />
+      <Snackbar
+        open={toastStatus.open}
+        autoHideDuration={4000}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        onClose={()=>{
+          setToastStatus({
+            open:false,
+            severity:'',
+            message:''
+          })
+        }}
+      >
+        <Alert severity={toastStatus.severity} sx={{ width: "100%" }}>
+          {toastStatus.message}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };
