@@ -10,8 +10,6 @@ export async function GET(req) {
     await connectDB();
     const userId = req.headers.get('user');
 
-    console.log(req);
-
     const user = await User.findOne({ _id: userId });
     const searchQuery = req.nextUrl.searchParams.get('search') || '';
     const statusFilter = req.nextUrl.searchParams.get('status') || '';
