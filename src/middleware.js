@@ -38,6 +38,11 @@ export async function middleware(req) {
         const { sub, name, email } = await verifyJWT(token);
         req.user = { id: sub, name, email };
         response.headers.set('User', sub);
+        const requestHeaders = new Headers(req.headers);
+
+        // Add new request headers
+        requestHeaders.set('x-hello-from-middleware1', 'hello');
+        requestHeaders.set('x-hello-from-middleware2', 'world!');
         return response;
       }
     } catch (error) {

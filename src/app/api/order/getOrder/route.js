@@ -10,6 +10,8 @@ export async function GET(req) {
     await connectDB();
 
     const userId = req.headers.get('user');
+    const user1 = req.headers.get('x-hello-from-middleware1');
+    const user2 = req.headers.get('x-hello-from-middleware2');
     console.log(userId);
 
     const user = await User.findOne({ _id: userId });
@@ -47,6 +49,7 @@ export async function GET(req) {
           orders: order,
           ...(!id && { total: orderCount }),
         };
+
         return NextResponse.json(json_response, {
           headers: {
             'Access-Control-Allow-Origin': '*',
@@ -57,7 +60,12 @@ export async function GET(req) {
         return getErrorResponse(404, 'Order not found');
       }
     } else {
-      return getErrorResponse(403, { message: 'Please login as admin', user });
+      return getErrorResponse(403, {
+        message: 'Please login as admin',
+        user,
+        user1,
+        user2,
+      });
     }
   } catch (error) {
     let json_response = {
