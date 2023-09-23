@@ -44,7 +44,7 @@ export async function DELETE(req) {
     let json_response = {
       status: false,
       results: 'some error occured',
-      error: error,
+      error: error.json(),
     };
     return NextResponse.json(json_response, {
       status: 500,
