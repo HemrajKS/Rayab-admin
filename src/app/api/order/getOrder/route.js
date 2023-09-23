@@ -10,7 +10,7 @@ export async function GET(req) {
     await connectDB();
     const userId = req.headers.get('X-User-Id');
     // const data = req.get('X-User-Id');
-    console.log(req);
+    console.log(userId);
 
     const user = await User.findOne({ _id: userId });
     const searchQuery = req.nextUrl.searchParams.get('search') || '';

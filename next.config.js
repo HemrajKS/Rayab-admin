@@ -20,6 +20,10 @@ const nextConfig = {
             value:
               'X-User-Id,X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version',
           },
+          {
+            key: 'X-User-Id',
+            value: 'user id',
+          },
         ],
       },
     ];
