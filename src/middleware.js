@@ -31,19 +31,14 @@ export async function middleware(req) {
       );
       response.headers.append(
         'Access-Control-Allow-Headers',
-        'user, X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+        'User, X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
       );
 
       if (token) {
         const { sub, name, email } = await verifyJWT(token);
         req.user = { id: sub, name, email };
-        response.headers.set('User', sub);
-        const requestHeaders = new Headers(req.headers);
-
-        // Add new request headers
-        requestHeaders.set('x-hello-from-middleware1', 'hello');
-        requestHeaders.set('x-hello-from-middleware2', 'world!');
-        response.headers.append('key', 'value');
+        // response.headers.set('User', sub);
+        response.headers.append('User', sub);
         return response;
       }
     } catch (error) {

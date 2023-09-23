@@ -8,11 +8,8 @@ import { headers } from 'next/headers';
 export async function GET(req) {
   try {
     await connectDB();
-
-    const userId = req.headers.get('user');
-    const user1 = req.headers.get('x-hello-from-middleware1');
-    const user2 = req.headers.get('x-hello-from-middleware2');
-    const key = req.headers.get('key');
+    const userId = req.headers.get('User');
+    console.log(req);
 
     const user = await User.findOne({ _id: userId });
     const searchQuery = req.nextUrl.searchParams.get('search') || '';
@@ -49,24 +46,12 @@ export async function GET(req) {
           orders: order,
           ...(!id && { total: orderCount }),
         };
-
-        return NextResponse.json(json_response, {
-          headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Headers': 'Content-Type, Authorization, user',
-          },
-        });
+        return NextResponse.json(json_response);
       } else {
         return getErrorResponse(404, 'Order not found');
       }
     } else {
-      return getErrorResponse(403, {
-        message: 'Please login as admin',
-        user,
-        user1,
-        user2,
-        key: key,
-      });
+      return getErrorResponse(403, 'Please login as admin');
     }
   } catch (error) {
     let json_response = {
