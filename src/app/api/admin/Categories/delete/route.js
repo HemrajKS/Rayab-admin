@@ -39,7 +39,7 @@ export async function POST(req) {
     return NextResponse.json(json_response, {
       status: 500,
       headers: {
-        'Access-Control-Allow-Methods': 'DELETE',
+        'Access-Control-Allow-Methods': 'POST',
       },
     });
   }
