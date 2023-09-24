@@ -60,7 +60,7 @@ const Page = () => {
 
   const deleteCatApi = () => {
     setLoading(true);
-    makeHttpRequest(`${urls.deleteCategories}`, 'delete', {
+    makeHttpRequest(`${urls.deleteCategories}`, 'post', {
       id: category?.cat?._id,
     })
       .then((res) => {
