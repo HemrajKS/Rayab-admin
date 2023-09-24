@@ -1,4 +1,5 @@
 import { getErrorResponse } from '@/lib/helpers';
+import { logout } from '@/lib/logout';
 import connectDB from '@/lib/mongodb';
 import { verifyJWT } from '@/lib/token';
 import Product from '@/models/product';
@@ -16,25 +17,32 @@ export async function POST(req) {
     const userId = (await verifyJWT(token)).sub;
 
     const user = await UserModel.findOne({ _id: userId });
-    if (user.isAdmin) {
-      try {
-        const deleteProduct = await Product.findOneAndDelete({ _id: body.id });
-        if (deleteProduct) {
-          let json_response = {
-            status: true,
-            message: 'Product deleted successfully',
-            data: deleteProduct,
-          };
-          return NextResponse.json(json_response);
-        } else {
-          getErrorResponse(404, 'Product not found');
+    const pass = await verifyPass(token, user.password);
+    if (pass) {
+      if (user.isAdmin) {
+        try {
+          const deleteProduct = await Product.findOneAndDelete({
+            _id: body.id,
+          });
+          if (deleteProduct) {
+            let json_response = {
+              status: true,
+              message: 'Product deleted successfully',
+              data: deleteProduct,
+            };
+            return NextResponse.json(json_response);
+          } else {
+            getErrorResponse(404, 'Product not found');
+          }
+          return getErrorResponse(200, 'Product deleted');
+        } catch (error) {
+          return getErrorResponse(400, 'Could not delete product');
         }
-        return getErrorResponse(200, 'Product deleted');
-      } catch (error) {
-        return getErrorResponse(400, 'Could not delete product');
+      } else {
+        return getErrorResponse(403, 'Only Admins can delete products.');
       }
     } else {
-      return getErrorResponse(403, 'Only Admins can delete products.');
+      return logout();
     }
   } catch (error) {
     let json_response = {

@@ -1,7 +1,9 @@
 import { sendMail } from '@/app/services/mail';
 import { getErrorResponse } from '@/lib/helpers';
+import { logout } from '@/lib/logout';
 import connectDB from '@/lib/mongodb';
 import { verifyJWT } from '@/lib/token';
+import { verifyPass } from '@/lib/verifyPass';
 import Order from '@/models/order';
 import Product from '@/models/product';
 import User from '@/models/user';
@@ -21,62 +23,68 @@ export async function POST(req) {
     let orderNew = {};
     const user = await User.findOne({ _id: userId });
     let json_response = {};
-    if (user.isAdmin) {
-      if (order.products && JSON.stringify(order.products) !== '[]') {
-        if (body.status === 'completed') {
-          for (const orderProduct of order.products) {
-            const quantityToDecrement = -orderProduct.quantity;
-            await Product.findOneAndUpdate(
-              {
-                _id: orderProduct.product,
-              },
-              { $inc: { stock: quantityToDecrement } }
-            ).exec();
+    const pass = await verifyPass(token, user.password);
+
+    if (pass) {
+      if (user.isAdmin) {
+        if (order.products && JSON.stringify(order.products) !== '[]') {
+          if (body.status === 'completed') {
+            for (const orderProduct of order.products) {
+              const quantityToDecrement = -orderProduct.quantity;
+              await Product.findOneAndUpdate(
+                {
+                  _id: orderProduct.product,
+                },
+                { $inc: { stock: quantityToDecrement } }
+              ).exec();
+            }
+            orderNew = await Order.findOneAndUpdate(
+              { _id: body.id },
+              { status: 'completed' },
+              { new: true }
+            );
+            json_response = {
+              status: true,
+              data: orderNew,
+              message: 'Order Completed Successfully',
+            };
+
+            return NextResponse.json(json_response);
+          } else if (body.status === 'rejected') {
+            orderNew = await Order.findOneAndUpdate(
+              { _id: body.id },
+              { status: 'rejected' },
+              { new: true }
+            );
+            json_response = {
+              status: true,
+              data: orderNew,
+              message: 'Order Rejected Successfully',
+            };
+
+            return NextResponse.json(json_response);
+          } else if (body.status === 'pending') {
+            orderNew = await Order.findOneAndUpdate(
+              { _id: body.id },
+              { status: 'pending' },
+              { new: true }
+            );
+
+            json_response = {
+              status: true,
+              data: orderNew,
+              message: 'Order status changed to Pending',
+            };
+            return NextResponse.json(json_response);
+          } else {
+            return getErrorResponse(404, 'Orders not found');
           }
-          orderNew = await Order.findOneAndUpdate(
-            { _id: body.id },
-            { status: 'completed' },
-            { new: true }
-          );
-          json_response = {
-            status: true,
-            data: orderNew,
-            message: 'Order Completed Successfully',
-          };
-
-          return NextResponse.json(json_response);
-        } else if (body.status === 'rejected') {
-          orderNew = await Order.findOneAndUpdate(
-            { _id: body.id },
-            { status: 'rejected' },
-            { new: true }
-          );
-          json_response = {
-            status: true,
-            data: orderNew,
-            message: 'Order Rejected Successfully',
-          };
-
-          return NextResponse.json(json_response);
-        } else if (body.status === 'pending') {
-          orderNew = await Order.findOneAndUpdate(
-            { _id: body.id },
-            { status: 'pending' },
-            { new: true }
-          );
-
-          json_response = {
-            status: true,
-            data: orderNew,
-            message: 'Order status changed to Pending',
-          };
-          return NextResponse.json(json_response);
         } else {
-          return getErrorResponse(404, 'Orders not found');
+          return getErrorResponse(406, 'Only admins can change order status');
         }
-      } else {
-        return getErrorResponse(406, 'Only admins can change order status');
       }
+    } else {
+      return logout();
     }
   } catch (error) {
     if (error.code === 11000) {

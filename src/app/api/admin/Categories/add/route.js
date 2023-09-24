@@ -1,6 +1,8 @@
 import { getErrorResponse } from '@/lib/helpers';
+import { logout } from '@/lib/logout';
 import connectDB from '@/lib/mongodb';
 import { verifyJWT } from '@/lib/token';
+import { verifyPass } from '@/lib/verifyPass';
 import Category from '@/models/category';
 import UserModel from '@/models/user';
 import { NextResponse } from 'next/server';
@@ -15,25 +17,23 @@ export async function POST(req) {
     const catObj = { ...body, addedBy: userId };
 
     const user = await UserModel.findOne({ _id: userId });
-    if (user.isAdmin) {
-      const newCat = new Category(catObj);
-      const savedCat = await newCat.save();
-      let json_response = {
-        status: true,
-        message: 'Category added successfully',
-        data: savedCat,
-      };
-      return NextResponse.json(json_response);
+    const pass = await verifyPass(token, user.password);
+    if (pass) {
+      if (user.isAdmin) {
+        const newCat = new Category(catObj);
+        const savedCat = await newCat.save();
+        let json_response = {
+          status: true,
+          message: 'Category added successfully',
+          data: savedCat,
+        };
+        return NextResponse.json(json_response);
+      } else {
+        return getErrorResponse(403, 'Only Admins can add category.');
+      }
     } else {
-      return getErrorResponse(403, 'Only Admins can add category.');
+      return logout();
     }
-
-    let json_response = {
-      status: true,
-      message: 'Category added successfully',
-      data: { user, userId: userId },
-    };
-    return NextResponse.json(json_response);
   } catch (error) {
     if (error.code === 11000) {
       let json_response = {

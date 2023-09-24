@@ -32,8 +32,9 @@ export async function middleware(req) {
       response.headers.append('Access-Control-Allow-Headers', 'X-User-Id');
 
       if (token) {
-        const { sub, name, email } = await verifyJWT(token);
-        req.user = { id: sub, name, email };
+        const { sub, name, password } = await verifyJWT(token);
+
+        req.user = { id: sub };
         response.headers.set('X-User-Id', sub);
 
         return response;

@@ -1,14 +1,15 @@
-import { getEnvVariable, getErrorResponse } from "./helpers";
-import { SignJWT, jwtVerify } from "jose";
+import { getEnvVariable, getErrorResponse } from './helpers';
+import { SignJWT, jwtVerify } from 'jose';
 
 export const signJWT = async (payload, options) => {
+  const currentTimeInSeconds = Math.floor(Date.now() / 1000);
   try {
-    const secret = new TextEncoder().encode(getEnvVariable("JWT_SECRET_KEY"));
-    const alg = "HS256";
+    const secret = new TextEncoder().encode(getEnvVariable('JWT_SECRET_KEY'));
+    const alg = 'HS256';
     return new SignJWT(payload)
       .setProtectedHeader({ alg })
       .setExpirationTime(options.exp)
-      .setIssuedAt()
+      .setIssuedAt(currentTimeInSeconds)
       .setSubject(payload.sub)
       .sign(secret);
   } catch (error) {
@@ -26,6 +27,6 @@ export const verifyJWT = async (token) => {
     ).payload;
   } catch (error) {
     console.log(error);
-    throw new Error("Your token has expired.");
+    throw new Error('Your token has expired.');
   }
 };

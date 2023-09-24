@@ -5,13 +5,15 @@ import User from '@/models/user';
 import { NextResponse, NextRequest } from 'next/server';
 import { headers } from 'next/headers';
 import { verifyJWT } from '@/lib/token';
+import { verifyPass } from '@/lib/verifyPass';
+import { logout } from '@/lib/logout';
 
 export async function GET(req) {
   try {
     await connectDB();
     let token = req.cookies.get('token')?.value;
     const userId = (await verifyJWT(token)).sub;
-    console.log(userId);
+
     // const userId = req.headers.get('x-user-id');
 
     const user = await User.findOne({ _id: userId });
@@ -19,51 +21,56 @@ export async function GET(req) {
     const statusFilter = req.nextUrl.searchParams.get('status') || '';
     const id = req.nextUrl.searchParams.get('id') || null;
 
-    if (user && user.isAdmin) {
-      let searchCriteria = {
-        $or: [
-          { name: { $regex: searchQuery, $options: 'i' } },
-          { email: { $regex: searchQuery, $options: 'i' } },
-          { phone1: { $regex: searchQuery, $options: 'i' } },
-          { phone2: { $regex: searchQuery, $options: 'i' } },
-        ],
-      };
-      const orderCount = !id && (await Order.countDocuments(searchCriteria));
-      const skip = JSON.parse(req.nextUrl.searchParams.get('skip'))
-        ? JSON.parse(req.nextUrl.searchParams.get('skip'))
-        : 0;
-      const limit = JSON.parse(req.nextUrl.searchParams.get('limit'))
-        ? JSON.parse(req.nextUrl.searchParams.get('limit'))
-        : orderCount;
+    const pass = await verifyPass(token, user.password);
 
-      if (statusFilter) {
-        searchCriteria.status = statusFilter;
-      }
-
-      const order = id
-        ? await Order.findOne({ _id: id })
-        : await Order.find(searchCriteria).skip(skip).limit(limit);
-      if (order) {
-        let json_response = {
-          status: true,
-          orders: order,
-          ...(!id && { total: orderCount }),
+    if (pass) {
+      if (user && user.isAdmin) {
+        let searchCriteria = {
+          $or: [
+            { name: { $regex: searchQuery, $options: 'i' } },
+            { email: { $regex: searchQuery, $options: 'i' } },
+            { phone1: { $regex: searchQuery, $options: 'i' } },
+            { phone2: { $regex: searchQuery, $options: 'i' } },
+          ],
         };
-        return NextResponse.json(json_response, {
-          status: 200,
-          headers: {
-            'Access-Control-Allow-Origin': '*', // Allow requests from localhost
-            'Access-Control-Allow-Headers': 'X-User-Id', // Allow multiple headers
-          },
-        });
+        const orderCount = !id && (await Order.countDocuments(searchCriteria));
+        const skip = JSON.parse(req.nextUrl.searchParams.get('skip'))
+          ? JSON.parse(req.nextUrl.searchParams.get('skip'))
+          : 0;
+        const limit = JSON.parse(req.nextUrl.searchParams.get('limit'))
+          ? JSON.parse(req.nextUrl.searchParams.get('limit'))
+          : orderCount;
+
+        if (statusFilter) {
+          searchCriteria.status = statusFilter;
+        }
+
+        const order = id
+          ? await Order.findOne({ _id: id })
+          : await Order.find(searchCriteria).skip(skip).limit(limit);
+        if (order) {
+          let json_response = {
+            status: true,
+            orders: order,
+            ...(!id && { total: orderCount }),
+          };
+          return NextResponse.json(json_response, {
+            status: 200,
+            headers: {
+              'Access-Control-Allow-Origin': '*', // Allow requests from localhost
+              'Access-Control-Allow-Headers': 'X-User-Id', // Allow multiple headers
+            },
+          });
+        } else {
+          return getErrorResponse(404, 'Order not found');
+        }
       } else {
-        return getErrorResponse(404, 'Order not found');
+        return getErrorResponse(403, {
+          message: 'Please login as admin',
+        });
       }
     } else {
-      return getErrorResponse(403, {
-        message: 'Please login as admin',
-        user: userId,
-      });
+      return logout();
     }
   } catch (error) {
     let json_response = {

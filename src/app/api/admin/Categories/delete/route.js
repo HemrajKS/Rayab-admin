@@ -1,6 +1,8 @@
 import { getErrorResponse } from '@/lib/helpers';
+import { logout } from '@/lib/logout';
 import connectDB from '@/lib/mongodb';
 import { verifyJWT } from '@/lib/token';
+import { verifyPass } from '@/lib/verifyPass';
 import Category from '@/models/category';
 import UserModel from '@/models/user';
 import { NextResponse } from 'next/server';
@@ -16,15 +18,20 @@ export async function POST(req) {
       let token = req.cookies.get('token')?.value;
       const userId = (await verifyJWT(token)).sub;
       const user = await UserModel.findOne({ _id: userId });
-      if (user.isAdmin) {
-        await Category.findOneAndDelete({ _id: body.id });
-        let json_response = {
-          status: true,
-          message: 'Category deleted successfully',
-        };
-        return NextResponse.json(json_response);
+      const pass = await verifyPass(token, user.password);
+      if (pass) {
+        if (user.isAdmin) {
+          await Category.findOneAndDelete({ _id: body.id });
+          let json_response = {
+            status: true,
+            message: 'Category deleted successfully',
+          };
+          return NextResponse.json(json_response);
+        } else {
+          return getErrorResponse(403, 'Only Admins can delete category.');
+        }
       } else {
-        return getErrorResponse(403, 'Only Admins can delete category.');
+        return logout();
       }
     } catch (error) {
       return getErrorResponse(400, 'Could not delete category');

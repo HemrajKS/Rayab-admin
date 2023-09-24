@@ -1,6 +1,8 @@
 import { getErrorResponse } from '@/lib/helpers';
+import { logout } from '@/lib/logout';
 import connectDB from '@/lib/mongodb';
 import { verifyJWT } from '@/lib/token';
+import { verifyPass } from '@/lib/verifyPass';
 import UserModel from '@/models/user';
 import { NextResponse } from 'next/server';
 
@@ -12,17 +14,23 @@ export async function GET(req) {
     const userId = (await verifyJWT(token)).sub;
 
     const user = await UserModel.findOne({ _id: userId });
-    if (user.isAdmin) {
-      const users = await UserModel.find({}).select('-password');
+    const pass = await verifyPass(token, user.password);
 
-      let json_response = {
-        status: true,
-        message: 'User data',
-        data: users,
-      };
-      return NextResponse.json(json_response);
+    if (pass) {
+      if (user.isAdmin) {
+        const users = await UserModel.find({}).select('-password');
+
+        let json_response = {
+          status: true,
+          message: 'User data',
+          data: users,
+        };
+        return NextResponse.json(json_response);
+      } else {
+        return getErrorResponse(403, 'Only Admins can get user data');
+      }
     } else {
-      return getErrorResponse(403, 'Only Admins can get user data');
+      return logout();
     }
   } catch (error) {
     console.log(error);

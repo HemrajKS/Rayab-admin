@@ -1,6 +1,8 @@
 import { getErrorResponse } from '@/lib/helpers';
+import { logout } from '@/lib/logout';
 import connectDB from '@/lib/mongodb';
 import { verifyJWT } from '@/lib/token';
+import { verifyPass } from '@/lib/verifyPass';
 import Category from '@/models/category';
 import UserModel from '@/models/user';
 import { NextResponse } from 'next/server';
@@ -15,28 +17,34 @@ export async function PATCH(req) {
     const userId = (await verifyJWT(token)).sub;
 
     const user = await UserModel.findOne({ _id: userId });
-    if (user.isAdmin) {
-      try {
-        const updatedCat = await Category.findOneAndUpdate(
-          { _id: body.id },
-          body,
-          { new: true }
-        );
-        if (updatedCat) {
-          let json_response = {
-            status: true,
-            message: 'Category Updated Successfully',
-            data: updatedCat,
-          };
-          return NextResponse.json(json_response);
-        } else {
+
+    const pass = await verifyPass(token, user.password);
+    if (pass) {
+      if (user.isAdmin) {
+        try {
+          const updatedCat = await Category.findOneAndUpdate(
+            { _id: body.id },
+            body,
+            { new: true }
+          );
+          if (updatedCat) {
+            let json_response = {
+              status: true,
+              message: 'Category Updated Successfully',
+              data: updatedCat,
+            };
+            return NextResponse.json(json_response);
+          } else {
+            return getErrorResponse(400, 'Could not update category');
+          }
+        } catch (error) {
           return getErrorResponse(400, 'Could not update category');
         }
-      } catch (error) {
-        return getErrorResponse(400, 'Could not update category');
+      } else {
+        return getErrorResponse(403, 'Only Admins can edit category.');
       }
     } else {
-      return getErrorResponse(403, 'Only Admins can edit category.');
+      return logout();
     }
   } catch (error) {
     let json_response = {
