@@ -29,8 +29,8 @@ const OrderId = ({ params }) => {
   const [statusData, setStatusData] = useState('');
   const [toastStatus, setToastStatus] = useState({
     open: false,
-    message: "",
-    severity: "",
+    message: '',
+    severity: '',
   });
 
   const productsPerPage = 5;
@@ -111,7 +111,7 @@ const OrderId = ({ params }) => {
 
   const deleteOder = () => {
     setDelLoading(true);
-    makeHttpRequest(`${urls.deleteOrder}`, 'delete', { id: params.orderId })
+    makeHttpRequest(`${urls.deleteOrder}`, 'post', { id: params.orderId })
       .then((res) => {
         setDelLoading(false);
         if (res.status === 200) {
@@ -123,8 +123,8 @@ const OrderId = ({ params }) => {
         console.log(err);
         setToastStatus({
           open: true,
-          message: err.message||"Could not Delete Order",
-          severity: "success",
+          message: err.message || 'Could not Delete Order',
+          severity: 'success',
         });
       });
   };
@@ -149,8 +149,8 @@ const OrderId = ({ params }) => {
         if (res.status === 200) {
           setToastStatus({
             open: true,
-            message: res.status.message||"Status updated successfully",
-            severity: "success",
+            message: res.status.message || 'Status updated successfully',
+            severity: 'success',
           });
           orderApi();
         }
@@ -160,8 +160,8 @@ const OrderId = ({ params }) => {
         console.log(err);
         setToastStatus({
           open: true,
-          message: err.message||"Could not Update Order",
-          severity: "error",
+          message: err.message || 'Could not Update Order',
+          severity: 'error',
         });
       });
   };
@@ -396,16 +396,16 @@ const OrderId = ({ params }) => {
       <Snackbar
         open={toastStatus.open}
         autoHideDuration={4000}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-        onClose={()=>{
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        onClose={() => {
           setToastStatus({
-            open:false,
-            severity:'',
-            message:''
-          })
+            open: false,
+            severity: '',
+            message: '',
+          });
         }}
       >
-        <Alert severity={toastStatus.severity} sx={{ width: "100%" }}>
+        <Alert severity={toastStatus.severity} sx={{ width: '100%' }}>
           {toastStatus.message}
         </Alert>
       </Snackbar>

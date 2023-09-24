@@ -20,8 +20,8 @@ const ProductId = ({ params }) => {
   const [deleteModal, setDeleteModal] = useState(false);
   const [toastStatus, setToastStatus] = useState({
     open: false,
-    message: "",
-    severity: "",
+    message: '',
+    severity: '',
   });
 
   const mediaTabs = ['images', 'video'];
@@ -71,14 +71,14 @@ const ProductId = ({ params }) => {
 
   const deleteProduct = () => {
     setLoading(true);
-    makeHttpRequest(`${urls.deleteProduct}`, 'delete', { id: params.productId })
+    makeHttpRequest(`${urls.deleteProduct}`, 'post', { id: params.productId })
       .then((res) => {
         setLoading(false);
         if (res.status === 200) {
           setToastStatus({
             open: true,
-            message: res.data.message||"Product deleted successfully",
-            severity: "success",
+            message: res.data.message || 'Product deleted successfully',
+            severity: 'success',
           });
           router.push('/products');
         }
@@ -88,8 +88,8 @@ const ProductId = ({ params }) => {
         console.log(err);
         setToastStatus({
           open: true,
-          message: err.message||"Could not Delete the Product",
-          severity: "success",
+          message: err.message || 'Could not Delete the Product',
+          severity: 'success',
         });
       });
   };
@@ -254,16 +254,16 @@ const ProductId = ({ params }) => {
       <Snackbar
         open={toastStatus.open}
         autoHideDuration={4000}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-        onClose={()=>{
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        onClose={() => {
           setToastStatus({
-            open:false,
-            severity:'',
-            message:''
-          })
+            open: false,
+            severity: '',
+            message: '',
+          });
         }}
       >
-        <Alert severity={toastStatus.severity} sx={{ width: "100%" }}>
+        <Alert severity={toastStatus.severity} sx={{ width: '100%' }}>
           {toastStatus.message}
         </Alert>
       </Snackbar>

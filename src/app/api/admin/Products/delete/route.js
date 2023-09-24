@@ -5,7 +5,7 @@ import Product from '@/models/product';
 import UserModel from '@/models/user';
 import { NextResponse } from 'next/server';
 
-export async function DELETE(req) {
+export async function POST(req) {
   try {
     await connectDB();
     const body = await req.json();
@@ -46,7 +46,7 @@ export async function DELETE(req) {
     return NextResponse.json(json_response, {
       status: 500,
       headers: {
-        'Access-Control-Allow-Methods': 'DELETE',
+        'Access-Control-Allow-Methods': 'POST',
       },
     });
   }

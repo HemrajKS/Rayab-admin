@@ -5,7 +5,7 @@ import Order from '@/models/order';
 import User from '@/models/user';
 import { NextResponse, NextRequest } from 'next/server';
 
-export async function DELETE(req) {
+export async function POST(req) {
   const body = await req.json();
   try {
     await connectDB();
@@ -44,7 +44,7 @@ export async function DELETE(req) {
     return NextResponse.json(json_response, {
       status: 500,
       headers: {
-        'Access-Control-Allow-Methods': 'GET',
+        'Access-Control-Allow-Methods': 'POST',
       },
     });
   }
