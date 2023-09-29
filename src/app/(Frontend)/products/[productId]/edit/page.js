@@ -1,11 +1,11 @@
-'use client';
-import FullScreenLoader from '@/Components/FullScreenLoader/FullScreenLoader';
-import ProductForm from '@/Containers/ProductForm/ProductForm';
-import { urls } from '@/app/constants/constants';
-import makeHttpRequest from '@/app/services/apiCall';
-import { ArrowBack } from '@mui/icons-material';
-import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+"use client";
+import FullScreenLoader from "@/Components/FullScreenLoader/FullScreenLoader";
+import ProductForm from "@/Containers/ProductForm/ProductForm";
+import { urls } from "@/app/constants/constants";
+import makeHttpRequest from "@/app/services/apiCall";
+import { ArrowBack } from "@mui/icons-material";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
 const Page = ({ params }) => {
   const router = useRouter();
@@ -21,12 +21,12 @@ const Page = ({ params }) => {
 
   const productApi = () => {
     setLoading(true);
-    makeHttpRequest(`${urls.products}?id=${params.productId}`, 'get')
+    makeHttpRequest(`${urls.products}?id=${params.productId}`, "get")
       .then((res) => {
         setLoading(false);
         if (res.status === 200) {
           if (res?.data?.products) {
-            setData(res?.data?.products);
+            setData({ ...res?.data?.products, currency: "INR" });
           }
         }
       })
@@ -43,15 +43,15 @@ const Page = ({ params }) => {
   const editApi = () => {
     setLoading(true);
     if (
-      submitObj.name !== '' &&
-      submitObj.description !== '' &&
-      submitObj.category !== '' &&
-      submitObj.price !== '' &&
-      submitObj.currency !== '' &&
-      submitObj.stock !== '' &&
-      submitObj.imageUrl !== ''
+      submitObj.name !== "" &&
+      submitObj.description !== "" &&
+      submitObj.category !== "" &&
+      submitObj.price !== "" &&
+      submitObj.currency !== "" &&
+      submitObj.stock !== "" &&
+      submitObj.imageUrl !== ""
     ) {
-      makeHttpRequest(`${urls.updateProduct}`, 'patch', {
+      makeHttpRequest(`${urls.updateProduct}`, "patch", {
         ...submitObj,
         id: productId,
       })
@@ -68,7 +68,7 @@ const Page = ({ params }) => {
           console.log(err);
         });
     } else {
-      alert('Please enter all the required fields..!');
+      alert("Please enter all the required fields..!");
     }
   };
 
@@ -82,8 +82,8 @@ const Page = ({ params }) => {
               router.push(`/products/${productId}`);
             }}
           >
-            {' '}
-            <ArrowBack sx={{ color: '#e47e52', fontSize: '26px' }} />
+            {" "}
+            <ArrowBack sx={{ color: "#e47e52", fontSize: "26px" }} />
           </div>
           <div
             className="cursor-pointer bg-[#e47e52] rounded-md text-white font-bold text-[18px] px-[18px] py-[6px] tracking-[1.5px]"
@@ -95,7 +95,7 @@ const Page = ({ params }) => {
           </div>
         </div>
         <div className=" bg-white rounded-[16px] shadow-md my-[20px] p-[20px] h-[calc(100vh-192px)] overflow-auto">
-          {JSON.stringify(data) !== '{}' ? (
+          {JSON.stringify(data) !== "{}" ? (
             <div className="h-full ">
               <ProductForm data={data} edit submitData={submitData} />
             </div>
