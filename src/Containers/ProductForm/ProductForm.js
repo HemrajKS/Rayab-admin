@@ -21,9 +21,10 @@ const ProductForm = ({ data, edit, submitData }) => {
 
   const [categories, setCategories] = useState([]);
   const [categoriesload, setCategoriesLoad] = useState([]);
-  const [submitObj, setSubmitObj] = useState(
-    sanitizeProduct(data, fieldsToRemove)
-  );
+  const [submitObj, setSubmitObj] = useState({
+    ...sanitizeProduct(data, fieldsToRemove),
+    currency: 'INR',
+  });
   const [uploadImgLoading, setUploadImgLoading] = useState(false);
   const [uploadImgUrlLoading, setUploadImgUrlLoading] = useState(false);
   const [activeInfo, setActiveInfo] = useState('dimensions');
@@ -204,7 +205,7 @@ const ProductForm = ({ data, edit, submitData }) => {
           label={'Stock'}
           value={submitObj.stock}
           onChange={handleChange}
-          type={"number"}
+          type={'number'}
           required
         />
       </div>
