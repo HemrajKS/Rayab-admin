@@ -5,8 +5,12 @@ import { compare } from "bcryptjs";
 import UserModel from "@/models/user";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req) {
+export async function POST(req, res) {
   const body = await req.json();
+
+  res.setHeader("Access-Control-Allow-Origin", "*"); // Replace with your frontend origin
+  res.setHeader("Access-Control-Allow-Methods", " POST");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
   try {
     await connectDB();
