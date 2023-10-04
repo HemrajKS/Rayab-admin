@@ -50,7 +50,6 @@ export async function POST(req, res) {
         headers: {
           "Content-Type": "application/json",
           token: token,
-          "Access-Control-Allow-Origin": "*",
         },
       }
     );
