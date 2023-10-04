@@ -1,9 +1,9 @@
-import { getEnvVariable, getErrorResponse } from '@/lib/helpers';
-import connectDB from '@/lib/mongodb';
-import { signJWT } from '@/lib/token';
-import { compare } from 'bcryptjs';
-import UserModel from '@/models/user';
-import { NextRequest, NextResponse } from 'next/server';
+import { getEnvVariable, getErrorResponse } from "@/lib/helpers";
+import connectDB from "@/lib/mongodb";
+import { signJWT } from "@/lib/token";
+import { compare } from "bcryptjs";
+import UserModel from "@/models/user";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req) {
   const body = await req.json();
@@ -20,10 +20,10 @@ export async function POST(req) {
       !(await compare(body.password, user.password)) ||
       !user.isActive
     ) {
-      return getErrorResponse(401, 'Invalid email or password');
+      return getErrorResponse(401, "Invalid email or password");
     }
 
-    const JWT_EXPIRES_IN = getEnvVariable('JWT_EXPIRES_IN');
+    const JWT_EXPIRES_IN = getEnvVariable("JWT_EXPIRES_IN");
 
     const token = await signJWT(
       { sub: user._id, name: user.username, password: user.password },
@@ -32,11 +32,11 @@ export async function POST(req) {
 
     const tokenMaxAge = parseInt(JWT_EXPIRES_IN) * 60;
     const cookieOptions = {
-      name: 'token',
+      name: "token",
       value: token,
       httpOnly: true,
-      path: '/',
-      secure: process.env.NODE_ENV !== 'development',
+      path: "/",
+      secure: process.env.NODE_ENV !== "development",
       maxAge: tokenMaxAge,
     };
 
@@ -47,15 +47,19 @@ export async function POST(req) {
       }),
       {
         status: 200,
-        headers: { 'Content-Type': 'application/json', token: token },
+        headers: {
+          "Content-Type": "application/json",
+          token: token,
+          "Access-Control-Allow-Origin": "*",
+        },
       }
     );
 
     await Promise.all([
       response.cookies.set(cookieOptions),
       response.cookies.set({
-        name: 'logged-in',
-        value: 'true',
+        name: "logged-in",
+        value: "true",
         maxAge: tokenMaxAge,
       }),
     ]);
