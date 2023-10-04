@@ -47,9 +47,11 @@ export async function POST(req, res) {
       }),
       {
         status: 200,
+        token: token,
         headers: {
-          "Content-Type": "application/json",
-          token: token,
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
         },
       }
     );
