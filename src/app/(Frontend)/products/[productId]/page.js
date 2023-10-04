@@ -14,6 +14,7 @@ import BasicModal from '@/Components/Modal/Modal';
 
 const ProductId = ({ params }) => {
   const router = useRouter();
+
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({});
   const [activeTab, setActiveTab] = useState('images');
