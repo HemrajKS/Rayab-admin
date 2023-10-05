@@ -29,7 +29,10 @@ export async function middleware(req) {
         "Access-Control-Allow-Methods",
         "GET,DELETE,PATCH,POST,PUT"
       );
-      response.headers.append("Access-Control-Allow-Headers", "X-User-Id");
+      response.headers.append(
+        "Access-Control-Allow-Headers",
+        "X-User-Id,Content-Type, Authorization"
+      );
 
       if (token) {
         const { sub, name, password } = await verifyJWT(token);
