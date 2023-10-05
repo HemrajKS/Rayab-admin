@@ -7,7 +7,7 @@ import { NextRequest, NextResponse } from "next/server";
 import cors from "cors";
 
 const corsMiddleware = cors({
-  origin: "https://rayab-user.netlify.app",
+  origin: "*",
   methods: ["POST"],
   credentials: true,
 });
