@@ -51,7 +51,7 @@ export async function POST(req, res) {
         token: token,
         headers: {
           // Allow your Angular app's origin (replace with your actual Angular app's URL)
-          "Access-Control-Allow-Origin": "http://localhost:4200" || "*",
+          "Access-Control-Allow-Origin": process.env.API_URL || "*",
           "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
           "Access-Control-Allow-Headers": "Content-Type",
         },

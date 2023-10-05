@@ -12,7 +12,7 @@ const nextConfig = {
           { key: "Access-Control-Allow-Credentials", value: "true" },
           {
             key: "Access-Control-Allow-Origin",
-            value: "http://localhost:4200",
+            value: process.env.API_URL,
           }, // replace this your actual origin
           {
             key: "Access-Control-Allow-Methods",
