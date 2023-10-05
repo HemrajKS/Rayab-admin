@@ -4,9 +4,18 @@ import { signJWT } from "@/lib/token";
 import { compare } from "bcryptjs";
 import UserModel from "@/models/user";
 import { NextRequest, NextResponse } from "next/server";
+import cors from "cors";
+
+const corsMiddleware = cors({
+  origin: "https://rayab-user.netlify.app",
+  methods: ["POST"],
+  credentials: true,
+});
 
 export async function POST(req, res) {
   const body = await req.json();
+
+  await corsMiddleware(req, res);
 
   try {
     await connectDB();
