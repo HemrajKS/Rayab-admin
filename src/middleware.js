@@ -3,7 +3,16 @@ import { verifyJWT } from "./lib/token";
 import { getErrorResponse } from "./lib/helpers";
 import { protectedRoutes } from "./app/constants/constants";
 
+export const corsHeaders = {
+  "Access-Control-Allow-Origin": "http://localhost:4200",
+  "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+};
+
 export async function middleware(req) {
+  if (req.method === "OPTIONS") {
+    return NextResponse.json({}, { headers: corsHeaders });
+  }
   let token;
 
   if (
@@ -24,7 +33,7 @@ export async function middleware(req) {
     try {
       const response = NextResponse.next();
       response.headers.append("Access-Control-Allow-Credentials", "true");
-      response.headers.append("Access-Control-Allow-Origin", "*");
+      response.headers.append("Access-Control-Allow-Origin", "google.com");
       response.headers.append(
         "Access-Control-Allow-Methods",
         "GET,DELETE,PATCH,POST,PUT"
@@ -52,5 +61,5 @@ export async function middleware(req) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)", "/api/:path*"],
 };

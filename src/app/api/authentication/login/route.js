@@ -26,7 +26,7 @@ export async function POST(req, res) {
     const JWT_EXPIRES_IN = getEnvVariable("JWT_EXPIRES_IN");
 
     const token = await signJWT(
-      { sub: user._id, name: user.username, password: user.password },
+      { sub: user._id, name: user.username },
       { exp: `${JWT_EXPIRES_IN}m` }
     );
 
@@ -40,6 +40,7 @@ export async function POST(req, res) {
       maxAge: tokenMaxAge,
     };
 
+    // Configure CORS headers
     const response = new NextResponse(
       JSON.stringify({
         status: true,
@@ -49,9 +50,10 @@ export async function POST(req, res) {
         status: 200,
         token: token,
         headers: {
-          "Access-Control-Allow-Origin": "*",
+          // Allow your Angular app's origin (replace with your actual Angular app's URL)
+          "Access-Control-Allow-Origin": "http://localhost:4200" || "*",
           "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-          "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          "Access-Control-Allow-Headers": "Content-Type",
         },
       }
     );
