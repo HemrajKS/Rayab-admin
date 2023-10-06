@@ -27,7 +27,7 @@ export async function middleware(req) {
     } else {
       return getErrorResponse(
         401,
-        "You are not loggen in, Please log in to proceed"
+        "You are not loggen in, Please log in to proceed..."
       );
     }
 
