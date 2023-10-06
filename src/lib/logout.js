@@ -1,23 +1,23 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 
 export async function logout() {
   const response = new NextResponse(
-    JSON.stringify({ message: 'You are  not loggedin' }),
+    JSON.stringify({ message: "You are  not loggedin" }),
     {
       status: 403,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" },
     }
   );
 
   await Promise.all([
     response.cookies.set({
-      name: 'token',
-      value: '',
+      name: "token",
+      value: "",
       maxAge: -1,
     }),
     response.cookies.set({
-      name: 'logged-in',
-      value: '',
+      name: "logged-in",
+      value: "",
       maxAge: -1,
     }),
   ]);

@@ -1,6 +1,6 @@
-import { NextResponse } from 'next/server';
-import { verifyJWT } from './token';
-import { getErrorResponse } from './helpers';
+import { NextResponse } from "next/server";
+import { verifyJWT } from "./token";
+import { getErrorResponse } from "./helpers";
 
 export const verifyPass = async (token, user) => {
   const pass = (await verifyJWT(token)).password;
