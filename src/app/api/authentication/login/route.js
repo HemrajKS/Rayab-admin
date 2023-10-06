@@ -34,10 +34,11 @@ export async function POST(req, res) {
     const cookieOptions = {
       name: "token",
       value: token,
-      httpOnly: true,
+      // httpOnly: true,
       path: "/",
       secure: process.env.NODE_ENV !== "development",
       maxAge: tokenMaxAge,
+      sameSite: "None",
     };
 
     // Configure CORS headers
