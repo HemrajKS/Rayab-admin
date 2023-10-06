@@ -66,6 +66,10 @@ export async function POST(req, res) {
         name: "logged-in",
         value: "true",
         maxAge: tokenMaxAge,
+
+        path: "/",
+        secure: process.env.NODE_ENV !== "development",
+        maxAge: tokenMaxAge,
         sameSite: "None",
       }),
     ]);
