@@ -38,7 +38,7 @@ export async function POST(req, res) {
       path: "/",
       secure: process.env.NODE_ENV !== "development",
       maxAge: tokenMaxAge,
-      sameSite: "None",
+      // sameSite: "None",
     };
 
     // Configure CORS headers
@@ -70,7 +70,7 @@ export async function POST(req, res) {
         path: "/",
         secure: process.env.NODE_ENV !== "development",
         maxAge: tokenMaxAge,
-        sameSite: "None",
+        // sameSite: "None",
       }),
     ]);
 
