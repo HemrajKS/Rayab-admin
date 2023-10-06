@@ -66,6 +66,7 @@ export async function POST(req, res) {
         name: "logged-in",
         value: "true",
         maxAge: tokenMaxAge,
+        sameSite: "None",
       }),
     ]);
 
