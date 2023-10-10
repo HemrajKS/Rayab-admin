@@ -1,10 +1,11 @@
-import { getErrorResponse } from '@/lib/helpers';
-import { logout } from '@/lib/logout';
-import connectDB from '@/lib/mongodb';
-import { verifyJWT } from '@/lib/token';
-import Product from '@/models/product';
-import UserModel from '@/models/user';
-import { NextResponse } from 'next/server';
+import { getErrorResponse } from "@/lib/helpers";
+import { logout } from "@/lib/logout";
+import connectDB from "@/lib/mongodb";
+import { verifyJWT } from "@/lib/token";
+import { verifyPass } from "@/lib/verifyPass";
+import Product from "@/models/product";
+import UserModel from "@/models/user";
+import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
@@ -13,7 +14,7 @@ export async function POST(req) {
 
     // const userId = req.headers.get('X-User-Id');
 
-    let token = req.cookies.get('token')?.value;
+    let token = req.cookies.get("token")?.value;
     const userId = (await verifyJWT(token)).sub;
 
     const user = await UserModel.findOne({ _id: userId });
@@ -27,34 +28,34 @@ export async function POST(req) {
           if (deleteProduct) {
             let json_response = {
               status: true,
-              message: 'Product deleted successfully',
+              message: "Product deleted successfully",
               data: deleteProduct,
             };
             return NextResponse.json(json_response);
           } else {
-            getErrorResponse(404, 'Product not found');
+            getErrorResponse(404, "Product not found");
           }
-          return getErrorResponse(200, 'Product deleted');
+          return getErrorResponse(200, "Product deleted");
         } catch (error) {
-          return getErrorResponse(400, 'Could not delete product');
+          return getErrorResponse(400, "Could not delete product");
         }
       } else {
-        return getErrorResponse(403, 'Only Admins can delete products.');
+        return getErrorResponse(403, "Only Admins can delete products.");
       }
     } else {
       return logout();
     }
   } catch (error) {
+    console.log(error);
     let json_response = {
       status: false,
-      results: 'some error occured',
+      results: "some error occured",
       error: error,
-      user: userId,
     };
     return NextResponse.json(json_response, {
       status: 500,
       headers: {
-        'Access-Control-Allow-Methods': 'POST',
+        "Access-Control-Allow-Methods": "POST",
       },
     });
   }
