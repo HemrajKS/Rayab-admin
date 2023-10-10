@@ -3,7 +3,7 @@
 import { urls } from "@/app/constants/constants";
 import makeHttpRequest from "@/app/services/apiCall";
 import { ArrowBack, Delete, Edit, LocationOn, Star } from "@mui/icons-material";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import _ from "lodash";
 import { Alert, Rating, Snackbar } from "@mui/material";
@@ -16,9 +16,12 @@ import ProductCards from "@/Containers/ProductCards/ProductCards";
 import Dropdown from "@/Components/Dropdown/Dropdown";
 import FullScreenLoader from "@/Components/FullScreenLoader/FullScreenLoader";
 
-const OrderId = ({ params }) => {
+const OrderId = () => {
   const router = useRouter();
-  console.log(params);
+  const searchParams = useSearchParams();
+  const params = {
+    orderId: searchParams.get("orderId"),
+  };
 
   const [loading, setLoading] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
