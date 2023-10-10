@@ -4,12 +4,17 @@ import ProductForm from "@/Containers/ProductForm/ProductForm";
 import { urls } from "@/app/constants/constants";
 import makeHttpRequest from "@/app/services/apiCall";
 import { ArrowBack } from "@mui/icons-material";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
-const Page = ({ params }) => {
+const Page = () => {
   const router = useRouter();
-  const { productId } = params;
+  const searchParams = useSearchParams();
+  const params = {
+    productId: searchParams.get("productId"),
+  };
+
+  const productId = params.productId;
 
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -59,7 +64,7 @@ const Page = ({ params }) => {
           setLoading(false);
           if (res.status === 200) {
             if (res?.data?.data) {
-              router.push(`/products/${productId}`);
+              router.push(`/products?productId=${productId}`);
             }
           }
         })
@@ -79,7 +84,7 @@ const Page = ({ params }) => {
           <div
             className="rounded-full z-[999]  bg-slate-100 shadow-md w-[50px] h-[50px] flex items-center justify-center cursor-pointer"
             onClick={() => {
-              router.push(`/products/${productId}`);
+              router.push(`/products?productId=${productId}`);
             }}
           >
             {" "}
