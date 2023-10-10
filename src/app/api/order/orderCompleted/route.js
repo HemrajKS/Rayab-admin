@@ -43,6 +43,14 @@ export async function POST(req) {
               { status: "completed" },
               { new: true }
             );
+
+            await sendMail({
+              to: order.email,
+              productStatus: `Completed`,
+              orderNumber: body.id,
+              template: "update",
+            });
+
             json_response = {
               status: true,
               data: orderNew,
@@ -62,6 +70,13 @@ export async function POST(req) {
               message: "Order Rejected Successfully",
             };
 
+            await sendMail({
+              to: order.email,
+              productStatus: `Rejected`,
+              orderNumber: body.id,
+              template: "update",
+            });
+
             return NextResponse.json(json_response);
           } else if (body.status === "pending") {
             orderNew = await Order.findOneAndUpdate(
@@ -75,6 +90,13 @@ export async function POST(req) {
               data: orderNew,
               message: "Order status changed to Pending",
             };
+
+            await sendMail({
+              to: order.email,
+              productStatus: `Pending`,
+              orderNumber: body.id,
+              template: "update",
+            });
             return NextResponse.json(json_response);
           } else {
             return getErrorResponse(404, "Orders not found");
