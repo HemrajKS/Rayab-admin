@@ -1,25 +1,25 @@
-import { getErrorResponse } from '@/lib/helpers';
-import connectDB from '@/lib/mongodb';
-import Order from '@/models/order';
-import User from '@/models/user';
-import { NextResponse, NextRequest } from 'next/server';
-import { headers } from 'next/headers';
-import { verifyJWT } from '@/lib/token';
-import { verifyPass } from '@/lib/verifyPass';
-import { logout } from '@/lib/logout';
+import { getErrorResponse } from "@/lib/helpers";
+import connectDB from "@/lib/mongodb";
+import Order from "@/models/order";
+import User from "@/models/user";
+import { NextResponse, NextRequest } from "next/server";
+import { headers } from "next/headers";
+import { verifyJWT } from "@/lib/token";
+import { verifyPass } from "@/lib/verifyPass";
+import { logout } from "@/lib/logout";
 
 export async function GET(req) {
   try {
     await connectDB();
-    let token = req.cookies.get('token')?.value;
+    let token = req.cookies.get("token")?.value;
     const userId = (await verifyJWT(token)).sub;
 
     // const userId = req.headers.get('x-user-id');
 
     const user = await User.findOne({ _id: userId });
-    const searchQuery = req.nextUrl.searchParams.get('search') || '';
-    const statusFilter = req.nextUrl.searchParams.get('status') || '';
-    const id = req.nextUrl.searchParams.get('id') || null;
+    const searchQuery = req.nextUrl.searchParams.get("search") || "";
+    const statusFilter = req.nextUrl.searchParams.get("status") || "";
+    const id = req.nextUrl.searchParams.get("id") || null;
 
     const pass = await verifyPass(token, user.password);
 
@@ -27,18 +27,19 @@ export async function GET(req) {
       if (user && user.isAdmin) {
         let searchCriteria = {
           $or: [
-            { name: { $regex: searchQuery, $options: 'i' } },
-            { email: { $regex: searchQuery, $options: 'i' } },
-            { phone1: { $regex: searchQuery, $options: 'i' } },
-            { phone2: { $regex: searchQuery, $options: 'i' } },
+            { orderId: { $regex: searchQuery, $options: "i" } },
+            { name: { $regex: searchQuery, $options: "i" } },
+            { email: { $regex: searchQuery, $options: "i" } },
+            { phone1: { $regex: searchQuery, $options: "i" } },
+            { phone2: { $regex: searchQuery, $options: "i" } },
           ],
         };
         const orderCount = !id && (await Order.countDocuments(searchCriteria));
-        const skip = JSON.parse(req.nextUrl.searchParams.get('skip'))
-          ? JSON.parse(req.nextUrl.searchParams.get('skip'))
+        const skip = JSON.parse(req.nextUrl.searchParams.get("skip"))
+          ? JSON.parse(req.nextUrl.searchParams.get("skip"))
           : 0;
-        const limit = JSON.parse(req.nextUrl.searchParams.get('limit'))
-          ? JSON.parse(req.nextUrl.searchParams.get('limit'))
+        const limit = JSON.parse(req.nextUrl.searchParams.get("limit"))
+          ? JSON.parse(req.nextUrl.searchParams.get("limit"))
           : orderCount;
 
         if (statusFilter) {
@@ -57,16 +58,16 @@ export async function GET(req) {
           return NextResponse.json(json_response, {
             status: 200,
             headers: {
-              'Access-Control-Allow-Origin': '*', // Allow requests from localhost
-              'Access-Control-Allow-Headers': 'X-User-Id', // Allow multiple headers
+              "Access-Control-Allow-Origin": "*", // Allow requests from localhost
+              "Access-Control-Allow-Headers": "X-User-Id", // Allow multiple headers
             },
           });
         } else {
-          return getErrorResponse(404, 'Order not found');
+          return getErrorResponse(404, "Order not found");
         }
       } else {
         return getErrorResponse(403, {
-          message: 'Please login as admin',
+          message: "Please login as admin",
         });
       }
     } else {
@@ -75,14 +76,14 @@ export async function GET(req) {
   } catch (error) {
     let json_response = {
       status: false,
-      results: 'some error occured',
+      results: "some error occured",
       error: error,
     };
     return NextResponse.json(json_response, {
       status: 500,
       headers: {
-        'Access-Control-Allow-Origin': '*', // Allow requests from localhost
-        'Access-Control-Allow-Headers': 'X-User-Id', // Allow multiple headers
+        "Access-Control-Allow-Origin": "*", // Allow requests from localhost
+        "Access-Control-Allow-Headers": "X-User-Id", // Allow multiple headers
       },
     });
   }
