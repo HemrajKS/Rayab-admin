@@ -38,9 +38,7 @@ export async function POST(req, res) {
       path: "/",
       secure: process.env.NODE_ENV !== "development",
       maxAge: tokenMaxAge,
-
-      sameSite: "None",
-      secure: true,
+      // sameSite: "None",
     };
 
     // Configure CORS headers
