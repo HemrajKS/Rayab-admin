@@ -57,6 +57,7 @@ export async function POST(req, res) {
           "Access-Control-Allow-Headers": "Content-Type",
           "Access-Control-Allow-Credentials": "true",
           Authorization: `Bearer ${token}`,
+          "Access-Control-Expose-Headers": "Authorization",
         },
       }
     );
