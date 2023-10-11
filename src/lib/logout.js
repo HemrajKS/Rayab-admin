@@ -9,18 +9,18 @@ export async function logout() {
     }
   );
 
-  await Promise.all([
-    response.cookies.set({
-      name: "token",
-      value: "",
-      maxAge: -1,
-    }),
-    response.cookies.set({
-      name: "logged-in",
-      value: "",
-      maxAge: -1,
-    }),
-  ]);
+  // await Promise.all([
+  //   response.cookies.set({
+  //     name: "token",
+  //     value: "",
+  //     maxAge: -1,
+  //   }),
+  //   response.cookies.set({
+  //     name: "logged-in",
+  //     value: "",
+  //     maxAge: -1,
+  //   }),
+  // ]);
 
   return response;
 }
