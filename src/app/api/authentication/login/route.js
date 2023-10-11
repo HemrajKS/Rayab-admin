@@ -38,7 +38,9 @@ export async function POST(req, res) {
       path: "/",
       secure: process.env.NODE_ENV !== "development",
       maxAge: tokenMaxAge,
-      // sameSite: "None",
+
+      sameSite: "None",
+      secure: true,
     };
 
     // Configure CORS headers
@@ -51,7 +53,6 @@ export async function POST(req, res) {
         status: 200,
         token: token,
         headers: {
-          // Allow your Angular app's origin (replace with your actual Angular app's URL)
           "Access-Control-Allow-Origin": process.env.API_URL || "*",
           "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
           "Access-Control-Allow-Headers": "Content-Type",
