@@ -6,10 +6,23 @@ import mongoose from 'mongoose';
 import { NextResponse } from 'next/server';
 
 export async function GET(req) {
-  const userId = req.headers.get('X-User-Id');
+  // const userId = req.headers.get('X-User-Id');
 
   // let token = req.cookies.get('token')?.value;
   // const userId = (await verifyJWT(token)).sub;
+  let token;
+  if (req.cookies.has('token')) {
+    token = req.cookies.get('token')?.value;
+  } else if (req.headers.get('Authorization')?.startsWith('Bearer ')) {
+    token = req.headers.get('Authorization')?.substring(7);
+  } else {
+    return getErrorResponse(
+      401,
+      'You are not loggen in, Please log in to proceed...'
+    );
+  }
+  const { sub } = await verifyJWT(token);
+  const userId = sub;
 
   const statusFilter = req.nextUrl.searchParams.get('status') || '';
   const searchQuery = req.nextUrl.searchParams.get('search') || '';
