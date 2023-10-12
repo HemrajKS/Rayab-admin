@@ -11,7 +11,17 @@ import { logout } from "@/lib/logout";
 export async function GET(req) {
   try {
     await connectDB();
-    let token = req.cookies.get("token")?.value;
+    let token;
+    if (req.cookies.has("token")) {
+      token = req.cookies.get("token")?.value;
+    } else if (req.headers.get("Authorization")?.startsWith("Bearer ")) {
+      token = req.headers.get("Authorization")?.substring(7);
+    } else {
+      return getErrorResponse(
+        401,
+        "You are not loggen in, Please log in to proceed..."
+      );
+    }
     const userId = (await verifyJWT(token)).sub;
 
     // const userId = req.headers.get('x-user-id');

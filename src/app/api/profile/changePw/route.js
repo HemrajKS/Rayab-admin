@@ -1,9 +1,9 @@
-import { getErrorResponse } from '@/lib/helpers';
-import { compare, hash } from 'bcryptjs';
-import { NextResponse } from 'next/server';
-import UserModel from '@/models/user';
-import connectDB from '@/lib/mongodb';
-import { verifyJWT } from '@/lib/token';
+import { getErrorResponse } from "@/lib/helpers";
+import { compare, hash } from "bcryptjs";
+import { NextResponse } from "next/server";
+import UserModel from "@/models/user";
+import connectDB from "@/lib/mongodb";
+import { verifyJWT } from "@/lib/token";
 
 export async function PATCH(req) {
   try {
@@ -11,7 +11,17 @@ export async function PATCH(req) {
     const body = await req.json();
     // const userId = req.headers.get('X-User-Id');
 
-    let token = req.cookies.get('token')?.value;
+    let token;
+    if (req.cookies.has("token")) {
+      token = req.cookies.get("token")?.value;
+    } else if (req.headers.get("Authorization")?.startsWith("Bearer ")) {
+      token = req.headers.get("Authorization")?.substring(7);
+    } else {
+      return getErrorResponse(
+        401,
+        "You are not loggen in, Please log in to proceed..."
+      );
+    }
     const userId = (await verifyJWT(token)).sub;
 
     const user = await UserModel.findOne({
@@ -27,24 +37,24 @@ export async function PATCH(req) {
               { _id: userId },
               { password: hashedPassword },
               { new: true }
-            ).select('-password');
+            ).select("-password");
             let json_response = {
               status: true,
-              message: 'Password changed successfully',
+              message: "Password changed successfully",
               data: { newPassword },
             };
             return NextResponse.json(json_response);
           } else {
-            return getErrorResponse(401, 'Different old password');
+            return getErrorResponse(401, "Different old password");
           }
         } else {
-          return getErrorResponse(401, 'Passwords are not matching');
+          return getErrorResponse(401, "Passwords are not matching");
         }
       } else {
-        return getErrorResponse(400, 'User not found');
+        return getErrorResponse(400, "User not found");
       }
     } else {
-      return getErrorResponse(400, 'Please Enter all the required fields');
+      return getErrorResponse(400, "Please Enter all the required fields");
     }
   } catch (error) {
     return getErrorResponse(500, error.message);
