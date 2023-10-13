@@ -55,7 +55,7 @@ export async function POST(req, res) {
           "Access-Control-Allow-Origin": process.env.API_URL || "*",
           "Access-Control-Allow-Methods":
             "GET, POST,PATCH, PUT, DELETE, OPTIONS",
-          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Headers": "Content-Type,Authorization",
           "Access-Control-Allow-Credentials": "true",
           Authorization: token,
           "Access-Control-Expose-Headers": "Authorization",
