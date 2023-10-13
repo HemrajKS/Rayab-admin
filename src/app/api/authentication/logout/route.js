@@ -1,21 +1,24 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req) {
-  const response = new NextResponse(JSON.stringify({ status: 'success' }), {
+  const response = new NextResponse(JSON.stringify({ status: "success" }), {
     status: 200,
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
   });
 
   await Promise.all([
     response.cookies.set({
-      name: 'token',
-      value: '',
+      name: "token",
+      value: "",
       maxAge: -1,
       httpOnly: false,
     }),
     response.cookies.set({
-      name: 'logged-in',
-      value: '',
+      name: "logged-in",
+      value: "",
       maxAge: -1,
       httpOnly: false,
     }),
