@@ -5,7 +5,7 @@ export async function GET(req) {
     status: 200,
     headers: {
       "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Origin": process.env.API_URL,
     },
   });
 
