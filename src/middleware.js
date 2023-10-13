@@ -11,9 +11,12 @@ export const corsHeaders = {
 };
 
 export async function middleware(req) {
-  // if (req.method === "OPTIONS") {
-  //   return NextResponse.json({}, { headers: corsHeaders });
-  // }
+  if (req.method === "OPTIONS") {
+    return NextResponse.json(
+      { message: "this causing error" },
+      { headers: corsHeaders }
+    );
+  }
   let token;
 
   if (
