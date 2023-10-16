@@ -1,5 +1,6 @@
 "use client";
 import MultiSelectDropdown from "@/Components/CheckBox/CheckBox";
+import Upload from "@/Components/Uploader/Upload";
 import { urls } from "@/app/constants/constants";
 import makeHttpRequest from "@/app/services/apiCall";
 import { Edit, Save } from "@mui/icons-material";
@@ -15,6 +16,7 @@ const Home = () => {
   const [isEditing, setEditing] = useState(false);
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [uploadImgLoading, setUploadImgLoading] = useState(false);
 
   const divRef = useRef(null);
 
@@ -111,6 +113,38 @@ const Home = () => {
     }
   };
 
+  const onDropHandler = (acceptedFiles, type) => {
+    setUploadImgLoading(true);
+
+    if (acceptedFiles.length === 1) {
+      const file = acceptedFiles[0];
+      const formData = new FormData();
+      formData.append("image", file);
+      formData.append("name", "Product Image");
+
+      makeHttpRequest(`/api/upload`, "post", formData)
+        .then((res) => {
+          if (res.status === 200) {
+            if (res?.data?.data) {
+              const newState = { ...homeData };
+              if (!newState.images) {
+                newState.images = [];
+              }
+              newState.banner.push({ banner: res?.data?.data });
+              setHomeData(newState);
+              setUploadImgLoading(false);
+            }
+          }
+        })
+        .catch((err) => {
+          setUploadImgLoading(false);
+          console.log(err);
+        });
+    } else {
+      alert("Only one file can be uploaded at once");
+    }
+  };
+
   return (
     <div className="overflow-auto h-full text-[#0b1c48] overflow-x-hidden">
       <div className="pl-[25px] pr-[20px] flex  flex-col w-full justify-between">
@@ -170,6 +204,20 @@ const Home = () => {
             item={homeData?.categories || []}
             label="categories"
             updateItem={updateItem}
+          />
+        </div>
+        <div className="flex flex-col mt-[18px] bg-white shadow-lg rounded-[14px] p-[24px]">
+          <div className="text-[24px] font-[600] flex items-center justify-between gap-[24px] mb-[12px]">
+            <span>Banner</span>
+          </div>
+          <Upload
+            onDropHandler={onDropHandler}
+            // images={homeData?.banner?.map((obj) => {
+            //   obj.banner;
+            // })}
+            uploadImgLoading={uploadImgLoading}
+            type={"otherImages"}
+            label={"Other Images"}
           />
         </div>
       </div>
