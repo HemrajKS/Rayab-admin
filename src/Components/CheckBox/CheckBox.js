@@ -33,7 +33,7 @@ export default function MultiSelect({ originalItem, item, label, updateItem }) {
           labelId="demo-multiple-checkbox-label"
           id="demo-multiple-checkbox"
           multiple
-          value={item}
+          value={item.map((obj) => obj.name)}
           input={<OutlinedInput label="Tag" />}
           renderValue={(selected) => {
             return selected.join(", ");
