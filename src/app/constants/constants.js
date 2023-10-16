@@ -66,6 +66,7 @@ export const urls = {
   users: "/api/admin/Users",
   profile: "/api/profile",
   changePassword: "/api/profile/changePw",
+  home: "/api/home",
 };
 
 export const OTP_LENGTH = 4;

@@ -1,7 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import '~react-image-gallery/styles/css/image-gallery.css';
+@import "~react-image-gallery/styles/css/image-gallery.css";
 
 body {
   background-color: #f7f8fa;
@@ -85,4 +85,9 @@ main {
 
 .Mui-focused .MuiOutlinedInput-notchedOutline {
   border: 2px #0b1c48 solid !important;
+}
+
+.css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root {
+  height: 52px !important;
+  padding-left: 14px !important;
 }
