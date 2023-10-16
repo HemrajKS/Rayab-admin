@@ -43,10 +43,30 @@ const bannerSchema = new mongoose.Schema({
 });
 
 const homeSchema = new mongoose.Schema({
-  banner: [bannerSchema],
-  about: String,
-  categories: [categorySchema],
-  products: [productSchema],
+  banner: { type: [bannerSchema], required: true },
+  about: { type: String, required: true },
+  categories: {
+    type: [categorySchema],
+    validate: [
+      {
+        validator: function (categories) {
+          return categories.length >= 1 && categories.length <= 5;
+        },
+        message: "You must have at least 1 category and at most 5 categories.",
+      },
+    ],
+  },
+  products: {
+    type: [productSchema],
+    validate: [
+      {
+        validator: function (products) {
+          return products.length <= 5;
+        },
+        message: "You can have at most 5 products.",
+      },
+    ],
+  },
 });
 
 const HomeData =
