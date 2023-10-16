@@ -1,60 +1,61 @@
-'use client';
-import * as React from 'react';
-import { styled, useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import MuiDrawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import { sideBarContent } from '@/app/constants/constants';
-import { usePathname, useRouter } from 'next/navigation';
+"use client";
+import * as React from "react";
+import { styled, useTheme } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import MuiDrawer from "@mui/material/Drawer";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import { sideBarContent } from "@/app/constants/constants";
+import { usePathname, useRouter } from "next/navigation";
 import {
   Category,
   Dashboard,
+  Home,
   Inventory,
   Person,
   ShoppingCart,
-} from '@mui/icons-material';
+} from "@mui/icons-material";
 
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
-  transition: theme.transitions.create('width', {
+  transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
   }),
-  overflowX: 'hidden',
+  overflowX: "hidden",
 });
 
 const closedMixin = (theme) => ({
-  transition: theme.transitions.create('width', {
+  transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  overflowX: 'hidden',
+  overflowX: "hidden",
   width: `calc(${theme.spacing(7)} + 14px)`,
-  [theme.breakpoints.up('sm')]: {
+  [theme.breakpoints.up("sm")]: {
     width: `calc(${theme.spacing(8)} + 14px)`,
   },
 });
 
 const Drawer = styled(MuiDrawer, {
-  shouldForwardProp: (prop) => prop !== 'open',
+  shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
   width: drawerWidth,
   flexShrink: 0,
-  whiteSpace: 'nowrap',
-  boxSizing: 'border-box',
+  whiteSpace: "nowrap",
+  boxSizing: "border-box",
   ...(open && {
     ...openedMixin(theme),
-    '& .MuiDrawer-paper': openedMixin(theme),
+    "& .MuiDrawer-paper": openedMixin(theme),
   }),
   ...(!open && {
     ...closedMixin(theme),
-    '& .MuiDrawer-paper': closedMixin(theme),
+    "& .MuiDrawer-paper": closedMixin(theme),
   }),
 }));
 
@@ -70,32 +71,33 @@ export default function Sidebar({ open }) {
       Inventory: <Inventory />,
       Category: <Category />,
       Person: <Person />,
+      Home: <Home />,
     }[ico];
 
     return icon;
   };
 
   return (
-    <Box sx={{ display: 'flex', paddingRight: '16px' }}>
+    <Box sx={{ display: "flex", paddingRight: "16px" }}>
       <Drawer
         variant="permanent"
         open={open}
         sx={{
-          '& .MuiDrawer-root': {
-            position: 'relative',
-            height: 'calc(100vh - 80px)',
-            background: 'none',
-            border: 'none',
+          "& .MuiDrawer-root": {
+            position: "relative",
+            height: "calc(100vh - 80px)",
+            background: "none",
+            border: "none",
           },
-          '& .MuiPaper-root': {
-            position: 'relative',
-            height: 'calc(100vh - 80px)',
-            background: 'none',
-            border: 'none',
+          "& .MuiPaper-root": {
+            position: "relative",
+            height: "calc(100vh - 80px)",
+            background: "none",
+            border: "none",
           },
         }}
       >
-        <List sx={{ paddingTop: '16px' }}>
+        <List sx={{ paddingTop: "16px" }}>
           {sideBarContent.map((item, index) => (
             <div
               className={`rounded-full bg-white shadow-md ml-[25px] h-[52px]
@@ -109,20 +111,20 @@ export default function Sidebar({ open }) {
                 <ListItemButton
                   sx={{
                     minHeight: 48,
-                    justifyContent: open ? 'initial' : 'center',
+                    justifyContent: open ? "initial" : "center",
                     px: 2.5,
-                    '&:hover': { backgroundColor: 'transparent' },
+                    "&:hover": { backgroundColor: "transparent" },
                   }}
                   disableRipple
                 >
                   <ListItemIcon
                     sx={{
                       minWidth: 0,
-                      mr: open ? 3 : 'auto',
-                      justifyContent: 'center',
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
                       color: pathname.startsWith(item.link)
-                        ? '#e47e52'
-                        : '#0b1c48',
+                        ? "#e47e52"
+                        : "#0b1c48",
                     }}
                   >
                     {getIcon(item.icon)}
@@ -130,16 +132,16 @@ export default function Sidebar({ open }) {
 
                   <div
                     style={{
-                      display: open ? 'block' : 'none',
+                      display: open ? "block" : "none",
                       color: pathname.startsWith(item.link)
-                        ? '#e47e52'
-                        : '#0b1c48',
-                      fontSize: '18px',
-                      fontWeight: '500',
-                      letterSpacing: '0.6px',
-                      whiteSpace: 'nowrap',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
+                        ? "#e47e52"
+                        : "#0b1c48",
+                      fontSize: "18px",
+                      fontWeight: "500",
+                      letterSpacing: "0.6px",
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
                     }}
                   >
                     {item.name}
