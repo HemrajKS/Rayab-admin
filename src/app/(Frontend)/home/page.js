@@ -14,12 +14,14 @@ const Home = () => {
   const [submitData, setSubmitData] = useState({});
   const [isEditing, setEditing] = useState(false);
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
 
   const divRef = useRef(null);
 
   useEffect(() => {
     fetchHomeDetails();
     fetchProducts();
+    fetchCategories();
   }, []);
 
   useEffect(() => {
@@ -61,6 +63,22 @@ const Home = () => {
     }
   };
 
+  const fetchCategories = async () => {
+    try {
+      makeHttpRequest(`${urls.categories}`, "get")
+        .then((res) => {
+          if (res.status === 200) {
+            setCategories(res.data?.categories);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (error) {
+      console.error("Error fetching product details:", error);
+    }
+  };
+
   const handleDivClick = () => {
     setEditing(true);
     if (divRef.current) {
@@ -88,7 +106,7 @@ const Home = () => {
       });
     } else {
       setHomeData((prev) => {
-        return { ...prev, [label]: [...prev.products, item] };
+        return { ...prev, [label]: [...prev[label], item] };
       });
     }
   };
@@ -134,12 +152,23 @@ const Home = () => {
         </div>
         <div className="flex flex-col mt-[18px] bg-white shadow-lg rounded-[14px] p-[24px]">
           <div className="text-[24px] font-[600] flex items-center justify-between gap-[24px] mb-[12px]">
-            <span>Banner</span>
+            <span>Top Products</span>
           </div>
           <MultiSelectDropdown
             originalItem={products || []}
             item={homeData?.products || []}
             label="products"
+            updateItem={updateItem}
+          />
+        </div>
+        <div className="flex flex-col mt-[18px] bg-white shadow-lg rounded-[14px] p-[24px]">
+          <div className="text-[24px] font-[600] flex items-center justify-between gap-[24px] mb-[12px]">
+            <span>Top Categories</span>
+          </div>
+          <MultiSelectDropdown
+            originalItem={categories || []}
+            item={homeData?.categories || []}
+            label="categories"
             updateItem={updateItem}
           />
         </div>
