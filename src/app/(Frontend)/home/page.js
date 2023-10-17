@@ -4,7 +4,7 @@ import Upload from "@/Components/Uploader/Upload";
 import ProductCards from "@/Containers/ProductCards/ProductCards";
 import { urls } from "@/app/constants/constants";
 import makeHttpRequest from "@/app/services/apiCall";
-import { Edit, Save } from "@mui/icons-material";
+import { Close, Edit, Save } from "@mui/icons-material";
 import Image from "next/image";
 import React from "react";
 import { useRef } from "react";
@@ -116,6 +116,15 @@ const Home = () => {
     }
   };
 
+  const removeImg = (img) => {
+    const updatedBanner = homeData?.banner.filter(
+      (image) => image.banner !== img.banner
+    );
+    setHomeData((prev) => {
+      return { ...prev, banner: updatedBanner };
+    });
+  };
+
   const onDropHandler = (acceptedFiles, type) => {
     setUploadImgLoading(true);
 
@@ -167,13 +176,17 @@ const Home = () => {
           />
           <div className="flex flex-wrap gap-[20px]">
             {homeData?.banner?.map((img, i) => (
-              <Image
-                key={i}
-                src={img.banner}
-                alt="banner"
-                width={300}
-                height={200}
-              />
+              <div key={i} className="relative">
+                <Image src={img.banner} alt="banner" width={300} height={200} />
+                <div
+                  onClick={() => {
+                    removeImg(img);
+                  }}
+                  className="absolute top-[-10px] right-[-10px] bg-[#e47e52] cursor-pointer shadow-md rounded-[50%]"
+                >
+                  <Close sx={{ color: "white" }} />
+                </div>
+              </div>
             ))}
           </div>
         </div>
