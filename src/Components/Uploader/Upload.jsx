@@ -1,8 +1,8 @@
-import { UploadFile } from '@mui/icons-material';
-import { useDropzone } from 'react-dropzone';
-import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
-import FullScreenLoader from '../FullScreenLoader/FullScreenLoader';
+import { UploadFile } from "@mui/icons-material";
+import { useDropzone } from "react-dropzone";
+import React, { useEffect, useState } from "react";
+import Image from "next/image";
+import FullScreenLoader from "../FullScreenLoader/FullScreenLoader";
 
 const Upload = ({
   onDropHandler,
@@ -17,7 +17,7 @@ const Upload = ({
   };
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
-    accept: 'image/*',
+    accept: "image/*",
     multiple: false,
   });
 
@@ -34,7 +34,7 @@ const Upload = ({
           >
             <input {...getInputProps()} />
             <div className="rounded-full z-[999]  bg-slate-100 shadow-md w-[50px] h-[50px] flex items-center justify-center cursor-pointer">
-              <UploadFile sx={{ color: '#e47e52' }} />
+              <UploadFile sx={{ color: "#e47e52" }} />
               <input hidden accept="image/*" multiple={false} type="file" />
             </div>
             <p>Drag & drop an image here, or click to select one</p>

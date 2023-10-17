@@ -5,6 +5,7 @@ import ProductCards from "@/Containers/ProductCards/ProductCards";
 import { urls } from "@/app/constants/constants";
 import makeHttpRequest from "@/app/services/apiCall";
 import { Edit, Save } from "@mui/icons-material";
+import Image from "next/image";
 import React from "react";
 import { useRef } from "react";
 import { useEffect } from "react";
@@ -160,13 +161,21 @@ const Home = () => {
           </div>
           <Upload
             onDropHandler={onDropHandler}
-            // images={homeData?.banner?.map((obj) => {
-            //   obj.banner;
-            // })}
             uploadImgLoading={uploadImgLoading}
             type={"otherImages"}
             label={"Other Images"}
           />
+          <div className="flex flex-wrap gap-[20px]">
+            {homeData?.banner?.map((img, i) => (
+              <Image
+                key={i}
+                src={img.banner}
+                alt="banner"
+                width={300}
+                height={200}
+              />
+            ))}
+          </div>
         </div>
         <div className="flex flex-col mt-[18px] bg-white shadow-lg rounded-[14px] p-[24px]">
           <div className="text-[24px] font-[600] flex items-center justify-between gap-[24px] mb-[12px]">
