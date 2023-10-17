@@ -127,7 +127,7 @@ const Home = () => {
 
   const onDropHandler = (acceptedFiles, type) => {
     setUploadImgLoading(true);
-
+    console.log(acceptedFiles);
     if (acceptedFiles.length === 1) {
       const file = acceptedFiles[0];
       const formData = new FormData();
@@ -167,6 +167,9 @@ const Home = () => {
         <div className="flex flex-col mt-[18px] bg-white shadow-lg rounded-[14px] p-[24px]">
           <div className="text-[24px] font-[600] flex items-center justify-between gap-[24px] mb-[12px]">
             <span>Banner</span>
+          </div>
+          <div className="text-[#e47e52]">
+            *Please upload images having aspect ratio 2:1
           </div>
           <Upload
             onDropHandler={onDropHandler}
