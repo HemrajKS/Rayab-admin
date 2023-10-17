@@ -226,6 +226,18 @@ const Home = () => {
             label="categories"
             updateItem={updateItem}
           />
+          <div className="flex gap-[20px] flex-wrap pt-[20px]">
+            {homeData?.categories?.map((item, i) => {
+              return (
+                <div
+                  key={i}
+                  className="text-[18px]  cursor-pointer text-white max-[768px]:!text-[15px] bg-[#e47e52] px-[10px] rounded-md shadow-md hover:scale-105 transition-all ease-in py-[4px]"
+                >
+                  {item.name}
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>
