@@ -15,10 +15,10 @@ const ProductCards = ({ data, index, qty }) => {
       <div className="h-[130px] relative">
         <Image
           src={data.imageUrl}
-          blurDataURL={data.imageUrl}
+          // blurDataURL={data.imageUrl}
           alt={data.name}
           loading="lazy"
-          placeholder="blur"
+          // placeholder="blur"
           width={500}
           height={450}
           className="rounded-[10px] h-full object-cover"

@@ -1,6 +1,7 @@
 "use client";
 import MultiSelectDropdown from "@/Components/CheckBox/CheckBox";
 import Upload from "@/Components/Uploader/Upload";
+import ProductCards from "@/Containers/ProductCards/ProductCards";
 import { urls } from "@/app/constants/constants";
 import makeHttpRequest from "@/app/services/apiCall";
 import { Edit, Save } from "@mui/icons-material";
@@ -12,7 +13,6 @@ import { useState } from "react";
 const Home = () => {
   const [fetchLoading, setFetchLoading] = useState(false);
   const [homeData, setHomeData] = useState({});
-  const [submitData, setSubmitData] = useState({});
   const [isEditing, setEditing] = useState(false);
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -101,10 +101,12 @@ const Home = () => {
 
   const updateItem = (item, label) => {
     if (homeData[label].some((e) => e._id === item._id)) {
+      const updatedProducts = homeData[label].filter(
+        (product) => product._id !== item._id
+      );
+
       setHomeData((prev) => {
-        const index = prev[label].findIndex((obj) => obj._id === item._id);
-        const newData = homeData[label].splice(index, 1);
-        return { ...prev, [label]: [...prev[label], newData] };
+        return { ...prev, [label]: updatedProducts };
       });
     } else {
       setHomeData((prev) => {
@@ -154,6 +156,20 @@ const Home = () => {
         </div>
         <div className="flex flex-col mt-[18px] bg-white shadow-lg rounded-[14px] p-[24px]">
           <div className="text-[24px] font-[600] flex items-center justify-between gap-[24px] mb-[12px]">
+            <span>Banner</span>
+          </div>
+          <Upload
+            onDropHandler={onDropHandler}
+            // images={homeData?.banner?.map((obj) => {
+            //   obj.banner;
+            // })}
+            uploadImgLoading={uploadImgLoading}
+            type={"otherImages"}
+            label={"Other Images"}
+          />
+        </div>
+        <div className="flex flex-col mt-[18px] bg-white shadow-lg rounded-[14px] p-[24px]">
+          <div className="text-[24px] font-[600] flex items-center justify-between gap-[24px] mb-[12px]">
             <span> About Us </span>
             {isEditing ? (
               <button
@@ -194,8 +210,13 @@ const Home = () => {
             label="products"
             updateItem={updateItem}
           />
+          <div className="flex gap-[20px] flex-wrap pt-[20px]">
+            {homeData?.products?.map((item, i) => {
+              return <ProductCards data={item} key={i} />;
+            })}
+          </div>
         </div>
-        <div className="flex flex-col mt-[18px] bg-white shadow-lg rounded-[14px] p-[24px]">
+        <div className="flex flex-col mt-[18px] bg-white shadow-lg rounded-[14px] p-[24px] mb-[24px]">
           <div className="text-[24px] font-[600] flex items-center justify-between gap-[24px] mb-[12px]">
             <span>Top Categories</span>
           </div>
@@ -204,20 +225,6 @@ const Home = () => {
             item={homeData?.categories || []}
             label="categories"
             updateItem={updateItem}
-          />
-        </div>
-        <div className="flex flex-col mt-[18px] bg-white shadow-lg rounded-[14px] p-[24px]">
-          <div className="text-[24px] font-[600] flex items-center justify-between gap-[24px] mb-[12px]">
-            <span>Banner</span>
-          </div>
-          <Upload
-            onDropHandler={onDropHandler}
-            // images={homeData?.banner?.map((obj) => {
-            //   obj.banner;
-            // })}
-            uploadImgLoading={uploadImgLoading}
-            type={"otherImages"}
-            label={"Other Images"}
           />
         </div>
       </div>
