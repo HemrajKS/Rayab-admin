@@ -1,10 +1,12 @@
 "use client";
 import MultiSelectDropdown from "@/Components/CheckBox/CheckBox";
+import FullScreenLoader from "@/Components/FullScreenLoader/FullScreenLoader";
 import Upload from "@/Components/Uploader/Upload";
 import ProductCards from "@/Containers/ProductCards/ProductCards";
 import { urls } from "@/app/constants/constants";
 import makeHttpRequest from "@/app/services/apiCall";
 import { Close, Edit, Save } from "@mui/icons-material";
+import { Alert, Snackbar } from "@mui/material";
 import Image from "next/image";
 import React from "react";
 import { useRef } from "react";
@@ -18,6 +20,12 @@ const Home = () => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [uploadImgLoading, setUploadImgLoading] = useState(false);
+  const [fullScrenLoad, setFullScreenLoad] = useState(false);
+  const [toastStatus, setToastStatus] = useState({
+    open: false,
+    message: "",
+    severity: "",
+  });
 
   const divRef = useRef(null);
 
@@ -26,10 +34,6 @@ const Home = () => {
     fetchProducts();
     fetchCategories();
   }, []);
-
-  useEffect(() => {
-    console.log("object123", homeData);
-  }, [homeData]);
 
   const fetchHomeDetails = async () => {
     setFetchLoading(true);
@@ -126,7 +130,7 @@ const Home = () => {
   };
 
   const onDropHandler = (acceptedFiles, type) => {
-    setUploadImgLoading(true);
+    setFullScreenLoad(true);
     console.log(acceptedFiles);
     if (acceptedFiles.length === 1) {
       const file = acceptedFiles[0];
@@ -144,12 +148,12 @@ const Home = () => {
               }
               newState.banner.push({ banner: res?.data?.data });
               setHomeData(newState);
-              setUploadImgLoading(false);
+              setFullScreenLoad(false);
             }
           }
         })
         .catch((err) => {
-          setUploadImgLoading(false);
+          setFullScreenLoad(false);
           console.log(err);
         });
     } else {
@@ -157,12 +161,47 @@ const Home = () => {
     }
   };
 
+  const submit = () => {
+    setFullScreenLoad(true);
+    makeHttpRequest(`/api/home/update`, "patch", homeData)
+      .then((res) => {
+        setFullScreenLoad(false);
+        if (res.status === 200) {
+          setHomeData(res?.data?.data);
+          setToastStatus({
+            open: true,
+            message: res?.data?.message || "Home Page Updated Successfully",
+            severity: "success",
+          });
+        }
+      })
+      .catch((err) => {
+        setFullScreenLoad(false);
+        setToastStatus({
+          open: true,
+          message: err.message || "Couldn't update Home Page",
+          severity: "error",
+        });
+        console.log(err);
+      });
+  };
+
   return (
     <div className="overflow-auto h-full text-[#0b1c48] overflow-x-hidden">
       <div className="pl-[25px] pr-[20px] flex  flex-col w-full justify-between">
-        <div className="text-[28px] font-bold ">Home Page</div>
-        <div className="text-[18px] text-[#e47e52] ">
-          Customize landing page here
+        <div className="flex flex-wrap items-center justify-between">
+          <div>
+            <div className="text-[28px] font-bold ">Home Page</div>
+            <div className="text-[18px] text-[#e47e52] ">
+              Customize landing page here
+            </div>
+          </div>
+          <div
+            onClick={submit}
+            className="cursor-pointer bg-[#e47e52] px-[16px] hover:scale-105 transition-all ease-in shadow-md py-[4px] text-white text-[20px] rounded-[6px]"
+          >
+            Save
+          </div>
         </div>
         <div className="flex flex-col mt-[18px] bg-white shadow-lg rounded-[14px] p-[24px]">
           <div className="text-[24px] font-[600] flex items-center justify-between gap-[24px] mb-[12px]">
@@ -265,6 +304,23 @@ const Home = () => {
           </div>
         </div>
       </div>
+      <FullScreenLoader open={fullScrenLoad} />
+      <Snackbar
+        open={toastStatus.open}
+        autoHideDuration={4000}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        onClose={() => {
+          setToastStatus({
+            open: false,
+            severity: "",
+            message: "",
+          });
+        }}
+      >
+        <Alert severity={toastStatus.severity} sx={{ width: "100%" }}>
+          {toastStatus.message}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };

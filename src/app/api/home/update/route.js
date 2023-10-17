@@ -39,6 +39,7 @@ export async function PATCH(req) {
             let json_response = {
               status: true,
               message: "Home Updated Successfully",
+              data: updatedHome,
             };
             return NextResponse.json(json_response);
           } else {
