@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Order Completed - Rayab International</title>
+  </head>
+  <body>
+    <div>
+      <h1>Thank you for choosing Rayab International!</h1>
+      <p>
+        Your order has been successfully completed. We hope you had a great
+        experience with us.
+      </p>
+
+      <p>
+        We would love to hear your feedback. Please take a moment to leave a
+        review for us on the following platforms:
+      </p>
+
+      <p>Order Id: <%= orderId %></p>
+
+      <ul>
+        <% reviewLinks.forEach(function(link) { %>
+        <li><a href="<%= link.link %>"><%= link.link %></a></li>
+        <% }); %>
+      </ul>
+
+      <p>
+        Your opinion matters to us, and it helps us improve our services. Thank
+        you for your support!
+      </p>
+
+      <p>Best Regards,<br />Rayab International Team</p>
+    </div>
+  </body>
+</html>
