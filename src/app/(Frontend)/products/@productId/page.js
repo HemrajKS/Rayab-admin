@@ -245,7 +245,7 @@ const ProductId = () => {
                       fontSize: "28px",
                     }}
                   />
-                  <div>{data.rating}</div>
+                  <div>{data.rating.toFixed(1)}</div>
                 </div>
               </div>
               <RatingTable data={data.reviews} />
