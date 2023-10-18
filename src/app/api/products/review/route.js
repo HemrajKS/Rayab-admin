@@ -44,8 +44,6 @@ export async function PATCH(req) {
         return averageRating;
       }
 
-      const averageRating = calculateAverageRating(product.reviews);
-
       const review = await Product.findOneAndUpdate(
         {
           _id: body.productId,
@@ -59,7 +57,7 @@ export async function PATCH(req) {
 
         {
           $push: { reviews: reviewUser },
-          rating: averageRating,
+          rating: calculateAverageRating(product.reviews),
         },
 
         { new: true }
