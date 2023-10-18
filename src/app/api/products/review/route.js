@@ -39,7 +39,8 @@ export async function PATCH(req) {
         }
 
         const totalRating =
-          reviews.reduce((sum, review) => sum + review.rating, 0) + body.rating;
+          reviews.reduce((sum, review) => sum + review.rating, 0) +
+          Number(body.rating);
         const averageRating = totalRating / (reviews.length + 1);
         return averageRating;
       }
