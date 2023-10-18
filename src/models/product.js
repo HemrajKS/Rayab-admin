@@ -42,11 +42,11 @@ const productSchema = new Schema(
     weight: String,
     dimensions: String,
     color: String,
-    rating: String,
+    rating: Number,
     reviews: [
       {
         user: { type: String, unique: true, required: true },
-        rating: String,
+        rating: Number,
         comment: String,
         userId: { type: String, unique: true, required: true },
       },

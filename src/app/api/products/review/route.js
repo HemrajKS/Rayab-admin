@@ -32,6 +32,19 @@ export async function PATCH(req) {
         ...{ userId: userId },
         ...{ user: user.username },
       };
+      const product = await Product.findOne({ _id: body.productId });
+      function calculateAverageRating(reviews) {
+        if (reviews.length === 0) {
+          return 0;
+        }
+
+        const totalRating =
+          reviews.reduce((sum, review) => sum + review.rating, 0) + body.rating;
+        const averageRating = totalRating / (reviews.length + 1);
+        return averageRating;
+      }
+
+      const averageRating = calculateAverageRating(product.reviews);
 
       const review = await Product.findOneAndUpdate(
         {
@@ -42,9 +55,12 @@ export async function PATCH(req) {
               $elemMatch: { user: user.username },
             },
           },
-          rating: 0,
         },
-        { $push: { reviews: reviewUser } },
+
+        {
+          $push: { reviews: reviewUser },
+          rating: averageRating,
+        },
 
         { new: true }
       );
