@@ -1,3 +1,4 @@
+import { getErrorResponse } from "@/lib/helpers";
 import connectDB from "@/lib/mongodb";
 import { verifyJWT } from "@/lib/token";
 import Product from "@/models/product";
@@ -25,27 +26,43 @@ export async function PATCH(req) {
     await connectDB();
     const user = await User.findOne({ _id: userId });
 
-    const reviewUser = {
-      ...body,
-      ...{ userId: userId },
-      ...{ user: user.name },
-    };
+    if (user) {
+      const reviewUser = {
+        ...body,
+        ...{ userId: userId },
+        ...{ user: user.username },
+      };
 
-    const review = await Product.findOneAndUpdate(
-      {
-        _id: body.productId,
-      },
-      { $push: { reviews: reviewUser } },
-      { new: true }
-    );
+      const review = await Product.findOneAndUpdate(
+        {
+          _id: body.productId,
 
-    let json_response = {
-      status: true,
-      data: review,
-      message: "Review has been added successfully",
-    };
+          reviews: {
+            $not: {
+              $elemMatch: { user: user.username },
+            },
+          },
+          rating: 0,
+        },
+        { $push: { reviews: reviewUser } },
 
-    return NextResponse.json(json_response);
+        { new: true }
+      );
+
+      if (review) {
+        let json_response = {
+          status: true,
+          data: review,
+          message: "Review has been added successfully",
+        };
+
+        return NextResponse.json(json_response);
+      } else {
+        return getErrorResponse(403, "Duplicate Entry or Invalid Review");
+      }
+    } else {
+      return getErrorResponse(403, "Please Login");
+    }
   } catch (error) {
     let json_response = {
       status: false,
