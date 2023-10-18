@@ -39,9 +39,12 @@ export async function PATCH(req) {
         }
 
         const totalRating =
-          reviews.reduce((sum, review) => sum + review.rating, 0) +
-          Number(body.rating);
+          (reviews
+            ? reviews.reduce((sum, review) => sum + review.rating, 0)
+            : 0) + body.rating;
+
         const averageRating = totalRating / (reviews.length + 1);
+
         return averageRating;
       }
 
@@ -79,6 +82,7 @@ export async function PATCH(req) {
       return getErrorResponse(403, "Please Login");
     }
   } catch (error) {
+    console.log(error);
     let json_response = {
       status: false,
       results: "could not update reviews",
