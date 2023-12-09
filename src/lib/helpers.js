@@ -24,7 +24,7 @@ export function getErrorResponse(
     }),
     {
       status,
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", 'Access-Control-Allow-Origin': process.env.API_URL  },
     }
   );
 }
