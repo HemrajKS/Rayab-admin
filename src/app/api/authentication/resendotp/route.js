@@ -1,11 +1,11 @@
-import { sendMail } from "@/app/services/mail";
-import { generateOTP } from "@/app/services/otp";
-import { getErrorResponse } from "@/lib/helpers";
-import connectDB from "@/lib/mongodb";
-import UserModel from "@/models/user";
-import Verify from "@/models/verification";
-import { hash } from "bcryptjs";
-import { NextResponse } from "next/server";
+import { sendMail } from '@/app/services/mail';
+import { generateOTP } from '@/app/services/otp';
+import { getErrorResponse } from '@/lib/helpers';
+import connectDB from '@/lib/mongodb';
+import UserModel from '@/models/user';
+import Verify from '@/models/verification';
+import { hash } from 'bcryptjs';
+import { NextResponse } from 'next/server';
 
 export async function POST(req) {
   const body = await req.json();
@@ -16,16 +16,16 @@ export async function POST(req) {
       _id: body.id,
     });
 
-    if (JSON.stringify(user) === "[]" || !user) {
+    if (JSON.stringify(user) === '[]' || !user) {
       return getErrorResponse(
         404,
-        "Not Registered, Please Register before Verification"
+        'Not Registered, Please Register before Verification'
       );
     } else {
       if (user.isActive) {
         return getErrorResponse(
           403,
-          "Already registered, Please Login to continue"
+          'Already registered, Please Login to continue'
         );
       } else {
         const otp = generateOTP();
@@ -39,9 +39,9 @@ export async function POST(req) {
           email: user.email,
           otp: hashedOtp,
         };
-        await sendMail({ to: body.email, otp, template: "otpTemplate" });
+        await sendMail({ to: body.email, otp, template: 'otpTemplate' });
 
-        if (JSON.stringify(otpDetails) === "[]" || !otpDetails) {
+        if (JSON.stringify(otpDetails) === '[]' || !otpDetails) {
           const verification = new Verify(verificationObj);
           const updatedOtp = await verification.save();
 
@@ -49,13 +49,16 @@ export async function POST(req) {
           delete sanitizedNewUser.otp;
           return new NextResponse(
             JSON.stringify({
-              status: "success",
-              message: "OTP sent to your Mail",
+              status: 'success',
+              message: 'OTP sent to your Mail',
               data: sanitizedNewUser,
             }),
             {
               status: 200,
-              headers: { "Content-Type": "application/json" },
+              headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': process.env.API_URL,
+              },
             }
           );
         } else {
@@ -71,13 +74,16 @@ export async function POST(req) {
           delete sanitizedNewUser.otp;
           return new NextResponse(
             JSON.stringify({
-              status: "success",
-              message: "OTP sent to your Mail",
+              status: 'success',
+              message: 'OTP sent to your Mail',
               data: sanitizedNewUser,
             }),
             {
               status: 200,
-              headers: { "Content-Type": "application/json" },
+              headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': process.env.API_URL,
+              },
             }
           );
         }

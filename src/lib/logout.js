@@ -5,7 +5,7 @@ export async function logout() {
     JSON.stringify({ message: "You are  not loggedin" }),
     {
       status: 403,
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json",'Access-Control-Allow-Origin': process.env.API_URL, },
     }
   );
 

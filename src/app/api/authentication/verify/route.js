@@ -1,10 +1,10 @@
-import { sendMail } from "@/app/services/mail";
-import { getErrorResponse } from "@/lib/helpers";
-import connectDB from "@/lib/mongodb";
-import UserModel from "@/models/user";
-import Verify from "@/models/verification";
-import { compare } from "bcryptjs";
-import { NextResponse } from "next/server";
+import { sendMail } from '@/app/services/mail';
+import { getErrorResponse } from '@/lib/helpers';
+import connectDB from '@/lib/mongodb';
+import UserModel from '@/models/user';
+import Verify from '@/models/verification';
+import { compare } from 'bcryptjs';
+import { NextResponse } from 'next/server';
 
 export async function POST(req) {
   const body = await req.json();
@@ -16,12 +16,12 @@ export async function POST(req) {
     });
 
     if (body.email && body.id && body.otp) {
-      if (JSON.stringify(user) === "[]" || !user) {
-        return getErrorResponse(404, "Not Registered or OTP expired");
+      if (JSON.stringify(user) === '[]' || !user) {
+        return getErrorResponse(404, 'Not Registered or OTP expired');
       } else {
         if (body.otp) {
           if (!(await compare(body.otp, user.otp))) {
-            return getErrorResponse(401, "Invalid OTP");
+            return getErrorResponse(401, 'Invalid OTP');
           } else {
             try {
               const user = await UserModel.findOneAndUpdate(
@@ -33,34 +33,37 @@ export async function POST(req) {
               );
               const sanitizedNewUser = { ...user.toObject() };
               delete sanitizedNewUser.password;
-              await Verify.deleteOne({ _id: body.id});
+              await Verify.deleteOne({ _id: body.id });
               await sendMail({
                 to: body.email,
-                template: "regSuccessTemplate",
+                template: 'regSuccessTemplate',
               });
 
               return new NextResponse(
                 JSON.stringify({
-                  status: "success",
+                  status: 'success',
                   message:
-                    "Congratuation you have been successfully registered",
+                    'Congratuation you have been successfully registered',
                   data: sanitizedNewUser,
                 }),
                 {
                   status: 200,
-                  headers: { "Content-Type": "application/json" },
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': process.env.API_URL,
+                  },
                 }
               );
             } catch (error) {
-              return getErrorResponse(500, "Error in fetching the data");
+              return getErrorResponse(500, 'Error in fetching the data');
             }
           }
         } else {
-          return getErrorResponse(404, "Please enter OTP");
+          return getErrorResponse(404, 'Please enter OTP');
         }
       }
     } else {
-      return getErrorResponse(404, "Some fields are missing");
+      return getErrorResponse(404, 'Some fields are missing');
     }
   } catch (error) {
     return getErrorResponse(500, error.message);

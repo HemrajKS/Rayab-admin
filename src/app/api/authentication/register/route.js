@@ -1,11 +1,11 @@
-import { getErrorResponse } from "@/lib/helpers";
-import { hash } from "bcryptjs";
-import { NextResponse } from "next/server";
-import UserModel from "@/models/user";
-import connectDB from "@/lib/mongodb";
-import { sendMail } from "@/app/services/mail";
-import { generateOTP } from "@/app/services/otp";
-import Verify from "@/models/verification";
+import { getErrorResponse } from '@/lib/helpers';
+import { hash } from 'bcryptjs';
+import { NextResponse } from 'next/server';
+import UserModel from '@/models/user';
+import connectDB from '@/lib/mongodb';
+import { sendMail } from '@/app/services/mail';
+import { generateOTP } from '@/app/services/otp';
+import Verify from '@/models/verification';
 
 export async function POST(req) {
   const isAdmin = false;
@@ -26,7 +26,7 @@ export async function POST(req) {
       body.firstName
     ) {
       if (user) {
-        return getErrorResponse(400, "User already exist");
+        return getErrorResponse(400, 'User already exist');
       } else {
         if (body.password === body.cpassword) {
           if (isAdmin == false) {
@@ -57,46 +57,52 @@ export async function POST(req) {
 
               const sanitizedNewUser = { ...savedUser.toObject() };
               delete sanitizedNewUser.password;
-              await sendMail({ to: body.email, otp, template: "otpTemplate" });
+              await sendMail({ to: body.email, otp, template: 'otpTemplate' });
               return new NextResponse(
                 JSON.stringify({
-                  status: "success",
-                  message: "OTP has been sent to your email",
+                  status: 'success',
+                  message: 'OTP has been sent to your email',
                   data: sanitizedNewUser,
                 }),
                 {
                   status: 200,
-                  headers: { "Content-Type": "application/json" },
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': process.env.API_URL,
+                  },
                 }
               );
             } catch (error) {
               if (error.code === 11000) {
-                return getErrorResponse(406, "Duplicate entries");
+                return getErrorResponse(406, 'Duplicate entries');
               }
-              return getErrorResponse(500, "Sorry!, Could not register");
+              return getErrorResponse(500, 'Sorry!, Could not register');
             }
           }
         } else {
-          return getErrorResponse(401, "Passwords are not matching");
+          return getErrorResponse(401, 'Passwords are not matching');
         }
       }
     } else {
-      return getErrorResponse(400, "Please Enter all the required fields");
+      return getErrorResponse(400, 'Please Enter all the required fields');
     }
 
     return new NextResponse(
       JSON.stringify({
-        status: "success",
+        status: 'success',
         data: { user: { user, password: undefined } },
       }),
       {
         status: 201,
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': process.env.API_URL,
+        },
       }
     );
   } catch (error) {
-    if (error.code === "P2002") {
-      return getErrorResponse(409, "user with that email already exists");
+    if (error.code === 'P2002') {
+      return getErrorResponse(409, 'user with that email already exists');
     }
 
     return getErrorResponse(500, error.message);
