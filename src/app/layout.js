@@ -1,16 +1,16 @@
-import { AuthProvider } from '@/contexts/AuthContext';
-import './globals.css';
-import { Poppins } from 'next/font/google';
+import { AuthProvider } from "@/contexts/AuthContext";
+import "./globals.css";
+import { Poppins } from "next/font/google";
 
 const poppins = Poppins({
-  weight: '400',
-  subsets: ['latin'],
-  display: 'swap',
+  weight: "400",
+  subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata = {
-  title: 'Rayab International - Ecommerce',
-  description: 'Rayab International',
+  title: "Eagle Eye Worldwide - Admin",
+  description: "Eagle Eye Worldwide",
 };
 
 export default function RootLayout({ children }) {

@@ -1,11 +1,11 @@
-import FullScreenLoader from '@/Components/FullScreenLoader/FullScreenLoader';
-import { urls } from '@/app/constants/constants';
-import makeHttpRequest from '@/app/services/apiCall';
-import { AccountCircle, Logout, Menu } from '@mui/icons-material';
-import { useRouter } from 'next/navigation';
-import { lazy, useState } from 'react';
+import FullScreenLoader from "@/Components/FullScreenLoader/FullScreenLoader";
+import { urls } from "@/app/constants/constants";
+import makeHttpRequest from "@/app/services/apiCall";
+import { AccountCircle, Logout, Menu } from "@mui/icons-material";
+import { useRouter } from "next/navigation";
+import { lazy, useState } from "react";
 
-const BasicModal = lazy(() => import('@/Components/Modal/Modal'));
+const BasicModal = lazy(() => import("@/Components/Modal/Modal"));
 
 const Header = ({ toggleDrawer }) => {
   const [open, setOpen] = useState(false);
@@ -17,7 +17,7 @@ const Header = ({ toggleDrawer }) => {
 
   const logoutFn = () => {
     setLoading(true);
-    makeHttpRequest(urls.logout, 'get')
+    makeHttpRequest(urls.logout, "get")
       .then((res) => {
         setLoading(false);
         window.location.reload();
@@ -33,25 +33,25 @@ const Header = ({ toggleDrawer }) => {
         <div className="rounded-full mr-[18px] bg-white shadow-md w-[50px] h-[50px] cursor-pointer flex items-center justify-center">
           <Menu
             onClick={toggleDrawer}
-            sx={{ color: '#0b1c487c', fontSize: '26px' }}
+            sx={{ color: "#0b1c487c", fontSize: "26px" }}
           />
         </div>
         <div className="font-black text-[24px] text-[#0b1c48] select-none">
-          Rayab <span className="font-thin text-[#e47e52]">International</span>
+          Eagle Eye <span className="font-thin text-[#e47e52]">Worldwide</span>
         </div>
       </div>
       <div className="flex">
         <div
           className="rounded-full mr-[18px] bg-white shadow-md w-[50px] h-[50px] flex items-center justify-center cursor-pointer"
           onClick={() => {
-            router.push('/profile');
+            router.push("/profile");
           }}
         >
-          <AccountCircle sx={{ color: '#0b1c487c', fontSize: '30px' }} />
+          <AccountCircle sx={{ color: "#0b1c487c", fontSize: "30px" }} />
         </div>
         <div className="rounded-full bg-white shadow-md w-[50px] h-[50px] flex items-center justify-center cursor-pointer">
           <Logout
-            sx={{ color: '#0b1c487c', fontSize: '26px' }}
+            sx={{ color: "#0b1c487c", fontSize: "26px" }}
             onClick={handleOpen}
           />
         </div>
@@ -59,7 +59,7 @@ const Header = ({ toggleDrawer }) => {
           open={open}
           cancel={handleClose}
           func={logoutFn}
-          message={'Are you sure you want to log out?'}
+          message={"Are you sure you want to log out?"}
         />
         <FullScreenLoader open={loading} />
       </div>
