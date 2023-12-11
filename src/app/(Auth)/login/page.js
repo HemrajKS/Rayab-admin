@@ -75,14 +75,17 @@ const Login = () => {
         className="sm:relative absolute sm:top-0 sm:left-0 sm:right-0 flex flex-col sm:rounded-[12px] p-[25px] sm:min-h-[250px] sm:min-w-[250px] sm:max-h-[520px] sm:max-w-[520px] h-full w-full items-center justify-center bg-white min-w-500 sm:rounded-2.5 shadow-md "
         style={{ height: "100dvh" }}
       >
-        <Image
+        {/* <Image
           src={require("/src/assets/Images/eagle eye.webp")}
           alt="Logo"
           loading="lazy"
           placeholder="blur"
           width={200}
           className="mb-[40px]"
-        />
+        /> */}
+        <div className="font-black text-[24px] text-[#0b1c48] select-none m-[0 auto]">
+          Eagle Eye <span className="font-thin text-[#e47e52]">Worldwide</span>
+        </div>
         <form className="min-w-[180px] max-w-[320px] w-full" onSubmit={submit}>
           <Input
             label={"Email Id"}
