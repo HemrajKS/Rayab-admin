@@ -83,7 +83,7 @@ const Login = () => {
           width={200}
           className="mb-[40px]"
         /> */}
-        <div className="font-black text-[24px] text-[#0b1c48] select-none m-[0 auto]">
+        <div className="font-black text-[24px] text-[#0b1c48] select-none m-[0 auto] mb-[44px]">
           Eagle Eye <span className="font-thin text-[#e47e52]">Worldwide</span>
         </div>
         <form className="min-w-[180px] max-w-[320px] w-full" onSubmit={submit}>
