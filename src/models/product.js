@@ -43,25 +43,25 @@ const productSchema = new Schema(
     dimensions: String,
     color: String,
     rating: Number,
-    reviews: [
-      {
-        user: {
-          type: String,
-          required: function () {
-            return this.reviews.length > 0;
-          },
-        },
-        rating: Number,
-        comment: String,
-        userId: {
-          type: String,
-          unique: true,
-          required: function () {
-            return this.reviews.length > 0;
-          },
-        },
-      },
-    ],
+    // reviews: [
+    //   {
+    //     user: {
+    //       type: String,
+    //       required: function () {
+    //         return this.reviews.length > 0;
+    //       },
+    //     },
+    //     rating: Number,
+    //     comment: String,
+    //     userId: {
+    //       type: String,
+    //       unique: true,
+    //       required: function () {
+    //         return this.reviews.length > 0;
+    //       },
+    //     },
+    //   },
+    // ],
     features: [String],
     warranty: String,
     shippingInfo: {
