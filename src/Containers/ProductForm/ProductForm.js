@@ -157,8 +157,8 @@ const ProductForm = ({ data, edit, submitData }) => {
           value={submitObj.name}
           onChange={handleChange}
           required
+          requiredStar
         />
-        <span style={{ color: "red" }}>*</span>
       </div>
 
       <div className="min-w-[450px] w-full xl:max-w-[calc(50%-10px)]">
@@ -168,8 +168,8 @@ const ProductForm = ({ data, edit, submitData }) => {
           onChange={handleChange}
           list={categories}
           label="Category"
+          requiredStar
         />
-        <span style={{ color: "red" }}>*</span>
       </div>
 
       <div className="min-w-[450px] w-full xl:max-w-[calc(50%-10px)]">
@@ -179,8 +179,8 @@ const ProductForm = ({ data, edit, submitData }) => {
           value={submitObj.description}
           onChange={handleChange}
           required
+          requiredStar
         />
-        <span style={{ color: "red" }}>*</span>
       </div>
 
       <div className="min-w-[450px] w-full xl:max-w-[calc(50%-10px)] ">
@@ -191,8 +191,8 @@ const ProductForm = ({ data, edit, submitData }) => {
           value={"INR"}
           // onChange={handleChange}
           disabled
+          requiredStar
         />
-        <span style={{ color: "red" }}>*</span>
       </div>
 
       <div className="min-w-[450px] w-full xl:max-w-[calc(50%-10px)] ">
@@ -202,8 +202,8 @@ const ProductForm = ({ data, edit, submitData }) => {
           value={submitObj.price}
           onChange={handleChange}
           required
+          requiredStar
         />
-        <span style={{ color: "red" }}>*</span>
       </div>
 
       <div className="min-w-[450px] w-full xl:max-w-[calc(50%-10px)] ">
@@ -214,8 +214,8 @@ const ProductForm = ({ data, edit, submitData }) => {
           onChange={handleChange}
           type={"number"}
           required
+          requiredStar
         />
-        <span style={{ color: "red" }}>*</span>
       </div>
 
       <div className="min-w-[450px] w-full xl:max-w-[calc(50%-10px)] ">
@@ -338,8 +338,8 @@ const ProductForm = ({ data, edit, submitData }) => {
           uploadImgLoading={uploadImgUrlLoading}
           type={"mainImage"}
           label={"Main Image"}
+          requiredStar
         />
-        <span style={{ color: "red" }}>*</span>
       </div>
 
       <div className="min-w-[450px] w-full xl:max-w-[calc(50%-10px)]">

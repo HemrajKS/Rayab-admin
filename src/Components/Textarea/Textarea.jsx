@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 function Textarea({
   label,
@@ -8,11 +8,12 @@ function Textarea({
   disabled,
   rows,
   placeholder,
+  requiredStar,
 }) {
   return (
     <label className="block relative mb-4">
       <span className="block text-[16px] text-[#0b1c48] font-[20px] opacity-80">
-        {label}
+        {label} {<span style={{ color: "red" }}>*</span>}
       </span>
 
       <textarea

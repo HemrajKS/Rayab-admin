@@ -11,6 +11,7 @@ const Upload = ({
   images,
   type,
   label,
+  requiredStar,
 }) => {
   const onDrop = (acceptedFiles) => {
     onDropHandler(acceptedFiles, type);
@@ -24,7 +25,7 @@ const Upload = ({
   return (
     <div className="mb-[20px] mt-[4px]">
       <div className="text-[16px] opacity-[0.8] text-[#0b1c48] mb-[4px]">
-        {label}
+        {label} {requiredStar && <span style={{ color: "red" }}>*</span>}
       </div>
       <div className="flex flex-col items-center border-[1px] p-[20px] border-slate-300 rounded-md">
         <>
