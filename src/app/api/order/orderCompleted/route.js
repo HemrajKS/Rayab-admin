@@ -34,7 +34,7 @@ export async function POST(req) {
     const user = await User.findOne({ _id: userId });
     let json_response = {};
     const pass = await verifyPass(token, user.password);
-
+    console.log(order);
     if (pass) {
       if (user.isAdmin) {
         if (order.products && JSON.stringify(order.products) !== "[]") {
@@ -138,11 +138,12 @@ export async function POST(req) {
     if (error.code === 11000) {
       return getErrorResponse(406, "Duplicate entries");
     }
-    console.log("error", error);
+    const order = await Order.findOne({ _id: body.id });
     let json_response = {
       status: false,
       results: "some error occured",
       error: error,
+      order: order,
     };
     return NextResponse.json(json_response, {
       status: 500,
