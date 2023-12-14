@@ -34,7 +34,7 @@ export async function POST(req) {
     const user = await User.findOne({ _id: userId });
     let json_response = {};
     const pass = await verifyPass(token, user.password);
-    console.log(order);
+
     if (pass) {
       if (user.isAdmin) {
         if (order.products && JSON.stringify(order.products) !== "[]") {
