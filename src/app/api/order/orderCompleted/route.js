@@ -109,7 +109,7 @@ export async function POST(req) {
               { status: "pending" },
               { new: true }
             );
-
+            console.log(orderNew);
             json_response = {
               status: true,
               data: orderNew,
