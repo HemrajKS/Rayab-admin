@@ -158,7 +158,7 @@ const ProductForm = ({ data, edit, submitData }) => {
           onChange={handleChange}
           required
         />
-        <span style={{ color: red }}>*</span>
+        <span style={{ color: "red" }}>*</span>
       </div>
 
       <div className="min-w-[450px] w-full xl:max-w-[calc(50%-10px)]">
@@ -169,7 +169,7 @@ const ProductForm = ({ data, edit, submitData }) => {
           list={categories}
           label="Category"
         />
-        <span style={{ color: red }}>*</span>
+        <span style={{ color: "red" }}>*</span>
       </div>
 
       <div className="min-w-[450px] w-full xl:max-w-[calc(50%-10px)]">
@@ -180,7 +180,7 @@ const ProductForm = ({ data, edit, submitData }) => {
           onChange={handleChange}
           required
         />
-        <span style={{ color: red }}>*</span>
+        <span style={{ color: "red" }}>*</span>
       </div>
 
       <div className="min-w-[450px] w-full xl:max-w-[calc(50%-10px)] ">
@@ -192,7 +192,7 @@ const ProductForm = ({ data, edit, submitData }) => {
           // onChange={handleChange}
           disabled
         />
-        <span style={{ color: red }}>*</span>
+        <span style={{ color: "red" }}>*</span>
       </div>
 
       <div className="min-w-[450px] w-full xl:max-w-[calc(50%-10px)] ">
@@ -203,7 +203,7 @@ const ProductForm = ({ data, edit, submitData }) => {
           onChange={handleChange}
           required
         />
-        <span style={{ color: red }}>*</span>
+        <span style={{ color: "red" }}>*</span>
       </div>
 
       <div className="min-w-[450px] w-full xl:max-w-[calc(50%-10px)] ">
@@ -215,7 +215,7 @@ const ProductForm = ({ data, edit, submitData }) => {
           type={"number"}
           required
         />
-        <span style={{ color: red }}>*</span>
+        <span style={{ color: "red" }}>*</span>
       </div>
 
       <div className="min-w-[450px] w-full xl:max-w-[calc(50%-10px)] ">
@@ -339,7 +339,7 @@ const ProductForm = ({ data, edit, submitData }) => {
           type={"mainImage"}
           label={"Main Image"}
         />
-        <span style={{ color: red }}>*</span>
+        <span style={{ color: "red" }}>*</span>
       </div>
 
       <div className="min-w-[450px] w-full xl:max-w-[calc(50%-10px)]">
