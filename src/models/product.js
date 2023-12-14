@@ -47,18 +47,12 @@ const productSchema = new Schema(
       {
         user: {
           type: String,
-          required: function () {
-            return this.reviews.length > 0;
-          },
         },
         rating: Number,
         comment: String,
         userId: {
           type: String,
           unique: true,
-          required: function () {
-            return this.reviews.length > 0;
-          },
         },
       },
     ],
