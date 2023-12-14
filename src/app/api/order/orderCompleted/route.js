@@ -138,6 +138,7 @@ export async function POST(req) {
     if (error.code === 11000) {
       return getErrorResponse(406, "Duplicate entries");
     }
+    console.log("error", error);
     let json_response = {
       status: false,
       results: "some error occured",
