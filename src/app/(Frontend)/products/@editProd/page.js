@@ -66,6 +66,10 @@ const Page = () => {
             if (res?.data?.data) {
               router.push(`/products?productId=${productId}`);
             }
+          } else {
+            alert(
+              "Some error occured!, Please ensure that all the required fields are filled"
+            );
           }
         })
         .catch((err) => {
