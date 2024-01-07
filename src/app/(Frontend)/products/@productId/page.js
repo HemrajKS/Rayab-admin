@@ -163,6 +163,9 @@ const ProductId = () => {
                 <div className="text-[#e47e52] text-[14px] font-thin">
                   {data.category}
                 </div>
+                <div className="text-[#e47e52] text-[14px] font-thin">
+                  {data?.subCategory}
+                </div>
                 <div className="mb-[14px] text-gray-400 ">
                   {data.description}
                 </div>

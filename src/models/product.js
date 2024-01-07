@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema } from 'mongoose';
 
 const productSchema = new Schema(
   {
@@ -11,6 +11,10 @@ const productSchema = new Schema(
       required: true,
     },
     category: {
+      type: String,
+      required: true,
+    },
+    subCategory: {
       type: String,
       required: true,
     },
@@ -82,6 +86,6 @@ const productSchema = new Schema(
 );
 
 const Product =
-  mongoose.models.Products || mongoose.model("Products", productSchema);
+  mongoose.models.Products || mongoose.model('Products', productSchema);
 
 export default Product;
