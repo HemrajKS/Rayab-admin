@@ -18,6 +18,7 @@ const Page = () => {
   const [editCategory, setEditCategory] = useState({
     name: '',
     description: '',
+    subCategories: [],
   });
 
   useEffect(() => {
@@ -47,7 +48,12 @@ const Page = () => {
 
     if (type === 'edit' || type === 'add') {
       setEditCategory((prev) => {
-        return { ...prev, name: cat.name, description: cat.description };
+        return {
+          ...prev,
+          name: cat.name,
+          description: cat.description,
+          subCategories: cat?.subCategories || [],
+        };
       });
     }
   };
@@ -107,12 +113,23 @@ const Page = () => {
   };
 
   const onChange = (e) => {
-    setEditCategory((prev) => {
-      return {
-        ...prev,
-        [e.target.name]: e.target.value,
-      };
-    });
+    if (e.target.name === 'subCategory') {
+      if (e.target.value) {
+        setEditCategory((prev) => {
+          return {
+            ...prev,
+            subCategories: [...prev.subCategories, e.target.value],
+          };
+        });
+      }
+    } else {
+      setEditCategory((prev) => {
+        return {
+          ...prev,
+          [e.target.name]: e.target.value,
+        };
+      });
+    }
   };
 
   return (
