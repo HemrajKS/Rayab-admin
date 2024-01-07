@@ -132,6 +132,19 @@ const Page = () => {
     }
   };
 
+  const deleteSubCat = (indexToRemove) => {
+    setEditCategory((prev) => {
+      return {
+        ...prev,
+
+        subCategories: [
+          ...prev.subCategories.slice(0, indexToRemove),
+          ...prev.subCategories.slice(indexToRemove + 1),
+        ],
+      };
+    });
+  };
+
   return (
     <div className="overflow-auto h-full text-[#0b1c48] overflow-x-hidden">
       <div className="pl-[25px] pr-[20px] flex items-center flex-row w-full justify-between">
@@ -157,7 +170,11 @@ const Page = () => {
       <BasicModal
         open={category.open === 'edit' || category.open === 'add'}
         message={
-          <CategoryForm editCategory={editCategory} onChange={onChange} />
+          <CategoryForm
+            editCategory={editCategory}
+            onChange={onChange}
+            deleteSubCat={deleteSubCat}
+          />
         }
         func={editCatApi}
         cancel={cancel}
