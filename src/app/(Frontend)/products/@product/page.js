@@ -53,12 +53,49 @@ const Page = () => {
       });
   };
 
+  // data.forEach((product) => {
+  //   const { category, subCategory } = product;
+
+  //   if (subCategory) {
+  //     if (groupedProducts[category]) {
+  //       if (groupedProducts[category][subCategory]) {
+  //         groupedProducts[category][subCategory].mapData.push(product);
+  //       } else {
+  //         groupedProducts[category][subCategory] = {
+  //           [subCategory]: { mapData: [product] },
+  //         };
+  //       }
+  //     } else {
+  //       groupedProducts[category] = {
+  //         [subCategory]: { mapData: [product] },
+  //         mapData: [],
+  //       };
+  //     }
+  //   } else {
+  //     if (groupedProducts[category]) {
+  //       groupedProducts[category].mapData.push(product);
+  //     } else {
+  //       groupedProducts[category] = { mapData: [product] };
+  //     }
+  //   }
+  // });
+
   data.forEach((product) => {
-    const { category } = product;
-    if (groupedProducts[category]) {
-      groupedProducts[category].push(product);
+    const { category, subCategory } = product;
+
+    if (!groupedProducts[category]) {
+      groupedProducts[category] = {};
+    }
+
+    if (subCategory) {
+      if (!groupedProducts[category][subCategory]) {
+        groupedProducts[category][subCategory] = { mapData: [] };
+      }
+      groupedProducts[category][subCategory].mapData.push(product);
     } else {
-      groupedProducts[category] = [product];
+      groupedProducts[category].mapData =
+        groupedProducts[category].mapData || [];
+      groupedProducts[category].mapData.push(product);
     }
   });
 
@@ -88,19 +125,50 @@ const Page = () => {
           </div>
         </div>
       </div>
+
       {data && data.length > 0 ? (
         <div className="p-[20px]">
           <div>
             {JSON.stringify(groupedProducts) !== '{}' &&
               Object.keys(groupedProducts).map((category, index) => {
+                console.log(Object.keys(groupedProducts[category]));
                 return (
                   <div key={index} className={`${index !== 0 && 'mt-[40px]'}`}>
                     <div className="text-[#e47e52] text-[18px] text-bold">
                       {category}
                     </div>
                     <div className="flex gap-[20px] flex-wrap pt-[20px]">
-                      {groupedProducts[category].map((item, i) => {
-                        return <ProductCards data={item} key={i} />;
+                      {Object.keys(groupedProducts[category]).map((item) => {
+                        return item === 'mapData' ? (
+                          groupedProducts[category][item].map((itemData, i) => {
+                            return <ProductCards data={itemData} key={i} />;
+                          })
+                        ) : (
+                          <div className="bg-gray-200 p-4 rounded-lg w-full">
+                            <div className="font-semibold text-[#e47e52] text-[18px]">
+                              {item}
+                            </div>
+                            <div className="flex gap-[20px] flex-wrap pt-[20px]">
+                              {Object.keys(groupedProducts[category][item]).map(
+                                (subItem, ind) => {
+                                  console.log(
+                                    groupedProducts[category][item][subItem]
+                                  );
+                                  return groupedProducts[category][item][
+                                    subItem
+                                  ]?.map((subItemdata, inde) => {
+                                    return (
+                                      <ProductCards
+                                        data={subItemdata}
+                                        key={inde}
+                                      />
+                                    );
+                                  });
+                                }
+                              )}
+                            </div>
+                          </div>
+                        );
                       })}
                     </div>
                   </div>

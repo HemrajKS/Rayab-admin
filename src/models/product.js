@@ -16,7 +16,6 @@ const productSchema = new Schema(
     },
     subCategory: {
       type: String,
-      required: true,
     },
     currency: {
       type: String,
