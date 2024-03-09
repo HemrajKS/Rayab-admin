@@ -58,7 +58,7 @@ const productSchema = new Schema(
         comment: String,
         userId: {
           type: String,
-          unique: true,
+          // unique: true,
           // required: function () {
           //   return this.reviews.length > 0;
           // },
