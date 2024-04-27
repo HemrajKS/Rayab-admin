@@ -1,13 +1,13 @@
-import Dropdown from '@/Components/Dropdown/Dropdown';
-import Input from '@/Components/Input/Input';
-import Textarea from '@/Components/Textarea/Textarea';
-import makeHttpRequest from '@/app/services/apiCall';
-import { sanitizeProduct } from '@/utils/utils';
-import React, { useEffect, useRef, useState } from 'react';
-import Upload from '@/Components/Uploader/Upload';
-import Button from '@/Components/Button/Button';
-import { Close, Remove } from '@mui/icons-material';
-import _ from 'lodash';
+import Dropdown from '@/Components/Dropdown/Dropdown'
+import Input from '@/Components/Input/Input'
+import Textarea from '@/Components/Textarea/Textarea'
+import makeHttpRequest from '@/app/services/apiCall'
+import { sanitizeProduct } from '@/utils/utils'
+import React, { useEffect, useRef, useState } from 'react'
+import Upload from '@/Components/Uploader/Upload'
+import Button from '@/Components/Button/Button'
+import { Close, Remove } from '@mui/icons-material'
+import _ from 'lodash'
 
 const ProductForm = ({ data, edit, submitData }) => {
   const fieldsToRemove = [
@@ -17,78 +17,78 @@ const ProductForm = ({ data, edit, submitData }) => {
     'updatedAt',
     'reviews',
     'rating',
-  ];
+  ]
 
-  const [categories, setCategories] = useState([]);
-  const [subCategories, setSubCategories] = useState([]);
-  const [categoriesload, setCategoriesLoad] = useState([]);
+  const [categories, setCategories] = useState([])
+  const [subCategories, setSubCategories] = useState([])
+  const [categoriesload, setCategoriesLoad] = useState([])
   const [submitObj, setSubmitObj] = useState({
     ...sanitizeProduct(data, fieldsToRemove),
-    currency: 'INR',
-  });
-  const [uploadImgLoading, setUploadImgLoading] = useState(false);
-  const [uploadImgUrlLoading, setUploadImgUrlLoading] = useState(false);
-  const [activeInfo, setActiveInfo] = useState('dimensions');
+    currency: 'USD',
+  })
+  const [uploadImgLoading, setUploadImgLoading] = useState(false)
+  const [uploadImgUrlLoading, setUploadImgUrlLoading] = useState(false)
+  const [activeInfo, setActiveInfo] = useState('dimensions')
 
-  const shipping = ['dimensions', 'shippingCost', 'weight'];
+  const shipping = ['dimensions', 'shippingCost', 'weight']
 
-  const featureRef = useRef(null);
+  const featureRef = useRef(null)
 
   useEffect(() => {
     const subCatListFound = categories.find(
-      (obj) => obj.name === submitObj.category
-    );
+      (obj) => obj.name === submitObj.category,
+    )
 
     setSubCategories(
-      subCatListFound?.subCategories.map((sub) => ({ name: sub })) || []
-    );
-  }, [submitObj.category, categories]);
+      subCatListFound?.subCategories.map((sub) => ({ name: sub })) || [],
+    )
+  }, [submitObj.category, categories])
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target
 
     setSubmitObj({
       ...submitObj,
       [name]: value,
-    });
-  };
+    })
+  }
 
   useEffect(() => {
-    categoryApi();
-  }, []);
+    categoryApi()
+  }, [])
 
   useEffect(() => {
-    submitData(submitObj);
-  }, [submitObj]);
+    submitData(submitObj)
+  }, [submitObj])
 
   const categoryApi = () => {
-    setCategoriesLoad(true);
+    setCategoriesLoad(true)
     makeHttpRequest(`/api/categories`, 'get')
       .then((res) => {
-        setCategoriesLoad(false);
+        setCategoriesLoad(false)
         if (res.status === 200) {
           if (res?.data?.categories) {
-            setCategories(res?.data?.categories);
+            setCategories(res?.data?.categories)
           }
         }
       })
       .catch((err) => {
-        setCategoriesLoad(false);
-        console.log(err);
-      });
-  };
+        setCategoriesLoad(false)
+        console.log(err)
+      })
+  }
 
   const onDropHandler = (acceptedFiles, type) => {
     {
-      mainImage: setUploadImgUrlLoading(true);
-      otherImages: setUploadImgLoading(true);
+      mainImage: setUploadImgUrlLoading(true)
+      otherImages: setUploadImgLoading(true)
     }
-    [type];
+    ;[type]
     if (acceptedFiles.length === 1) {
-      const file = acceptedFiles[0];
-      const formData = new FormData();
-      formData.append('image', file);
-      formData.append('name', 'Product Image');
+      const file = acceptedFiles[0]
+      const formData = new FormData()
+      formData.append('image', file)
+      formData.append('name', 'Product Image')
 
       makeHttpRequest(`/api/upload`, 'post', formData)
         .then((res) => {
@@ -98,56 +98,56 @@ const ProductForm = ({ data, edit, submitData }) => {
                 setSubmitObj({
                   ...submitObj,
                   imageUrl: res?.data?.data,
-                });
-                setUploadImgLoading(false);
-                setUploadImgUrlLoading(false);
+                })
+                setUploadImgLoading(false)
+                setUploadImgUrlLoading(false)
               } else if (type === 'otherImages') {
-                const newState = { ...submitObj };
+                const newState = { ...submitObj }
                 if (!newState.images) {
-                  newState.images = [];
+                  newState.images = []
                 }
-                newState.images.push(res?.data?.data);
-                setSubmitObj(newState);
-                setUploadImgLoading(false);
-                setUploadImgUrlLoading(false);
+                newState.images.push(res?.data?.data)
+                setSubmitObj(newState)
+                setUploadImgLoading(false)
+                setUploadImgUrlLoading(false)
               }
             }
           }
         })
         .catch((err) => {
-          setUploadImgLoading(false);
-          setUploadImgUrlLoading(false);
-          console.log(err);
-        });
+          setUploadImgLoading(false)
+          setUploadImgUrlLoading(false)
+          console.log(err)
+        })
     } else {
-      alert('Only one file can be uploaded at once');
+      alert('Only one file can be uploaded at once')
     }
-  };
+  }
 
   const addFeature = () => {
     if (featureRef.current) {
-      const feature = featureRef.current.value;
+      const feature = featureRef.current.value
       if (feature !== '') {
-        const newState = { ...submitObj };
+        const newState = { ...submitObj }
         if (!newState.features) {
-          newState.features = [];
+          newState.features = []
         }
 
-        newState.features.push(feature);
-        setSubmitObj(newState);
+        newState.features.push(feature)
+        setSubmitObj(newState)
       }
     } else {
-      console.error('Input element not found.');
+      console.error('Input element not found.')
     }
-  };
+  }
 
   const deleteFeature = (i) => {
     if (i !== -1) {
-      const newState = { ...submitObj };
-      newState.features.splice(i, 1);
-      setSubmitObj(newState);
+      const newState = { ...submitObj }
+      newState.features.splice(i, 1)
+      setSubmitObj(newState)
     }
-  };
+  }
 
   const addShippingInfo = (e) => {
     setSubmitObj({
@@ -156,8 +156,8 @@ const ProductForm = ({ data, edit, submitData }) => {
         ...submitObj.shippingInfo,
         [activeInfo]: e.target.value,
       },
-    });
-  };
+    })
+  }
 
   return (
     <form className="flex gap-x-[20px] flex-wrap">
@@ -209,7 +209,7 @@ const ProductForm = ({ data, edit, submitData }) => {
           name={'currency'}
           label={'Currency'}
           // value={submitObj.currency}
-          value={'INR'}
+          value={'USD'}
           // onChange={handleChange}
           disabled
           requiredStar
@@ -309,14 +309,14 @@ const ProductForm = ({ data, edit, submitData }) => {
               </span>{' '}
               <span
                 onClick={() => {
-                  deleteFeature(i);
+                  deleteFeature(i)
                 }}
                 className="cursor-pointer text-[#e47e52]"
               >
                 <Close />
               </span>
             </div>
-          );
+          )
         })}
       </div>
 
@@ -342,12 +342,12 @@ const ProductForm = ({ data, edit, submitData }) => {
                   item === activeInfo && 'bg-[#e47e52] text-[white]'
                 }`}
                 onClick={() => {
-                  setActiveInfo(item);
+                  setActiveInfo(item)
                 }}
               >
                 {_.startCase(item)}
               </div>
-            );
+            )
           })}
         </div>
       </div>
@@ -374,7 +374,7 @@ const ProductForm = ({ data, edit, submitData }) => {
         />
       </div>
     </form>
-  );
-};
+  )
+}
 
-export default ProductForm;
+export default ProductForm

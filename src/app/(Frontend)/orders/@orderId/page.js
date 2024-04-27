@@ -1,175 +1,175 @@
-"use client";
+'use client'
 
-import { urls } from "@/app/constants/constants";
-import makeHttpRequest from "@/app/services/apiCall";
-import { ArrowBack, Delete, Edit, LocationOn, Star } from "@mui/icons-material";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import _ from "lodash";
-import { Alert, Rating, Snackbar } from "@mui/material";
-import RatingTable from "@/Containers/RatingTable/RatingTable";
-import BasicModal from "@/Components/Modal/Modal";
-import Link from "next/link";
-import Pagination from "@/Components/Pagination/Pagination";
-import { CircularIndeterminate } from "@/Components/Loaders/Loaders";
-import ProductCards from "@/Containers/ProductCards/ProductCards";
-import Dropdown from "@/Components/Dropdown/Dropdown";
-import FullScreenLoader from "@/Components/FullScreenLoader/FullScreenLoader";
+import { urls } from '@/app/constants/constants'
+import makeHttpRequest from '@/app/services/apiCall'
+import { ArrowBack, Delete, Edit, LocationOn, Star } from '@mui/icons-material'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import React, { useEffect, useState } from 'react'
+import _ from 'lodash'
+import { Alert, Rating, Snackbar } from '@mui/material'
+import RatingTable from '@/Containers/RatingTable/RatingTable'
+import BasicModal from '@/Components/Modal/Modal'
+import Link from 'next/link'
+import Pagination from '@/Components/Pagination/Pagination'
+import { CircularIndeterminate } from '@/Components/Loaders/Loaders'
+import ProductCards from '@/Containers/ProductCards/ProductCards'
+import Dropdown from '@/Components/Dropdown/Dropdown'
+import FullScreenLoader from '@/Components/FullScreenLoader/FullScreenLoader'
 
 const OrderId = () => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
+  const router = useRouter()
+  const searchParams = useSearchParams()
   const params = {
-    orderId: searchParams.get("orderId"),
-  };
+    orderId: searchParams.get('orderId'),
+  }
 
-  const [loading, setLoading] = useState(false);
-  const [deleteModal, setDeleteModal] = useState(false);
-  const [data, setData] = useState({});
-  const [currentPage, setCurrentPage] = useState(1);
-  const [productLoading, setProductLoading] = useState(false);
-  const [products, setProducts] = useState([]);
-  const [delLoading, setDelLoading] = useState(false);
-  const [statusModal, setStatusModal] = useState(false);
-  const [statusData, setStatusData] = useState("");
+  const [loading, setLoading] = useState(false)
+  const [deleteModal, setDeleteModal] = useState(false)
+  const [data, setData] = useState({})
+  const [currentPage, setCurrentPage] = useState(1)
+  const [productLoading, setProductLoading] = useState(false)
+  const [products, setProducts] = useState([])
+  const [delLoading, setDelLoading] = useState(false)
+  const [statusModal, setStatusModal] = useState(false)
+  const [statusData, setStatusData] = useState('')
   const [toastStatus, setToastStatus] = useState({
     open: false,
-    message: "",
-    severity: "",
-  });
+    message: '',
+    severity: '',
+  })
 
-  const productsPerPage = 5;
+  const productsPerPage = 5
 
   const totalPages = Math.ceil(
-    ((data && data.products && data.products.length) || 0) / productsPerPage
-  );
+    ((data && data.products && data.products.length) || 0) / productsPerPage,
+  )
 
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
       if (newPage !== currentPage) {
-        setCurrentPage(newPage);
-        setProducts([]);
+        setCurrentPage(newPage)
+        setProducts([])
       }
     }
-  };
+  }
 
   useEffect(() => {
-    const startIndex = (currentPage - 1) * productsPerPage;
-    const endIndex = startIndex + productsPerPage;
+    const startIndex = (currentPage - 1) * productsPerPage
+    const endIndex = startIndex + productsPerPage
     const pageProducts =
-      data && data.products && data.products.slice(startIndex, endIndex);
+      data && data.products && data.products.slice(startIndex, endIndex)
 
     const fetchProductDetails = async (productId, qty) => {
-      setProductLoading(true);
-      setProducts([]);
+      setProductLoading(true)
+      setProducts([])
       try {
-        makeHttpRequest(`${urls.products}?id=${productId}`, "get")
+        makeHttpRequest(`${urls.products}?id=${productId}`, 'get')
           .then((res) => {
-            setProductLoading(false);
+            setProductLoading(false)
             if (res.status === 200) {
               if (res?.data?.products) {
                 return setProducts((prevProducts) => [
                   ...prevProducts,
                   { ...res?.data?.products, quantity: qty },
-                ]);
+                ])
               }
             }
           })
           .catch((err) => {
-            setProductLoading(false);
-            console.log(err);
-          });
+            setProductLoading(false)
+            console.log(err)
+          })
       } catch (error) {
-        console.error("Error fetching product details:", error);
+        console.error('Error fetching product details:', error)
       }
-    };
+    }
 
     if (pageProducts) {
-      (async () => {
+      ;(async () => {
         for (const product of pageProducts) {
-          await fetchProductDetails(product.product, product.quantity);
+          await fetchProductDetails(product.product, product.quantity)
         }
-      })();
+      })()
     }
-  }, [currentPage, data.products]);
+  }, [currentPage, data.products])
 
   useEffect(() => {
-    orderApi();
-  }, []);
+    orderApi()
+  }, [])
 
   const orderApi = () => {
-    setLoading(true);
-    makeHttpRequest(`${urls.getOrders}?id=${params.orderId}`, "get")
+    setLoading(true)
+    makeHttpRequest(`${urls.getOrders}?id=${params.orderId}`, 'get')
       .then((res) => {
-        setLoading(false);
+        setLoading(false)
         if (res.status === 200) {
           if (res?.data?.orders) {
-            setData(res?.data?.orders);
+            setData(res?.data?.orders)
           }
         }
       })
       .catch((err) => {
-        setLoading(false);
-        console.log(err);
-      });
-  };
+        setLoading(false)
+        console.log(err)
+      })
+  }
 
   const deleteOder = () => {
-    setDelLoading(true);
-    makeHttpRequest(`${urls.deleteOrder}`, "post", { id: params.orderId })
+    setDelLoading(true)
+    makeHttpRequest(`${urls.deleteOrder}`, 'post', { id: params.orderId })
       .then((res) => {
-        setDelLoading(false);
+        setDelLoading(false)
         if (res.status === 200) {
-          router.push("/orders");
+          router.push('/orders')
         }
       })
       .catch((err) => {
-        setDelLoading(false);
-        console.log(err);
+        setDelLoading(false)
+        console.log(err)
         setToastStatus({
           open: true,
-          message: err.message || "Could not Delete Order",
-          severity: "success",
-        });
-      });
-  };
+          message: err.message || 'Could not Delete Order',
+          severity: 'success',
+        })
+      })
+  }
 
   const calculateTotalQuantity = () => {
-    let totalQuantity = 0;
+    let totalQuantity = 0
 
     for (const product of data.products) {
-      totalQuantity += product.quantity;
+      totalQuantity += product.quantity
     }
-    return totalQuantity;
-  };
+    return totalQuantity
+  }
 
   const orderStatusFunc = () => {
-    setDelLoading(true);
-    makeHttpRequest(`${urls.orderStatus}`, "post", {
+    setDelLoading(true)
+    makeHttpRequest(`${urls.orderStatus}`, 'post', {
       id: params.orderId,
       status: statusData,
     })
       .then((res) => {
-        setDelLoading(false);
+        setDelLoading(false)
         if (res.status === 200) {
           setToastStatus({
             open: true,
-            message: res.status.message || "Status updated successfully",
-            severity: "success",
-          });
-          orderApi();
+            message: res.status.message || 'Status updated successfully',
+            severity: 'success',
+          })
+          orderApi()
         }
       })
       .catch((err) => {
-        setDelLoading(false);
-        console.log(err);
+        setDelLoading(false)
+        console.log(err)
         setToastStatus({
           open: true,
-          message: err.message || "Could not Update Order",
-          severity: "error",
-        });
-      });
-  };
+          message: err.message || 'Could not Update Order',
+          severity: 'error',
+        })
+      })
+  }
 
   return (
     <div className="overflow-auto h-full text-[#0b1c48] ">
@@ -178,10 +178,10 @@ const OrderId = () => {
           <div
             className="rounded-full z-[999]  bg-slate-100 shadow-md w-[50px] h-[50px] flex items-center justify-center cursor-pointer"
             onClick={() => {
-              router.push("/orders");
+              router.push('/orders')
             }}
           >
-            <ArrowBack sx={{ color: "#e47e52", fontSize: "26px" }} />
+            <ArrowBack sx={{ color: '#e47e52', fontSize: '26px' }} />
           </div>
           <div className="flex gap-[20px] items-center">
             {data.status && (
@@ -190,13 +190,13 @@ const OrderId = () => {
                   name="status"
                   value={data.status}
                   onChange={(e) => {
-                    setStatusData(e.target.value);
-                    setStatusModal(true);
+                    setStatusData(e.target.value)
+                    setStatusModal(true)
                   }}
                   list={[
-                    { name: "pending" },
-                    { name: "rejected" },
-                    { name: "completed" },
+                    { name: 'pending' },
+                    { name: 'rejected' },
+                    { name: 'completed' },
                   ]}
                   customStyle={{ marginBottom: 0 }}
                 />
@@ -205,14 +205,14 @@ const OrderId = () => {
             <div
               className="rounded-full z-[999]  bg-slate-100 shadow-md w-[50px] h-[50px] flex items-center justify-center cursor-pointer"
               onClick={() => {
-                setDeleteModal(true);
+                setDeleteModal(true)
               }}
             >
-              <Delete sx={{ color: "#f05454", fontSize: "26px" }} />
+              <Delete sx={{ color: '#f05454', fontSize: '26px' }} />
             </div>
           </div>
         </div>
-        {JSON.stringify(data) !== "{}" ? (
+        {JSON.stringify(data) !== '{}' ? (
           <div className="mt-[20px]">
             <div className="flex gap-[20px] flex-wrap">
               <div className="bg-white rounded-[16px] flex flex-col shadow-md max-h-[calc(100vh-106px)] min-w-[450px] w-full xl:max-w-[calc(50%-10px)] h-[100%] p-[20px]">
@@ -222,16 +222,16 @@ const OrderId = () => {
                   </div>
                   {data.name && (
                     <div className="text-bold text-[18px] mb-[14px] mt-[10px]">
-                      Ordered By:{" "}
+                      Ordered By:{' '}
                       <span className=" text-[#e47e52]">{data.name}</span>
                     </div>
                   )}
                   {data.totalPrice && (
                     <div className="text-bold text-[18px] mb-[14px]">
-                      Worth:{" "}
+                      Worth:{' '}
                       <span className=" text-[#e47e52]">
-                        {" "}
-                        {data.currency ? data.currency : "INR"}{" "}
+                        {' '}
+                        {data.currency ? data.currency : 'USD'}{' '}
                         {data.totalPrice}
                       </span>
                     </div>
@@ -239,30 +239,30 @@ const OrderId = () => {
 
                   {data.email && (
                     <div className="text-bold text-[18px] mb-[14px]">
-                      Email Id:{" "}
+                      Email Id:{' '}
                       <span className=" text-[#e47e52]"> {data.email}</span>
                     </div>
                   )}
 
                   {data.phone1 && (
                     <div className="text-bold text-[18px] mb-[14px]">
-                      Phone No #1:{" "}
+                      Phone No #1:{' '}
                       <span className=" text-[#e47e52]"> {data.phone1}</span>
                     </div>
                   )}
 
                   {data.phone2 && (
                     <div className="text-bold text-[18px] mb-[14px]">
-                      Phone No #2:{" "}
+                      Phone No #2:{' '}
                       <span className=" text-[#e47e52]"> {data.phone2}</span>
                     </div>
                   )}
 
                   {data.orderDate && (
                     <div className="text-bold text-[18px] mb-[14px]">
-                      Ordered Date:{" "}
+                      Ordered Date:{' '}
                       <span className=" text-[#e47e52]">
-                        {" "}
+                        {' '}
                         {new Date(data.orderDate).toLocaleString()}
                       </span>
                     </div>
@@ -270,9 +270,9 @@ const OrderId = () => {
 
                   {data.updatedAt && (
                     <div className="text-bold text-[18px] mb-[14px]">
-                      Last Updated:{" "}
+                      Last Updated:{' '}
                       <span className=" text-[#e47e52]">
-                        {" "}
+                        {' '}
                         {new Date(data.updatedAt).toLocaleString()}
                       </span>
                     </div>
@@ -284,7 +284,7 @@ const OrderId = () => {
                   <div className="text-bold text-2xl">Other Details</div>
                   {data.customerQuery && (
                     <div className="text-bold text-[18px] mb-[10px] mt-[10px]">
-                      Customer Query:{" "}
+                      Customer Query:{' '}
                       <span className=" text-[#e47e52]">
                         {data.customerQuery}
                       </span>
@@ -295,7 +295,7 @@ const OrderId = () => {
                     <>
                       {data.address.country && (
                         <div className="text-bold text-[18px] mb-[8px]">
-                          Country:{" "}
+                          Country:{' '}
                           <span className=" text-[#e47e52]">
                             {data.address.country}
                           </span>
@@ -303,7 +303,7 @@ const OrderId = () => {
                       )}
                       {data.address.city && (
                         <div className="text-bold text-[18px] mb-[8px]">
-                          City:{" "}
+                          City:{' '}
                           <span className=" text-[#e47e52]">
                             {data.address.city}
                           </span>
@@ -312,7 +312,7 @@ const OrderId = () => {
 
                       {data.address.street && (
                         <div className="text-bold text-[18px] mb-[8px]">
-                          Street:{" "}
+                          Street:{' '}
                           <span className=" text-[#e47e52]">
                             {data.address.street}
                           </span>
@@ -321,7 +321,7 @@ const OrderId = () => {
 
                       {data.address.postalCode && (
                         <div className="text-bold text-[18px] mb-[8px]">
-                          Postal Code:{" "}
+                          Postal Code:{' '}
                           <span className=" text-[#e47e52]">
                             {data.address.postalCode}
                           </span>
@@ -336,7 +336,7 @@ const OrderId = () => {
                         >
                           <div className="rounded-full z-[999]  bg-slate-100 shadow-md w-[50px] h-[50px] flex items-center justify-center cursor-pointer">
                             <LocationOn
-                              sx={{ color: "#f05454", fontSize: "26px" }}
+                              sx={{ color: '#f05454', fontSize: '26px' }}
                             />
                           </div>
                         </a>
@@ -383,10 +383,10 @@ const OrderId = () => {
       </div>
       <BasicModal
         open={deleteModal}
-        message={"Are you sure, you want to delete this Order?"}
+        message={'Are you sure, you want to delete this Order?'}
         func={deleteOder}
         cancel={() => {
-          setDeleteModal(false);
+          setDeleteModal(false)
         }}
       />
       <BasicModal
@@ -394,28 +394,28 @@ const OrderId = () => {
         message={`Are you sure, you want to change the status of this Order to ${statusData}?`}
         func={orderStatusFunc}
         cancel={() => {
-          setStatusModal(false);
+          setStatusModal(false)
         }}
       />
       <FullScreenLoader open={delLoading} />
       <Snackbar
         open={toastStatus.open}
         autoHideDuration={4000}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
         onClose={() => {
           setToastStatus({
             open: false,
-            severity: "",
-            message: "",
-          });
+            severity: '',
+            message: '',
+          })
         }}
       >
-        <Alert severity={toastStatus.severity} sx={{ width: "100%" }}>
+        <Alert severity={toastStatus.severity} sx={{ width: '100%' }}>
           {toastStatus.message}
         </Alert>
       </Snackbar>
     </div>
-  );
-};
+  )
+}
 
-export default OrderId;
+export default OrderId
