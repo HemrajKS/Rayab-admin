@@ -57,10 +57,18 @@ const Upload = ({
                   <div className="flex flex-col items-center mt-[12px]">
                     <PictureAsPdf sx={{ fontSize: 80, color: '#e47e52' }} />
                     <p className="text-sm mt-2">PDF File</p>
-                    <a href={url.replace('/upload/', '/upload/fl_attachment/')} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline text-sm">
-                      View PDF
-                    </a>
-                    
+                    <div className="flex gap-2">
+                      <a href={url.replace('/upload/', '/upload/fl_attachment/')} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline text-sm">
+                        View PDF
+                      </a>
+                      <button 
+                        onClick={() => onDropHandler([], type)} 
+                        className="text-red-500 underline text-sm"
+                        type="button"
+                      >
+                        Remove
+                      </button>
+                    </div>
                   </div>
                 ),
                 otherImages: (

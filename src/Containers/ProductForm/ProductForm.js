@@ -80,6 +80,13 @@ const ProductForm = ({ data, edit, submitData }) => {
   };
 
   const onDropHandler = (acceptedFiles, type) => {
+    if (acceptedFiles.length === 0 && type === 'pdf') {
+      setSubmitObj({
+        ...submitObj,
+        pdf: '',
+      });
+      return;
+    }
     {
       mainImage: setUploadImgUrlLoading(true);
       otherImages: setUploadImgLoading(true);
