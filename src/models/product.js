@@ -73,6 +73,9 @@ const productSchema = new Schema(
       shippingCost: String,
     },
     images: [String],
+    pdf: {
+      type: String,
+    },
     addedBy: {
       type: String,
       required: true,

@@ -1,153 +1,161 @@
-import Dropdown from '@/Components/Dropdown/Dropdown'
-import Input from '@/Components/Input/Input'
-import Textarea from '@/Components/Textarea/Textarea'
-import makeHttpRequest from '@/app/services/apiCall'
-import { sanitizeProduct } from '@/utils/utils'
-import React, { useEffect, useRef, useState } from 'react'
-import Upload from '@/Components/Uploader/Upload'
-import Button from '@/Components/Button/Button'
-import { Close, Remove } from '@mui/icons-material'
-import _ from 'lodash'
+import Dropdown from "@/Components/Dropdown/Dropdown";
+import Input from "@/Components/Input/Input";
+import Textarea from "@/Components/Textarea/Textarea";
+import makeHttpRequest from "@/app/services/apiCall";
+import { sanitizeProduct } from "@/utils/utils";
+import React, { useEffect, useRef, useState } from "react";
+import Upload from "@/Components/Uploader/Upload";
+import Button from "@/Components/Button/Button";
+import { Close, Remove } from "@mui/icons-material";
+import _ from "lodash";
+import PdfViewer from "@/Components/PdfViewer/PdfViewer";
 
 const ProductForm = ({ data, edit, submitData }) => {
   const fieldsToRemove = [
-    'addedBy',
-    '__v',
-    'createdAt',
-    'updatedAt',
-    'reviews',
-    'rating',
-  ]
+    "addedBy",
+    "__v",
+    "createdAt",
+    "updatedAt",
+    "reviews",
+    "rating",
+  ];
 
-  const [categories, setCategories] = useState([])
-  const [subCategories, setSubCategories] = useState([])
-  const [categoriesload, setCategoriesLoad] = useState([])
+  const [categories, setCategories] = useState([]);
+  const [subCategories, setSubCategories] = useState([]);
+  const [categoriesload, setCategoriesLoad] = useState([]);
   const [submitObj, setSubmitObj] = useState({
     ...sanitizeProduct(data, fieldsToRemove),
-    currency: 'USD',
-  })
-  const [uploadImgLoading, setUploadImgLoading] = useState(false)
-  const [uploadImgUrlLoading, setUploadImgUrlLoading] = useState(false)
-  const [activeInfo, setActiveInfo] = useState('dimensions')
+    currency: "USD",
+  });
+  const [uploadImgLoading, setUploadImgLoading] = useState(false);
+  const [uploadImgUrlLoading, setUploadImgUrlLoading] = useState(false);
+  const [activeInfo, setActiveInfo] = useState("dimensions");
 
-  const shipping = ['dimensions', 'shippingCost', 'weight']
+  const shipping = ["dimensions", "shippingCost", "weight"];
 
-  const featureRef = useRef(null)
+  const featureRef = useRef(null);
 
   useEffect(() => {
     const subCatListFound = categories.find(
-      (obj) => obj.name === submitObj.category,
-    )
+      (obj) => obj.name === submitObj.category
+    );
 
     setSubCategories(
-      subCatListFound?.subCategories.map((sub) => ({ name: sub })) || [],
-    )
-  }, [submitObj.category, categories])
+      subCatListFound?.subCategories.map((sub) => ({ name: sub })) || []
+    );
+  }, [submitObj.category, categories]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
 
     setSubmitObj({
       ...submitObj,
       [name]: value,
-    })
-  }
+    });
+  };
 
   useEffect(() => {
-    categoryApi()
-  }, [])
+    categoryApi();
+  }, []);
 
   useEffect(() => {
-    submitData(submitObj)
-  }, [submitObj])
+    submitData(submitObj);
+  }, [submitObj]);
 
   const categoryApi = () => {
-    setCategoriesLoad(true)
-    makeHttpRequest(`/api/categories`, 'get')
+    setCategoriesLoad(true);
+    makeHttpRequest(`/api/categories`, "get")
       .then((res) => {
-        setCategoriesLoad(false)
+        setCategoriesLoad(false);
         if (res.status === 200) {
           if (res?.data?.categories) {
-            setCategories(res?.data?.categories)
+            setCategories(res?.data?.categories);
           }
         }
       })
       .catch((err) => {
-        setCategoriesLoad(false)
-        console.log(err)
-      })
-  }
+        setCategoriesLoad(false);
+        console.log(err);
+      });
+  };
 
   const onDropHandler = (acceptedFiles, type) => {
     {
-      mainImage: setUploadImgUrlLoading(true)
-      otherImages: setUploadImgLoading(true)
+      mainImage: setUploadImgUrlLoading(true);
+      otherImages: setUploadImgLoading(true);
     }
-    ;[type]
+    [type];
     if (acceptedFiles.length === 1) {
-      const file = acceptedFiles[0]
-      const formData = new FormData()
-      formData.append('image', file)
-      formData.append('name', 'Product Image')
+      const file = acceptedFiles[0];
+      const formData = new FormData();
+      formData.append("image", file);
+      formData.append("name", "Product Image");
 
-      makeHttpRequest(`/api/upload`, 'post', formData)
+      makeHttpRequest(`/api/upload`, "post", formData)
         .then((res) => {
           if (res.status === 200) {
             if (res?.data?.data) {
-              if (type === 'mainImage') {
+              if (type === "mainImage") {
                 setSubmitObj({
                   ...submitObj,
                   imageUrl: res?.data?.data,
-                })
-                setUploadImgLoading(false)
-                setUploadImgUrlLoading(false)
-              } else if (type === 'otherImages') {
-                const newState = { ...submitObj }
+                });
+                setUploadImgLoading(false);
+                setUploadImgUrlLoading(false);
+              } else if (type === "pdf") {
+                setSubmitObj({
+                  ...submitObj,
+                  pdf: res?.data?.data,
+                });
+                setUploadImgLoading(false);
+                setUploadImgUrlLoading(false);
+              } else if (type === "otherImages") {
+                const newState = { ...submitObj };
                 if (!newState.images) {
-                  newState.images = []
+                  newState.images = [];
                 }
-                newState.images.push(res?.data?.data)
-                setSubmitObj(newState)
-                setUploadImgLoading(false)
-                setUploadImgUrlLoading(false)
+                newState.images.push(res?.data?.data);
+                setSubmitObj(newState);
+                setUploadImgLoading(false);
+                setUploadImgUrlLoading(false);
               }
             }
           }
         })
         .catch((err) => {
-          setUploadImgLoading(false)
-          setUploadImgUrlLoading(false)
-          console.log(err)
-        })
+          setUploadImgLoading(false);
+          setUploadImgUrlLoading(false);
+          console.log(err);
+        });
     } else {
-      alert('Only one file can be uploaded at once')
+      alert("Only one file can be uploaded at once");
     }
-  }
+  };
 
   const addFeature = () => {
     if (featureRef.current) {
-      const feature = featureRef.current.value
-      if (feature !== '') {
-        const newState = { ...submitObj }
+      const feature = featureRef.current.value;
+      if (feature !== "") {
+        const newState = { ...submitObj };
         if (!newState.features) {
-          newState.features = []
+          newState.features = [];
         }
 
-        newState.features.push(feature)
-        setSubmitObj(newState)
+        newState.features.push(feature);
+        setSubmitObj(newState);
       }
     } else {
-      console.error('Input element not found.')
+      console.error("Input element not found.");
     }
-  }
+  };
 
   const deleteFeature = (i) => {
     if (i !== -1) {
-      const newState = { ...submitObj }
-      newState.features.splice(i, 1)
-      setSubmitObj(newState)
+      const newState = { ...submitObj };
+      newState.features.splice(i, 1);
+      setSubmitObj(newState);
     }
-  }
+  };
 
   const addShippingInfo = (e) => {
     setSubmitObj({
@@ -156,15 +164,15 @@ const ProductForm = ({ data, edit, submitData }) => {
         ...submitObj.shippingInfo,
         [activeInfo]: e.target.value,
       },
-    })
-  }
+    });
+  };
 
   return (
     <form className="flex gap-x-[20px] flex-wrap">
       <div className="min-w-[450px] w-full xl:max-w-[calc(50%-10px)] ">
         <Input
-          name={'name'}
-          label={'Name'}
+          name={"name"}
+          label={"Name"}
           value={submitObj.name}
           onChange={handleChange}
           required
@@ -174,7 +182,7 @@ const ProductForm = ({ data, edit, submitData }) => {
 
       <div className="min-w-[450px] w-full xl:max-w-[calc(50%-10px)]">
         <Dropdown
-          name={'category'}
+          name={"category"}
           value={submitObj.category}
           onChange={handleChange}
           list={categories}
@@ -185,7 +193,7 @@ const ProductForm = ({ data, edit, submitData }) => {
 
       <div className="min-w-[450px] w-full xl:max-w-[calc(50%-10px)]">
         <Dropdown
-          name={'subCategory'}
+          name={"subCategory"}
           value={submitObj.subCategory}
           onChange={handleChange}
           list={subCategories}
@@ -195,8 +203,8 @@ const ProductForm = ({ data, edit, submitData }) => {
 
       <div className="min-w-[450px] w-full xl:max-w-[calc(50%-10px)]">
         <Textarea
-          name={'description'}
-          label={'Description'}
+          name={"description"}
+          label={"Description"}
           value={submitObj.description}
           onChange={handleChange}
           required
@@ -206,10 +214,10 @@ const ProductForm = ({ data, edit, submitData }) => {
 
       <div className="min-w-[450px] w-full xl:max-w-[calc(50%-10px)] ">
         <Input
-          name={'currency'}
-          label={'Currency'}
+          name={"currency"}
+          label={"Currency"}
           // value={submitObj.currency}
-          value={'USD'}
+          value={"USD"}
           // onChange={handleChange}
           disabled
           requiredStar
@@ -218,8 +226,8 @@ const ProductForm = ({ data, edit, submitData }) => {
 
       <div className="min-w-[450px] w-full xl:max-w-[calc(50%-10px)] ">
         <Input
-          name={'price'}
-          label={'Price'}
+          name={"price"}
+          label={"Price"}
           value={submitObj.price}
           onChange={handleChange}
           required
@@ -229,11 +237,11 @@ const ProductForm = ({ data, edit, submitData }) => {
 
       <div className="min-w-[450px] w-full xl:max-w-[calc(50%-10px)] ">
         <Input
-          name={'stock'}
-          label={'Stock'}
+          name={"stock"}
+          label={"Stock"}
           value={submitObj.stock}
           onChange={handleChange}
-          type={'number'}
+          type={"number"}
           required
           requiredStar
         />
@@ -241,8 +249,8 @@ const ProductForm = ({ data, edit, submitData }) => {
 
       <div className="min-w-[450px] w-full xl:max-w-[calc(50%-10px)] ">
         <Input
-          name={'model'}
-          label={'Model'}
+          name={"model"}
+          label={"Model"}
           value={submitObj.model}
           onChange={handleChange}
         />
@@ -250,8 +258,8 @@ const ProductForm = ({ data, edit, submitData }) => {
 
       <div className="min-w-[450px] w-full xl:max-w-[calc(50%-10px)] ">
         <Input
-          name={'color'}
-          label={'Color'}
+          name={"color"}
+          label={"Color"}
           value={submitObj.color}
           onChange={handleChange}
         />
@@ -259,8 +267,8 @@ const ProductForm = ({ data, edit, submitData }) => {
 
       <div className="min-w-[450px] w-full xl:max-w-[calc(50%-10px)] ">
         <Input
-          name={'dimensions'}
-          label={'Dimensions'}
+          name={"dimensions"}
+          label={"Dimensions"}
           value={submitObj.dimensions}
           onChange={handleChange}
         />
@@ -268,8 +276,8 @@ const ProductForm = ({ data, edit, submitData }) => {
 
       <div className="min-w-[450px] w-full xl:max-w-[calc(50%-10px)] ">
         <Input
-          name={'weight'}
-          label={'Weight'}
+          name={"weight"}
+          label={"Weight"}
           value={submitObj.weight}
           onChange={handleChange}
         />
@@ -277,8 +285,8 @@ const ProductForm = ({ data, edit, submitData }) => {
 
       <div className="min-w-[450px] w-full xl:max-w-[calc(50%-10px)] ">
         <Input
-          name={'warranty'}
-          label={'Warranty'}
+          name={"warranty"}
+          label={"Warranty"}
           value={submitObj.warranty}
           onChange={handleChange}
         />
@@ -286,8 +294,8 @@ const ProductForm = ({ data, edit, submitData }) => {
 
       <div className="min-w-[450px] w-full xl:max-w-[calc(50%-10px)] ">
         <Input
-          name={'manufacturer'}
-          label={'Manufacturer'}
+          name={"manufacturer"}
+          label={"Manufacturer"}
           value={submitObj.manufacturer}
           onChange={handleChange}
         />
@@ -295,8 +303,8 @@ const ProductForm = ({ data, edit, submitData }) => {
 
       <div className="min-w-[450px] w-full xl:max-w-[calc(50%-10px)] mb-[20px]">
         <div className="flex items-center gap-[20px]">
-          <Input name={'features'} label={'Features'} inputRef={featureRef} />
-          <Button name={'Add'} type={'button'} onClick={addFeature} />
+          <Input name={"features"} label={"Features"} inputRef={featureRef} />
+          <Button name={"Add"} type={"button"} onClick={addFeature} />
         </div>
         {submitObj?.features?.map((feat, i) => {
           return (
@@ -306,26 +314,26 @@ const ProductForm = ({ data, edit, submitData }) => {
             >
               <span>
                 {i + 1}. {feat}
-              </span>{' '}
+              </span>{" "}
               <span
                 onClick={() => {
-                  deleteFeature(i)
+                  deleteFeature(i);
                 }}
                 className="cursor-pointer text-[#e47e52]"
               >
                 <Close />
               </span>
             </div>
-          )
+          );
         })}
       </div>
 
       <div className="min-w-[450px] w-full xl:max-w-[calc(50%-10px)] mb-[20px]">
-        {' '}
+        {" "}
         <div>
           <Input
-            name={'shippingInfo'}
-            label={'Shipping Info'}
+            name={"shippingInfo"}
+            label={"Shipping Info"}
             value={
               submitObj?.shippingInfo && submitObj.shippingInfo[activeInfo]
             }
@@ -339,15 +347,15 @@ const ProductForm = ({ data, edit, submitData }) => {
               <div
                 key={i}
                 className={`cursor-pointer px-[8px] py-[4px] rounded-md ${
-                  item === activeInfo && 'bg-[#e47e52] text-[white]'
+                  item === activeInfo && "bg-[#e47e52] text-[white]"
                 }`}
                 onClick={() => {
-                  setActiveInfo(item)
+                  setActiveInfo(item);
                 }}
               >
                 {_.startCase(item)}
               </div>
-            )
+            );
           })}
         </div>
       </div>
@@ -357,9 +365,20 @@ const ProductForm = ({ data, edit, submitData }) => {
           onDropHandler={onDropHandler}
           url={submitObj.imageUrl}
           uploadImgLoading={uploadImgUrlLoading}
-          type={'mainImage'}
-          label={'Main Image'}
+          type={"mainImage"}
+          label={"Main Image"}
           requiredStar
+        />
+      </div>
+
+      <div className="min-w-[450px] w-full xl:max-w-[calc(50%-10px)]">
+        <Upload
+          onDropHandler={onDropHandler}
+          url={submitObj.pdf}
+          uploadImgLoading={uploadImgUrlLoading}
+          type={"pdf"}
+          label={"PDF"}
+          allowPdf
         />
       </div>
 
@@ -369,12 +388,14 @@ const ProductForm = ({ data, edit, submitData }) => {
           url={submitObj.imageUrl}
           images={submitObj.images}
           uploadImgLoading={uploadImgLoading}
-          type={'otherImages'}
-          label={'Other Images'}
+          type={"otherImages"}
+          label={"Other Images"}
         />
       </div>
-    </form>
-  )
-}
 
-export default ProductForm
+     {submitObj.pdf && <PdfViewer pdfUrl={submitObj.pdf} height="500px" />}
+    </form>
+  );
+};
+
+export default ProductForm;

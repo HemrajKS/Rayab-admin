@@ -12,12 +12,14 @@ export default async function upload(img, name) {
   var uploadData = {};
   const bytes = await img.arrayBuffer();
   const buffer = Buffer.from(bytes);
+  const isPdf = img.type === 'application/pdf';
 
   const uploadFn = () => {
     return new Promise((resolve, reject) => {
       let cld_upload_stream = cloudinary.uploader.upload_stream(
         {
           folder: 'images',
+          resource_type: isPdf ? 'raw' : 'image',
         },
         (error, result) => {
           if (result) {

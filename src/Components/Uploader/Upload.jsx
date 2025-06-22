@@ -1,4 +1,4 @@
-import { UploadFile } from "@mui/icons-material";
+import { UploadFile, PictureAsPdf } from "@mui/icons-material";
 import { useDropzone } from "react-dropzone";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
@@ -12,13 +12,14 @@ const Upload = ({
   type,
   label,
   requiredStar,
+  allowPdf = false,
 }) => {
   const onDrop = (acceptedFiles) => {
     onDropHandler(acceptedFiles, type);
   };
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
-    accept: "image/*",
+    accept: allowPdf ? "application/pdf" : "image/*",
     multiple: false,
   });
 
@@ -38,7 +39,7 @@ const Upload = ({
               <UploadFile sx={{ color: "#e47e52" }} />
               <input hidden accept="image/*" multiple={false} type="file" />
             </div>
-            <p>Drag & drop an image here, or click to select one</p>
+            <p>Drag & drop {allowPdf ? 'a PDF' : 'an image'} here, or click to select one</p>
           </div>
           <div className="flex justify-center overflow-auto">
             {
@@ -51,6 +52,16 @@ const Upload = ({
                     height={500}
                     className="h-[200px] w-[200px] object-cover align-middle rounded-[8px] mt-[12px]"
                   />
+                ),
+                pdf: url && (
+                  <div className="flex flex-col items-center mt-[12px]">
+                    <PictureAsPdf sx={{ fontSize: 80, color: '#e47e52' }} />
+                    <p className="text-sm mt-2">PDF File</p>
+                    <a href={url.replace('/upload/', '/upload/fl_attachment/')} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline text-sm">
+                      View PDF
+                    </a>
+                    
+                  </div>
                 ),
                 otherImages: (
                   <div className="flex items-center gap-[20px]">
